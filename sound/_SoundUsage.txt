@@ -1,0 +1,47 @@
+This file details usage of SFX
+
+BULLET AND BATTLE SFX
+bigbullet	Used for long-duration low-impact blasts and waves (See: Raiden Spell 1, Taiga Spell 3, Dyne Spells 1-2)
+bigburst	Used for high-power bursts (See: X Flare)
+bigexplode	Used for large Utsuho-sun-tier explosions (See: Taro S2Mid Spell, Accel Electron Beam, Gen Spells 2-3)
+bullet		Generic short-duration bullet sfx
+burst		Used for long-duration low-impact smooth bursts (See: Raiden Spell 1, Taiga Spell 3, Gen Odd Nonspells)
+crash		Used for smashing (See: Gen Spells 3 and 10, Taro stabbing Teiki)
+eleburst	Generic medium-duration electric pulse sfx
+explode		Generic gently-explode-into-multiple-parts sfx
+freeze1		Used for long-duration smooth cracking objects (See: Dyne Spell 2, Taro Ex Spell 1, Gen Sp 6, 8, 10)
+freeze2		Used for long-duration ranged shatter (See: Taro Spell 2 familiars)
+hiwave		Generic medium-duration high-pitched chime sfx
+laser		Standard laser SFX
+laserbolt	Reserved for Enrai's railgun
+lineblast	Used for long projectile throwing spears, often loose lightning lasers (See: Taro Spells 3-4, Dyne Sp 1)
+mecha		Used for slowly expanding ranged objects (See: Maryuu Spell 4B, Ryusuke mid)
+mechawave	Used for single-fire mechanical bolts
+seiga		Used for energy-heavy familiars and chargeable bullets (See: Maryuu)
+shiki		Used for low-energy familiars (See: Maryuu)
+slash		Used for slashing waves (See: Ryusuke Spells 2, 4)
+snipershot	Used for single-blast long-range bolts.
+spark		KIRISAME!!!!!!!!!! (See: X Flare)
+thunder		Used for... thunder, I guess? o_O (See: Maryuu S2A and S3A, Ryusuke Spell 4)
+water		...Take a good guess (Maryuu Spell 3A)
+wave		Generic long-duration or high-repetition bullet waves
+waveburst	AKA Dialga SFX, used for high-resonance long-duration large-scale energy attacks (See: Gen Spell 4)
+
+GAMEPLAY - OTHER SFX
+bonus		grep -r -l "SFX_BONUS" .
+bossdie		Used for boss death
+capture		Used for spell capture
+charge		Used for standard boss charge
+devolve		Used for Taiga's Charging, dialogue start
+enemydie	Used for stage enemy death
+exattack	Used for Taiga's Charging
+extend		Used for extends
+item		Used for item collection
+longcharge	Used for Final/Ex Boss final attack charging
+longpulse	Unused
+playershot	Used for player firing
+select		Menu
+selectcancel	Menu
+selectinvalid	Menu
+selectok	Menu
+spell		Used for spell declare

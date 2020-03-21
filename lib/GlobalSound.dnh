@@ -1,0 +1,259 @@
+/* ******************************************************************
+* Sparen's Global Sound Handler
+* For use with Touhou Danmakufu ph3
+* (C) Sparen of Iria 2018-2020
+****************************************************************** */
+
+/* ******************************************************************
+* This script is meant to be run in parallel with the package OR 
+* System file, whichever is available. It is in control of the
+* loading and playing of every sound effect in game.
+*
+* Prior to this file, all files requiring sound #included FxnSFX.dnh
+* and would run SoundSFX to create the necessary objects.
+* This was inefficient, as objects were being created and deleted 
+* constantly instead of being reused. 
+*
+* With this script, which runs at the start of a System Script or
+* Package Script, only calling the GS(SFX_#####); is necessary.
+* This script was designed with compatibility in mind - the old 
+* system can be used along side this new system.
+*
+* All scripts using sound functions must #include const_sfx.dnh
+* const_sfx.dnh contains the GS() function.
+* 
+* Once the old system has been entirely replaced, this should be 
+* the only file that #includes FxnSFX.dnh.
+****************************************************************** */
+
+#include "./FxnSFX.dnh"
+#include "./const_sfx.dnh"
+
+//Declaration of all objects currently allowed in the system. Deprecated or unused SFX should be commented out (not removed). 
+//Replaced SFX should only be listed if there is a possibility of reuse elsewhere.
+let dir = GetCurrentScriptDirectory();
+
+//let alert = SoundSFX(dir ~ "../sound/alert.wav");
+//let beat1 = SoundSFX(dir ~ "../sound/beat1.wav");
+//let beat2 = SoundSFX(dir ~ "../sound/beat2.wav");
+//let beat3 = SoundSFX(dir ~ "../sound/beat3.wav");
+let bigbullet = SoundSFX(dir ~ "../sound/bigbullet.wav");
+let bigexplode = SoundSFX(dir ~ "../sound/bigexplode.wav");
+let bonus = SoundSFX(dir ~ "../sound/bonus.wav");
+let bossdie = SoundSFX(dir ~ "../sound/bossdie.wav");
+let bullet = SoundSFX(dir ~ "../sound/bullet.wav");
+let burst = SoundSFX(dir ~ "../sound/burst.wav");
+let capture = SoundSFX(dir ~ "../sound/capture.wav");
+let charge = SoundSFX(dir ~ "../sound/charge.wav");
+let devolve = SoundSFX(dir ~ "../sound/devolve.wav");
+let eleburst = SoundSFX(dir ~ "../sound/eleburst.wav");
+let enemydie = SoundSFX(dir ~ "../sound/enemydie.wav");
+let exattack = SoundSFX(dir ~ "../sound/exattack.wav");
+let explode = SoundSFX(dir ~ "../sound/explode.wav");
+let extend = SoundSFX(dir ~ "../sound/extend.wav");
+//let fail = SoundSFX(dir ~ "../sound/fail.wav");
+//let graze = SoundSFX(dir ~ "../sound/graze.wav");
+let hiwave = SoundSFX(dir ~ "../sound/hiwave.wav");
+//let ice = SoundSFX(dir ~ "../sound/ice.wav");
+let item = SoundSFX(dir ~ "../sound/item.wav");
+//let item2 = SoundSFX(dir ~ "../sound/item2.wav");
+let laser = SoundSFX(dir ~ "../sound/laser.wav");
+let lineblast = SoundSFX(dir ~ "../sound/lineblast.wav");
+let longcharge = SoundSFX(dir ~ "../sound/longcharge.wav");
+let mecha = SoundSFX(dir ~ "../sound/mecha.wav");
+let playershot = SoundSFX(dir ~ "../sound/playershot.wav");
+let seiga = SoundSFX(dir ~ "../sound/seiga.wav");
+let select = SoundSFX(dir ~ "../sound/select.wav");
+let selectcancel = SoundSFX(dir ~ "../sound/selectcancel.wav");
+let selectinvalid = SoundSFX(dir ~ "../sound/selectinvalid.wav");
+let selectok = SoundSFX(dir ~ "../sound/selectok.wav");
+//let shield = SoundSFX(dir ~ "../sound/shield.wav");
+let shiki = SoundSFX(dir ~ "../sound/shiki.wav");
+let slash = SoundSFX(dir ~ "../sound/slash.wav");
+let spark = SoundSFX(dir ~ "../sound/spark.wav");
+let spell = SoundSFX(dir ~ "../sound/spell.wav");
+let thunder = SoundSFX(dir ~ "../sound/thunder.wav");
+//let timeout = SoundSFX(dir ~ "../sound/timeout.wav");
+//let timestop = SoundSFX(dir ~ "../sound/timestop.wav");
+let water = SoundSFX(dir ~ "../sound/water.wav");
+let wave = SoundSFX(dir ~ "../sound/wave.wav");
+let waveburst = SoundSFX(dir ~ "../sound/waveburst.wav");
+
+//Replaced but still viable
+
+//New
+let bigburst = SoundSFX(dir ~ "../sound/bigburst.wav");
+let longpulse = SoundSFX(dir ~ "../sound/longpulse.wav");
+let freeze1 = SoundSFX(dir ~ "../sound/freeze1.wav");
+let freeze2 = SoundSFX(dir ~ "../sound/freeze2.wav");
+let crash = SoundSFX(dir ~ "../sound/crash.wav");
+let laserbolt = SoundSFX(dir ~ "../sound/laserbolt.wav");
+let snipershot = SoundSFX(dir ~ "../sound/snipershot.wav");
+let mechawave = SoundSFX(dir ~ "../sound/mechawave.wav");
+
+let splat = SoundSFX(dir ~ "../sound/splat.wav");
+
+@Initialize {
+    WriteLog("GlobalSound: Now running");
+}
+
+@Event { //Raise an Error for events that are no longer supported (i.e. sound effect is duplicate or deprecated)
+    alternative(GetEventType())
+    case(EV_USER + 101) {
+        RaiseError("GlobalSound: SFX_ALERT is no longer supported.");
+    }
+    case(EV_USER + 102) {
+        RaiseError("GlobalSound: SFX_BEAT1 is no longer supported.");
+    }
+    case(EV_USER + 103) {
+        RaiseError("GlobalSound: SFX_BEAT2 is no longer supported.");
+    }
+    case(EV_USER + 104) {
+        PlaySFX(bigbullet);
+    }
+    case(EV_USER + 105) {
+        PlaySFX(bigburst);
+    }
+    case(EV_USER + 106) {
+        PlaySFX(bigexplode);
+    }
+    case(EV_USER + 107) {
+        PlaySFX(bonus);
+    }
+    case(EV_USER + 108) {
+        PlaySFX(bossdie);
+    }
+    case(EV_USER + 109) {
+        PlaySFX(bullet);
+    }
+    case(EV_USER + 110) {
+        PlaySFX(burst);
+    }
+    case(EV_USER + 111) {
+        PlaySFX(capture);
+    }
+    case(EV_USER + 112) {
+        PlaySFX(charge);
+    }
+    case(EV_USER + 113) {
+        PlaySFX(devolve);
+    }
+    case(EV_USER + 114) {
+        PlaySFX(waveburst); //Formerly dialga
+    }
+    case(EV_USER + 115) {
+        PlaySFX(eleburst);
+    }
+    case(EV_USER + 116) {
+        PlaySFX(enemydie);
+    }
+    case(EV_USER + 117) {
+        PlaySFX(exattack);
+    }
+    case(EV_USER + 118) {
+        PlaySFX(explode);
+    }
+    case(EV_USER + 119) {
+        PlaySFX(extend);
+    }
+    case(EV_USER + 120) {
+        RaiseError("GlobalSound: SFX_FAIL is no longer supported.");
+    }
+    case(EV_USER + 121) {
+        RaiseError("GlobalSound: SFX_GRAZE is not supported in the main package. Please refer to the Player Script.");
+    }
+    case(EV_USER + 122) {
+        PlaySFX(hiwave);
+    }
+    case(EV_USER + 123) {
+        RaiseError("GlobalSound: SFX_ICE is no longer supported. Use SFX_FREEZE1 or SFX_FREEZE2 instead.");
+    }
+    case(EV_USER + 124) {
+        PlaySFX(item);
+    }
+    case(EV_USER + 125) {
+        RaiseError("GlobalSound: SFX_ITEM2 is no longer supported.");
+    }
+    case(EV_USER + 126) {
+        PlaySFX(laser);
+    }
+    case(EV_USER + 127) {
+        PlaySFX(lineblast);
+    }
+    case(EV_USER + 128) {
+        PlaySFX(longcharge);
+    }
+    case(EV_USER + 129) {
+        PlaySFX(mecha);
+    }
+    case(EV_USER + 130) {
+        PlaySFX(playershot);
+    }
+    case(EV_USER + 131) {
+        PlaySFX(seiga);
+    }
+    case(EV_USER + 132) {
+        PlaySFX(select);
+    }
+    case(EV_USER + 133) {
+        PlaySFX(selectcancel);
+    }
+    case(EV_USER + 134) {
+        PlaySFX(selectinvalid);
+    }
+    case(EV_USER + 135) {
+        PlaySFX(selectok);
+    }
+    case(EV_USER + 136) {
+        RaiseError("GlobalSound: SFX_SHIELD is no longer supported.");
+    }
+    case(EV_USER + 137) {
+        PlaySFX(shiki);
+    }
+    case(EV_USER + 138) {
+        PlaySFX(slash);
+    }
+    case(EV_USER + 139) {
+        PlaySFX(spark);
+    }
+    case(EV_USER + 140) {
+        PlaySFX(spell);
+    }
+    case(EV_USER + 141) {
+        PlaySFX(thunder);
+    }
+    case(EV_USER + 142) {
+        PlaySFX(water);
+    }
+    case(EV_USER + 143) {
+        PlaySFX(wave);
+    }
+    case(EV_USER + 302) {
+        PlaySFX(longpulse);
+    }
+    case(EV_USER + 303) {
+        PlaySFX(freeze1);
+    }
+    case(EV_USER + 304) {
+        PlaySFX(freeze2);
+    }
+    case(EV_USER + 305) {
+        PlaySFX(crash);
+    }
+    case(EV_USER + 306) {
+        PlaySFX(laserbolt);
+    }
+    case(EV_USER + 307) {
+        PlaySFX(snipershot);
+    }
+    case(EV_USER + 308) {
+        PlaySFX(mechawave);
+    }
+    case(EV_USER + 309) {
+        PlaySFX(splat);
+    }
+}
+
+@MainLoop{
+    yield;
+}

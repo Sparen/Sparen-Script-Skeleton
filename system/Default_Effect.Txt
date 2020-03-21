@@ -1,0 +1,24 @@
+task TExplosionA(x, y, dAlpha, dScale) {
+    let path = GetCurrentScriptDirectory() ~ "../img/Default_Effect.png";
+    let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+    ObjPrim_SetTexture(obj, path);
+    Obj_SetRenderPriority(obj, 0.65);
+    ObjRender_SetBlendType(obj, BLEND_ADD_RGB);
+    ObjSprite2D_SetSourceRect(obj, 1, 1, 63, 63);
+    ObjSprite2D_SetDestCenter(obj);
+    ObjRender_SetPosition(obj, x, y, 0);
+
+    let scale = 0;
+    let alpha = 255;
+    while(alpha > 0) {
+        ObjRender_SetColor(obj, alpha, alpha, alpha);
+        ObjRender_SetScaleXYZ(obj, scale, scale, 1);
+
+        scale += dScale;
+        alpha -= dAlpha;
+        yield;
+    }
+    Obj_Delete(obj);
+}
+
+

@@ -1,0 +1,684 @@
+#include "./../system/Default_Effect.Txt"
+#include "./FxnList.dnh"
+#include "./../script/ShotCommon.dnh"
+#include "./STTJ_ShotConst.dnh"
+#include "./FxnAutoFormat.dnh"
+
+//Stage stuff
+
+task WriteBGM(name) {
+    let objText = ObjText_Create();
+    ObjText_SetText(objText, "BGM: " ~ name);
+    ObjText_SetFontSize(objText, 14);
+    ObjText_SetFontType(objText, "Russell Square Regular");
+    ObjText_SetFontBold(objText, false);
+    ObjText_SetFontColorTop(objText, 255, 255, 255);
+    ObjText_SetFontColorBottom(objText, 255, 255, 255);
+    ObjRender_SetPosition(objText, 384 - 4 - ObjText_GetTotalWidth(objText), 448 - 4 - 14, 1);
+    Obj_SetRenderPriority(objText, 0.79);
+    ascent(i in 0..30) {
+        ObjRender_SetAlpha(objText, i*255/30);
+        yield;
+    }
+    wait(90);
+    ascent(i in 0..30) {
+        ObjRender_SetAlpha(objText, 255-i*255/30);
+        yield;
+    }
+    Obj_Delete(objText);
+}
+
+task DrawStageBanner(stage) {
+    //BG - 77, effects - 78, text - 79
+    //Loc is 192x180, 15 fr fade in, 90 fr yield, 15 fr fade out. Do the math for the accel.
+    let stagenumber = "Stage 1";
+    let stageloctext = ["D", "e", "f", "a", "u", "l", "t", ""];
+    alternative(stage)
+    case(1) {stagenumber = "Name"; stageloctext = ["D", "e", "f", "a", "u", "l", "t", ""];}
+    SB_AMBTextObj(stage);
+    SB_StageNumTextObj(stage, stagenumber);
+    SB_StageNumBGA(0, -12, 45); //speed*root2
+    SB_StageNumBGA(384, -12, 135); //speed*root2
+    SB_StageNumBGB(384, 180, 180);
+    SB_TextBoxBG;
+    SB_TextName(stage, stageloctext);
+    SB_MagicCircle(192-150, 180-72, 64, 1, 12);
+    SB_MagicCircle(192+150, 180-72, 64, 1, 8);
+    SB_MagicCircle(192-150, 180-72, 64, -1, 8);
+    SB_MagicCircle(192+150, 180-72, 64, -1, 12);
+}
+
+task SB_AMBTextObj(stage) {
+    let objText = ObjText_Create();
+    ObjText_SetText(objText, "Line 1[r]Line 2");
+    ObjText_SetFontSize(objText, 24);
+    ObjText_SetFontType(objText, "Russell Square Regular");
+    ObjText_SetFontBold(objText, false);
+    ObjText_SetFontColorTop(objText, 255, 160, 160);
+    ObjText_SetFontColorBottom(objText, 192, 160, 160);
+    ObjText_SetFontBorderType(objText, BORDER_FULL);
+    ObjText_SetFontBorderColor(objText, 255, 192, 160);
+    ObjText_SetFontBorderWidth(objText, 2);
+    alternative(stage)//override
+    case(1) {ObjText_SetFontBorderColor(objText, 128, 64, 96);}
+    ObjText_SetHorizontalAlignment(objText, ALIGNMENT_CENTER);
+    ObjText_SetMaxWidth(objText, 360);
+    Obj_SetRenderPriority(objText, 0.79);
+    ObjRender_SetX(objText, 192 - 180); //Minus half the max width. 194 = 388/2 (388 is GetStgFrameWidth w/ r.p.<80)
+    ObjRender_SetY(objText, 180 - 72);
+    ascent(i in 0..15) {
+        ObjRender_SetAlpha(objText, i*255/15);
+        yield;
+    }
+    loop(120) {yield;}
+    descent(i in 0..15) {
+        ObjRender_SetAlpha(objText, i*255/15);
+        yield;
+    }
+    Obj_Delete(objText);
+}
+
+task SB_StageNumTextObj(stage, stagetext) {
+    let objspeed = 24.6; //was based off of calculations. But... I ditched that.
+    let objText = ObjText_Create();
+    ObjText_SetText(objText, stagetext);
+    ObjText_SetFontSize(objText, 32);
+    ObjText_SetFontType(objText, "Russell Square Regular");
+    ObjText_SetFontBold(objText, false);
+    ObjText_SetFontColorTop(objText, 59, 248, 80);
+    ObjText_SetFontColorBottom(objText, 59, 248, 80);
+    ObjText_SetFontBorderType(objText, BORDER_NONE);
+    ObjText_SetFontBorderColor(objText, 64, 64, 64);
+    ObjText_SetFontBorderWidth(objText, 2);
+    ObjText_SetHorizontalAlignment(objText, ALIGNMENT_CENTER);
+    ObjText_SetMaxWidth(objText, 240);
+    Obj_SetRenderPriority(objText, 0.79);
+    ObjRender_SetX(objText, -128);
+    ObjRender_SetY(objText, 180);
+    ObjText_SetSidePitch(objText, 2); //Otherwise, RS Regular renders too close
+    ascent(i in 0..15) {
+        ObjRender_SetAlpha(objText, i*255/15);
+        ObjRender_SetX(objText, ObjRender_GetX(objText) + objspeed);
+        if(objspeed > 0.5) {objspeed -= 1.7;}
+        if(objspeed < 0.5) {objspeed = 0.5;} //To prevent stupid things now that I'm doing this manually.
+        yield;
+    }
+    loop(90) {
+        ObjRender_SetX(objText, ObjRender_GetX(objText) + objspeed);
+        yield;
+    }
+    descent(i in 0..15) {
+        ObjRender_SetAlpha(objText, i*255/15);
+        ObjRender_SetX(objText, ObjRender_GetX(objText) + objspeed);
+        if(objspeed < 24.6) {objspeed += 1.7;}
+        yield;
+    }
+    Obj_Delete(objText);
+}
+
+task SB_StageNumBGA(x,y,ang) { //Only accepts 45 and 135
+    let objspeed = 24.6; //Copy Paste
+    let dirx = 1;
+    if(ang == 45) {dirx = 1;}
+    if(ang == 135) {dirx = -1;}
+    let imgpath = GetCurrentScriptDirectory() ~ "../img/StgBannerBlock.png";
+    let objImg = ObjPrim_Create(OBJ_SPRITE_2D); //2D Sprite Background
+    Obj_SetRenderPriorityI(objImg, 77); //Render Priority
+    ObjPrim_SetTexture(objImg, imgpath); //Title Image Path
+    ObjSprite2D_SetSourceRect(objImg, 0, 0, 128, 48);
+    ObjSprite2D_SetDestCenter(objImg);
+    ObjRender_SetAngleZ(objImg, ang);
+    ObjRender_SetX(objImg, x);
+    ObjRender_SetY(objImg, y);
+    ascent(i in 0..15) {
+        ObjRender_SetAlpha(objImg, i*255/15);
+        ObjRender_SetX(objImg, ObjRender_GetX(objImg) + objspeed*dirx);
+        ObjRender_SetY(objImg, ObjRender_GetY(objImg) + objspeed);
+        if(objspeed > 0.5) {objspeed -= 1.7;}
+        if(objspeed < 0.5) {objspeed = 0.5;} //To prevent stupid things now that I'm doing this manually.
+        yield;
+    }
+    loop(90) {
+        ObjRender_SetX(objImg, ObjRender_GetX(objImg) + objspeed*dirx);
+        ObjRender_SetY(objImg, ObjRender_GetY(objImg) + objspeed);
+        yield;
+    }
+    descent(i in 0..15) {
+        ObjRender_SetAlpha(objImg, i*255/15);
+        ObjRender_SetX(objImg, ObjRender_GetX(objImg) + objspeed*dirx);
+        ObjRender_SetY(objImg, ObjRender_GetY(objImg) + objspeed);
+        if(objspeed < 24.6) {objspeed += 1.7;}
+        yield;
+    }
+    Obj_Delete(objImg);
+}
+
+task SB_StageNumBGB(x,y,ang) { //Only accepts 0 and 180
+    let objspeed = 24.6; //Editing editing editing
+    let dirx = 1;
+    if(ang == 0) {dirx = 1;}
+    if(ang == 180) {dirx = -1;}
+    let imgpath = GetCurrentScriptDirectory() ~ "../img/StgBannerBlock.png";
+    let objImg = ObjPrim_Create(OBJ_SPRITE_2D); //2D Sprite Background
+    Obj_SetRenderPriorityI(objImg, 77); //Render Priority
+    ObjPrim_SetTexture(objImg, imgpath); //Title Image Path
+    ObjSprite2D_SetSourceRect(objImg, 0, 0, 128, 48);
+    ObjSprite2D_SetDestRect(objImg, -160, -40, 96, 8);
+    ObjRender_SetAngleZ(objImg, ang);
+    ObjRender_SetX(objImg, x);
+    ObjRender_SetY(objImg, y);
+    ascent(i in 0..15) {
+        ObjRender_SetAlpha(objImg, i*255/15);
+        ObjRender_SetX(objImg, ObjRender_GetX(objImg) + objspeed*dirx);
+        if(objspeed > 0.5) {objspeed -= 1.7;}
+        if(objspeed < 0.5) {objspeed = 0.5;} //To prevent stupid things now that I'm doing this manually.
+        yield;
+    }
+    loop(90) {
+        ObjRender_SetX(objImg, ObjRender_GetX(objImg) + objspeed*dirx);
+        yield;
+    }
+    descent(i in 0..15) {
+        ObjRender_SetAlpha(objImg, i*255/15);
+        ObjRender_SetX(objImg, ObjRender_GetX(objImg) + objspeed*dirx);
+        if(objspeed < 24.6) {objspeed += 1.7;}
+        yield;
+    }
+    Obj_Delete(objImg);
+}
+
+task SB_TextBoxBG{
+    let imgpath = GetCurrentScriptDirectory() ~ "../img/SB_TextBG.png";
+    let objImg = ObjPrim_Create(OBJ_SPRITE_2D); //2D Sprite Background
+    Obj_SetRenderPriorityI(objImg, 77);
+    ObjPrim_SetTexture(objImg, imgpath);
+    ObjSprite2D_SetSourceRect(objImg, 0, 0, 256, 64);
+    ObjSprite2D_SetDestRect(objImg, -176, -32, 176, 0);
+    ObjRender_SetX(objImg, 192);
+    ObjRender_SetY(objImg, 180 + 90);
+    ObjRender_SetAlpha(objImg, 150);
+    ascent(i in 0..15) {
+        ObjRender_SetAlpha(objImg, i*255/15);
+        yield;
+    }
+    loop(120) {
+        yield;
+    }
+    descent(i in 0..15) {
+        ObjRender_SetAlpha(objImg, i*255/15);
+        yield;
+    }
+    Obj_Delete(objImg);
+}
+
+task SB_TextName(stage, text) {
+    let arrlength = length(text);
+    let objText = ObjText_Create();
+    ObjText_SetText(objText, "");
+    ObjText_SetFontSize(objText, 14);
+    ObjText_SetFontType(objText, "Russell Square Regular");
+    ObjText_SetFontBold(objText, false);
+    ObjText_SetFontColorTop(objText, 59, 248, 80);
+    ObjText_SetFontColorBottom(objText, 59, 248, 80);
+    alternative(stage)
+    case(1) {ObjText_SetFontColorTop(objText, 255, 160, 160); ObjText_SetFontColorBottom(objText, 255, 160, 160);}
+    ObjText_SetFontBorderType(objText, BORDER_NONE);
+    ObjText_SetFontBorderColor(objText, 64, 64, 64);
+    ObjText_SetFontBorderWidth(objText, 0);
+    ObjText_SetHorizontalAlignment(objText, ALIGNMENT_LEFT);
+    ObjText_SetMaxWidth(objText, 352);
+    Obj_SetRenderPriority(objText, 0.79);
+    ObjRender_SetX(objText, 192 - 176 + 4); //192-160 is very left.
+    ObjRender_SetY(objText, 180 + 90 - 32 + 8);
+    ObjText_SetSidePitch(objText, 1);
+
+    //Color adjustment will depend on stage
+    ascent(i in 0..15) {
+        yield;
+    }
+    ascent(i in 0..90) {
+        let string = ""; //unfortuantely I need to rebuild the string...
+        if(i < arrlength) {
+            ascent(j in 0..i) {
+                string = string ~ text[j];
+            }
+            ObjText_SetText(objText, string);
+        }else{
+            ascent(j in 0..arrlength) {
+                string = string ~ text[j];
+            }
+            if(i % 16 < 8) {
+                string = string ~ "_"; //yay!
+            }
+            ObjText_SetText(objText, string);
+        }
+        yield;
+    }
+    descent(i in 90..120) {
+        ObjRender_SetAlpha(objText, i*255/15);
+        //The flashing underscore strikes again
+        let string = "";//unfortuantely I need to rebuild the string...
+        ascent(j in 0..arrlength) {
+            string = string ~ text[j];
+        }
+        if(i % 16 < 8) {
+            string = string ~ "_"; //yay!
+        }
+        ObjText_SetText(objText, string);
+        yield;
+    }
+    Obj_Delete(objText);
+}
+
+function SB_MagicCircle(x, y, rad, dir, verts) { //Invincibility circle, ripped from Random Player Generator. 
+    //Rad usually 96.
+    let obj = ObjPrim_Create(OBJ_PRIMITIVE_2D);
+    ObjRender_SetPosition(obj, x, y, 1);
+    Stuff;
+    return obj;
+
+    task Stuff{
+        let countVertex = verts; //Orig 64. 48 is good *8 forms a triangle, *12 forms a pentagon. Requires even number.
+        let listRadius = [];
+        loop(countVertex) {
+            listRadius = listRadius ~ [0];
+        }
+        let path = GetCurrentScriptDirectory() ~ "../img/EMagicCircle.png";
+        ObjPrim_SetPrimitiveType(obj, PRIMITIVE_TRIANGLESTRIP);
+        ObjPrim_SetVertexCount(obj, countVertex);
+        ObjRender_SetBlendType(obj, BLEND_ADD_ARGB);
+        Obj_SetRenderPriority(obj, 0.78);
+        ObjPrim_SetTexture(obj, path);
+        ascent(iVert in 0..countVertex / 2) {
+            let left = iVert * 128;
+            let indexVert = iVert * 2;
+            ObjPrim_SetVertexUVT(obj, indexVert + 0, left, 0);
+            ObjPrim_SetVertexUVT(obj, indexVert + 1, left, 64);        
+        }
+
+        let cx = 0;
+        let cy = 0;
+        let maxRadius = rad;
+        let alpha = 0;
+        let frame = 0;
+        let angleRender = 0;
+
+        while(!Obj_IsDeleted(obj)) { //Manually delete.
+            alpha += 1 / 120;
+            alpha = min(alpha, 1);
+            angleRender += dir*360 / countVertex / 16; //Last number is best way to control rotation speed. 2 is fast, 8 ^_^
+            Obj_SetVisible(obj, true);
+
+            let rRate = 100 / 100; //Radius rate. 
+
+            ascent(iVert in 0..countVertex / 2) {
+                let indexVert = iVert * 2;
+                let angle = 360 / (countVertex / 2 - 1) * iVert;
+                let vx1 = listRadius[indexVert] * cos(angle);
+                let vy1 = listRadius[indexVert] * sin(angle);
+                ObjPrim_SetVertexPosition(obj, indexVert + 0, vx1, vy1, 0);
+                let vx2 = listRadius[indexVert + 1] * cos(angle);
+                let vy2 = listRadius[indexVert + 1] * sin(angle);
+                ObjPrim_SetVertexPosition(obj, indexVert + 1, vx2, vy2, 0);
+                if(frame >= 0) {
+                    let dr = (maxRadius * rRate - listRadius[indexVert]) / 8;
+                    listRadius[indexVert] = listRadius[indexVert] + dr;
+                }
+                if(frame > 10) {
+                    let rRateIn = rRate - 0.12;
+                    if(rRateIn < 0) {rRateIn=0;}
+                    let dr= (maxRadius * rRateIn - listRadius[indexVert + 1]) / 16;
+                    listRadius[indexVert + 1] = listRadius[indexVert + 1] + dr;
+                }
+            }
+
+            ObjRender_SetColor(obj, 255 * alpha, 255 * alpha, 255 * alpha);
+            ObjRender_SetAngleZ(obj, angleRender);
+            frame++;
+            if(frame > 120) {break;}
+            yield;
+        }
+
+        ascent(i in 0..30) {
+            ObjRender_SetAlpha(obj, 192 - 192/30*i);
+            angleRender += dir*360 / countVertex / 16;
+            ObjRender_SetAngleZ(obj, angleRender);
+            yield;
+        }
+        Obj_Delete(obj);
+    }
+}
+
+task DrawStageClearA1(bonus) { // 7 characters
+    DrawStageClearText;
+    wait(10);
+    let objText = ObjText_Create();
+    ObjText_SetText(objText, "[r]" ~ rtos("0000000", bonus));
+    ObjText_SetFontSize(objText, 24);
+    ObjText_SetFontType(objText, "Russell Square Regular");
+    ObjText_SetFontBold(objText, false);
+    ObjText_SetFontColorTop(objText, 64, 255, 128);
+    ObjText_SetFontColorBottom(objText, 0, 192, 255);
+    ObjText_SetFontBorderType(objText, BORDER_FULL);
+    ObjText_SetFontBorderColor(objText, 96, 96, 96);
+    ObjText_SetFontBorderWidth(objText, 2);
+    ObjText_SetHorizontalAlignment(objText, ALIGNMENT_CENTER);
+    ObjText_SetMaxWidth(objText, 360);
+    Obj_SetRenderPriority(objText, 0.6);
+    ObjRender_SetX(objText, 194 - 180); //Minus half the max width. 194 = 388/2 (388 is GetStgFrameWidth w/ r.p.<80)
+    ObjRender_SetY(objText, 98); //Same location as the spell bonus text
+
+    ascent(i in 0..10) {
+        ObjRender_SetAlpha(objText, 255/10*i);
+        yield;
+    }
+
+    loop(100) {
+        AddScore(bonus/100);
+        yield;
+    }
+
+    ascent(i in 0..15) {
+        ObjRender_SetAlpha(objText, 255 - 255/15*i);
+        yield;
+    }
+
+    Obj_Delete(objText);
+}
+
+task DrawStageClearA2(bonus) { // 8 characters
+    DrawStageClearText;
+    let objText = ObjText_Create();
+    ObjText_SetText(objText, "[r]" ~ rtos("00000000", bonus));
+    ObjText_SetFontSize(objText, 24);
+    ObjText_SetFontType(objText, "Russell Square Regular");
+    ObjText_SetFontBold(objText, false);
+    ObjText_SetFontColorTop(objText, 64, 255, 128);
+    ObjText_SetFontColorBottom(objText, 0, 192, 255);
+    ObjText_SetFontBorderType(objText, BORDER_FULL);
+    ObjText_SetFontBorderColor(objText, 96, 96, 96);
+    ObjText_SetFontBorderWidth(objText, 2);
+    ObjText_SetHorizontalAlignment(objText, ALIGNMENT_CENTER);
+    ObjText_SetMaxWidth(objText, 360);
+    Obj_SetRenderPriority(objText, 0.6);
+    ObjRender_SetX(objText, 194 - 180); //Minus half the max width. 194 = 388/2 (388 is GetStgFrameWidth w/ r.p.<80)
+    ObjRender_SetY(objText, 98); //Same location as the spell bonus text
+
+    ascent(i in 0..10) {
+        ObjRender_SetAlpha(objText, 255/10*i);
+        yield;
+    }
+
+    loop(100) {
+        AddScore(bonus/100);
+        yield;
+    }
+
+    ascent(i in 0..15) {
+        ObjRender_SetAlpha(objText, 255 - 255/15*i);
+        yield;
+    }
+
+    Obj_Delete(objText);
+}
+
+task DrawStageClearText{
+    let imgstageclear = GetCurrentScriptDirectory() ~ "../img/stageclear.png";
+    ascent(i in -5..6) {DrawStageClearTextID(i); loop(6) {yield;}}
+
+    task DrawStageClearTextID(char) { //char is the ID of the individual character
+        let maxscale = 1;
+        let objchar = ObjPrim_Create(OBJ_SPRITE_2D);
+        Obj_SetRenderPriorityI(objchar, 60);
+        ObjPrim_SetTexture(objchar, imgstageclear);
+        ObjRender_SetY(objchar, 98);
+        if(char < 0) {
+            ObjSprite2D_SetSourceRect(objchar, 0 + (char + 5)*12, 7, 12 + (char + 5)*12, 25);
+        } else if(char > 0) {
+            ObjSprite2D_SetSourceRect(objchar, 56 + char*12, 7, 68 + char*12, 25);
+        }
+        ObjSprite2D_SetDestCenter(objchar);
+        ObjRender_SetX(objchar, GetCenterX + char*12*maxscale);
+        ascent(i in 0..10) {
+            let scale = max(maxscale, 10 - i);
+            ObjRender_SetAlpha(objchar, 255/10*i);
+            ObjRender_SetScaleXYZ(objchar, scale, scale, scale);
+            yield;
+        }
+        ObjRender_SetAlpha(objchar, 255);
+        wait(100);
+        ascent(i in 0..15) {
+            ObjRender_SetAlpha(objchar, 255 - 255/15*i);
+            ObjRender_SetY(objchar, ObjRender_GetY(objchar) + i);
+            yield;
+        }
+        Obj_Delete(objchar);
+    }
+}
+
+function PrepareEvent{
+    GS(SFX_DEVOLVE);
+
+    //Prepare text background
+    let bkgdpath = GetCurrentScriptDirectory() ~ "../img/textback.png";
+    let objTextBack = ObjPrim_Create(OBJ_SPRITE_2D);
+    Obj_SetRenderPriorityI(objTextBack, 80);
+    ObjPrim_SetTexture(objTextBack, bkgdpath);
+    ObjSprite2D_SetSourceRect(objTextBack, 0, 0, 352, 48);
+    ObjSprite2D_SetDestRect(objTextBack, 0, 0, 352, 48);
+    ObjRender_SetX(objTextBack, 18);
+    ObjRender_SetY(objTextBack, 360);
+    ascent(i in 0..30) {
+        ObjRender_SetAlpha(objTextBack, 255/30*i);
+        yield;
+    }
+
+    //Prepare text
+    let objText = ObjText_Create();
+    ObjText_SetText(objText, "Text");
+    ObjText_SetFontSize(objText, 15);
+    ObjText_SetFontBold(objText, false);
+    ObjText_SetFontType(objText, "Helvetica");
+    Obj_SetRenderPriorityI(objText, 81);
+    ObjText_SetFontColorTop(objText, 255, 255, 255); //Will be altered inside the event
+    ObjText_SetFontColorBottom(objText, 255, 255, 255);
+    ObjText_SetFontBorderType(objText, BORDER_FULL);
+    ObjText_SetFontBorderColor(objText, 255, 255, 255);
+    ObjText_SetFontBorderWidth(objText, 1);
+    ObjRender_SetX(objText, 54);
+    ObjRender_SetY(objText, 381);
+
+    //Event images
+    let imgpathL = GetCurrentScriptDirectory() ~ "../img/_EVENT/Image1.png";
+    let objImgLeft = ObjPrim_Create(OBJ_SPRITE_2D);
+    Obj_SetRenderPriorityI(objImgLeft, 81);
+    ObjPrim_SetTexture(objImgLeft, imgpathL);
+    ObjSprite2D_SetSourceRect(objImgLeft, 0, 0, 128, 128);
+    ObjSprite2D_SetDestRect(objImgLeft, -48, -48, 48, 48);
+    ObjRender_SetX(objImgLeft, GetCenterX + GetStgFrameLeft - 90);
+    ObjRender_SetY(objImgLeft, 297);
+
+    let imgpathR = GetCurrentScriptDirectory() ~ "../img/_EVENT/Image2.png";
+    let objImgRight = ObjPrim_Create(OBJ_SPRITE_2D);
+    Obj_SetRenderPriorityI(objImgRight, 81);
+    ObjPrim_SetTexture(objImgRight, imgpathR);
+    ObjSprite2D_SetSourceRect(objImgRight, 0, 0, 128, 128);
+    ObjSprite2D_SetDestRect(objImgRight, -48, -48, 48, 48);
+    ObjRender_SetX(objImgRight, GetCenterX + GetStgFrameLeft + 90);
+    ObjRender_SetY(objImgRight, 297);
+
+    //Prepare VS text
+    let objVS = ObjText_Create();
+    ObjText_SetText(objVS, "VS");
+    ObjText_SetFontSize(objVS, 36);
+    ObjText_SetFontBold(objVS, true);
+    ObjText_SetFontType(objVS, "Helvetica");
+    Obj_SetRenderPriorityI(objVS, 81);
+    ObjText_SetFontColorTop(objVS, 255, 128, 128);
+    ObjText_SetFontColorBottom(objVS, 255, 52, 52);
+    ObjText_SetFontBorderType(objVS, BORDER_FULL);
+    ObjText_SetFontBorderColor(objVS, 255, 192, 52);
+    ObjText_SetFontBorderWidth(objVS, 3);
+    ObjText_SetHorizontalAlignment(objVS, ALIGNMENT_CENTER);
+    ObjText_SetMaxWidth(objVS, 180);
+    ObjRender_SetX(objVS, GetCenterX + GetStgFrameLeft - 90); //196 wo tildes
+    ObjRender_SetY(objVS, 280);
+
+    //Prepare TLeft text
+    let objTLeft = ObjText_Create();
+    ObjText_SetText(objTLeft, "Name1");
+    ObjText_SetFontSize(objTLeft, 14);
+    ObjText_SetFontBold(objTLeft, false);
+    ObjText_SetFontType(objTLeft, "Andale Mono");
+    Obj_SetRenderPriorityI(objTLeft, 79);
+    ObjText_SetFontColorTop(objTLeft, 255, 255, 255);
+    ObjText_SetFontColorBottom(objTLeft, 255, 255, 255);
+    ObjText_SetFontBorderType(objTLeft, BORDER_FULL);
+    ObjText_SetFontBorderColor(objTLeft, 128, 128, 128);
+    ObjText_SetFontBorderWidth(objTLeft, 2);
+    ObjText_SetHorizontalAlignment(objTLeft, ALIGNMENT_CENTER);
+    ObjText_SetMaxWidth(objTLeft, 180);
+    ObjRender_SetX(objTLeft, GetCenterX - 90 - 90);
+    ObjRender_SetY(objTLeft, 338);
+
+    //Prepare TRight text
+    let objTRight = ObjText_Create();
+    ObjText_SetText(objTRight, "Name2");
+    ObjText_SetFontSize(objTRight, 14);
+    ObjText_SetFontBold(objTRight, false);
+    ObjText_SetFontType(objTRight, "Andale Mono");
+    Obj_SetRenderPriorityI(objTRight, 79);
+    ObjText_SetFontColorTop(objTRight, 255, 255, 255);
+    ObjText_SetFontColorBottom(objTRight, 255, 255, 255);
+    ObjText_SetFontBorderType(objTRight, BORDER_FULL);
+    ObjText_SetFontBorderColor(objTRight, 128, 128, 128);
+    ObjText_SetFontBorderWidth(objTRight, 2);
+    ObjText_SetHorizontalAlignment(objTRight, ALIGNMENT_CENTER);
+    ObjText_SetMaxWidth(objTRight, 180);
+    ObjRender_SetX(objTRight, GetCenterX + 90 - 90);
+    ObjRender_SetY(objTRight, 338);
+
+    if(GetCommonData("Boss", 0) == 0) {ObjText_SetText(objTRight, "Name2"); ObjText_SetFontBorderColor(objTRight, 128, 128, 128);}
+
+    return [objTextBack, objText, objImgLeft, objImgRight, objVS, objTLeft, objTRight];
+}
+
+task ShakeImageVert(objRender, intensity, hops) { //Sparen
+    let origY = ObjRender_GetY(objRender);
+    ascent(i in 0..15) {
+        ObjRender_SetY(objRender, origY + intensity*cos(i*18*hops));
+        yield;
+    }
+    ObjRender_SetY(objRender, origY);
+}
+
+task ShakeImageHoriz(objRender, intensity, hops) { //Please use a multiple of 15 for smooth movement. Sparen
+    let origX = ObjRender_GetX(objRender);
+    ascent(i in 0..15) {
+        ObjRender_SetX(objRender, origX + intensity*sin(i*18*hops)); //check if sine works
+        yield;
+    }
+    ObjRender_SetX(objRender, origX);
+}
+
+task MoveImageOffscreenLeft(objRender, dir) { //1 to move left, -1 to move back
+    let origX = ObjRender_GetX(objRender);
+    ascent(i in 0..15) {
+        ObjRender_SetX(objRender, origX - i*25*dir);
+        yield;
+    }
+}
+
+task MoveImageOffscreenRight(objRender, dir) { //1 to move right, -1 to move back
+    let origX = ObjRender_GetX(objRender);
+    ascent(i in 0..15) {
+        ObjRender_SetX(objRender, origX + i*25*dir);
+        yield;
+    }
+}
+
+function EventWaitA1(frames) { //Manual move. Sparen.
+    let keystate = GetVirtualKeyState(VK_OK);
+    let counter = 0;
+    loop{
+        keystate = GetVirtualKeyState(VK_OK);
+        if(keystate != KEY_FREE && keystate != KEY_HOLD) {break;}
+        if(keystate == KEY_HOLD) {counter++;} //Functionality to allow holding the key to actually break out of the loop.
+        if(counter >= frames*4) {break;}
+        yield;
+    }
+    wait(frames); 
+    GS(SFX_PLAYERSHOT);
+}
+
+function EventWaitA2(frames) { //Forced wait. Sparen
+    wait(frames); 
+    GS(SFX_PLAYERSHOT);
+}
+
+function EventWaitA3(frames) { //Start of event, to prevent skipping dialogue
+    while(GetVirtualKeyState(VK_OK) != KEY_PUSH) {yield;}
+    wait(frames); 
+    GS(SFX_PLAYERSHOT);
+}
+
+function Event_CharaName(char) {
+    let path;
+    alternative(char)
+    case("NAME") {path = GetCurrentScriptDirectory() ~ "../img/charaname_name.png";}
+    
+    let bgpath = GetCurrentScriptDirectory() ~ "../img/SB_TextBG.png";
+    let count = 0;
+
+    let objImg = ObjPrim_Create(OBJ_SPRITE_2D);
+    Obj_SetRenderPriorityI(objImg, 77);
+    ObjPrim_SetTexture(objImg, bgpath);
+    ObjSprite2D_SetSourceRect(objImg, 0, 0, 256, 64);
+    ObjSprite2D_SetDestRect(objImg, -128, -48, 128, 48);
+    ObjRender_SetX(objImg, 384/2);
+    ObjRender_SetY(objImg, 448/2);
+
+    let objImg2 = ObjPrim_Create(OBJ_SPRITE_2D);
+    Obj_SetRenderPriorityI(objImg2, 77);
+    ObjPrim_SetTexture(objImg2, bgpath);
+    ObjSprite2D_SetSourceRect(objImg2, 0, 0, 256, 64);
+    ObjSprite2D_SetDestRect(objImg2, -128, -48, 128, 48);
+    ObjRender_SetX(objImg2, 384/2);
+    ObjRender_SetY(objImg2, 448/2);
+
+    let objchara = ObjPrim_Create(OBJ_SPRITE_2D);
+    Obj_SetRenderPriorityI(objchara, 77);
+    ObjPrim_SetTexture(objchara, path);
+    ObjSprite2D_SetSourceRect(objchara, 0, 0, 256, 128);
+    ObjSprite2D_SetDestRect(objchara, -128, -64, 128, 64);
+    ObjRender_SetX(objchara, 384/2);
+    ObjRender_SetY(objchara, 448/2);
+
+    ascent(i in 0..15) {
+        ObjRender_SetAlpha(objImg, i*128/15);
+        ObjRender_SetAlpha(objImg2, i*128/15);
+        ObjRender_SetAngleZ(objImg, count*-4);
+        ObjRender_SetAngleZ(objImg2, count*4);
+        ObjRender_SetAlpha(objchara, i*255/15);
+        count++;
+        yield;
+    }
+    loop(120) {
+        ObjRender_SetAngleZ(objImg, count*-4);
+        ObjRender_SetAngleZ(objImg2, count*4);
+        count++;
+        yield;
+    }
+    descent(i in 0..15) {
+        ObjRender_SetAlpha(objImg, i*128/15);
+        ObjRender_SetAlpha(objImg2, i*128/15);
+        ObjRender_SetAngleZ(objImg, count*-4);
+        ObjRender_SetAngleZ(objImg2, count*4);
+        ObjRender_SetAlpha(objchara, i*255/15);
+        count++;
+        yield;
+    }
+    Obj_Delete(objImg);
+    Obj_Delete(objImg2);
+    Obj_Delete(objchara);
+}

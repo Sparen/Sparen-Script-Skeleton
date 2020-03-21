@@ -1,0 +1,188 @@
+#include "./../lib/const_sfx.dnh"
+
+//DISCLAIMER: If running from outside the package, sound effects in this script using the Global Sound framework will NOT play.
+//This is due to the pause event pausing the Global Sound script (which, if run through the System file, is tied to the Stage script)
+//Basically, if no sound works in the Pause script when running outside the package, that's just Danmakufu. No workaround. NOT A BUG.
+
+@Initialize{
+    SetAutoDeleteObject(true);
+    TBackground();
+    TMenu();
+}
+
+@MainLoop{
+    yield;
+}
+
+@Finalize{
+}
+
+
+task TBackground{
+    task TVertex(var index, var left, var top, var right, var bottom) {
+        ObjPrim_SetVertexPosition(obj, index + 0, left, top, 0);
+        ObjPrim_SetVertexPosition(obj, index + 1, left, bottom, 0);
+        ObjPrim_SetVertexPosition(obj, index + 2, right, top, 0);
+        ObjPrim_SetVertexPosition(obj, index + 3, right, top, 0);
+        ObjPrim_SetVertexPosition(obj, index + 4, left, bottom, 0);
+        ObjPrim_SetVertexPosition(obj, index + 5, right, bottom, 0);
+
+        ObjPrim_SetVertexUVT(obj, index + 0, left, top);
+        ObjPrim_SetVertexUVT(obj, index + 1, left, bottom);
+        ObjPrim_SetVertexUVT(obj, index + 2, right, top);
+        ObjPrim_SetVertexUVT(obj, index + 3, right, top);
+        ObjPrim_SetVertexUVT(obj, index + 4, left, bottom);
+        ObjPrim_SetVertexUVT(obj, index + 5, right, bottom);
+
+        if (left >= 32 && right <= 416 && top >=16 && bottom <= 464) {
+            let alpha = 255;
+            while(alpha >= 128) {
+                ObjPrim_SetVertexAlpha(obj, index + 0, alpha);
+                ObjPrim_SetVertexAlpha(obj, index + 1, alpha/2);
+                ObjPrim_SetVertexAlpha(obj, index + 2, alpha/2);
+                ObjPrim_SetVertexAlpha(obj, index + 3, alpha/2);
+                ObjPrim_SetVertexAlpha(obj, index + 4, alpha/2);
+                ObjPrim_SetVertexAlpha(obj, index + 5, alpha);
+                alpha -= 255 / frame;
+
+                yield;
+            }
+        }
+    }
+
+    let frame = 30;
+    let countH = 20; 
+    let countV = 30; 
+    let width = 640 / countH;
+    let height = 480 / countV;
+    let target = GetTransitionRenderTargetName();
+    let obj = ObjPrim_Create(OBJ_PRIMITIVE_2D);
+    ObjPrim_SetPrimitiveType(obj, PRIMITIVE_TRIANGLELIST);
+    ObjPrim_SetVertexCount(obj, countH * countV * 6);
+    Obj_SetRenderPriorityI(obj, 0);
+    ObjPrim_SetTexture(obj, target); 
+
+    ascent(ix in 0.. countH) {
+        ascent(iy in 0.. countV) {
+            let index = (ix + iy * countH) * 6;
+            let left = ix * width;
+            let right = left + width;
+            let top = iy * height;
+            let bottom = top + height;
+            TVertex(index, left, top, right, bottom);
+        }
+    }
+
+}
+
+task TMenu{
+    let selectIndex = 0; //Default is return to script
+    task TMenuItem(let index, let mx, let my) {
+        let imgpath = GetCurrentScriptDirectory() ~ "../img/PM_ReturnScript.png";
+        let objcount = 0;
+        alternative(index)
+        case(0) {imgpath = GetCurrentScriptDirectory() ~ "../img/PM_ReturnScript.png";}
+        case(1) {imgpath = GetCurrentScriptDirectory() ~ "../img/PM_ReturnTitle.png";}
+        case(2) {imgpath = GetCurrentScriptDirectory() ~ "../img/PM_RetryScript.png";}
+        function CreateTextObject(let mx, let my, let alpha) {
+            let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+            ObjPrim_SetTexture(obj, imgpath);
+            ObjRender_SetX(obj, mx);
+            ObjRender_SetY(obj, my);
+            ObjRender_SetAlpha(obj, alpha);
+            ObjRender_SetColor(obj, 128, 192, 192);
+            ObjRender_SetBlendType(obj, BLEND_ADD_ARGB);
+            ObjSprite2D_SetSourceRect(obj, 0, 0, 256, 64);
+            ObjSprite2D_SetDestRect(obj, 0, 0, 256, 64);
+            Obj_SetRenderPriority(obj, 0.1);
+            ObjRender_SetScaleXYZ(obj, 0.75, 0.75, 1);
+            return obj;
+        }
+
+        let objText = CreateTextObject(mx, my, 128);
+        let objSelect = CreateTextObject(mx, my, 255);
+        loop{
+            Obj_SetVisible(objSelect, index == selectIndex);
+            ObjRender_SetColor(objSelect, 128 + 32*cos(objcount*4), 192 + 32*cos(objcount*3), 192 + 32*cos(objcount*6));
+            objcount++;
+            yield;
+        }
+    }
+
+    task Cursor{
+        let imgpath = GetCurrentScriptDirectory() ~ "../img/PM_Cursor3.png";
+        let objcount = 0;
+        let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+        ObjPrim_SetTexture(obj, imgpath);
+        ObjRender_SetX(obj, 72);
+        ObjRender_SetY(obj, 48);
+        ObjRender_SetBlendType(obj, BLEND_ALPHA);
+        ObjSprite2D_SetSourceRect(obj, 0, 0, 64, 64);
+        ObjSprite2D_SetDestRect(obj, -24, -24, 24, 24);
+        Obj_SetRenderPriority(obj, 0.1);
+        loop{
+            ObjRender_SetY(obj, 72 + 48*selectIndex); //Moves along with select index
+            ObjRender_SetAngleZ(obj, objcount);
+            objcount++;
+            yield;
+        }
+    }
+
+    let mx = 96; //Start X position
+    let my = 48;
+    var countMenu = 3; //Alter if add more options
+    ascent(var iText in 0 .. countMenu) {
+        TMenuItem(iText, mx, my); //Create them at different y positions
+        my += 48; //Orig 32, but *0.75 instead of *0.50, so increasing this proportionately.
+    }
+    Cursor;
+
+    while(GetVirtualKeyState(VK_PAUSE) != KEY_FREE) {yield;}
+
+    let frameKeyHold = 0;
+    loop{
+        if (GetVirtualKeyState(VK_OK) == KEY_PULL) {
+            let listResult = [RESULT_CANCEL, RESULT_END, RESULT_RETRY];
+            SetScriptResult(listResult[selectIndex]);
+            GS(SFX_SELECTOK);
+            CloseScript(GetOwnScriptID());
+            return;
+        }
+
+        if (GetVirtualKeyState(VK_CANCEL) == KEY_PULL || GetVirtualKeyState(VK_PAUSE) == KEY_PULL) {
+            SetScriptResult(RESULT_CANCEL); //Hit the X button
+            GS(SFX_SELECTCANCEL);
+            CloseScript(GetOwnScriptID());
+            return;
+        }
+
+        if (GetVirtualKeyState(VK_UP) == KEY_PUSH) {
+            selectIndex--;
+            GS(SFX_SELECT);
+        } else if (GetVirtualKeyState(VK_DOWN) == KEY_PUSH) {
+            selectIndex++;
+            GS(SFX_SELECT);
+        } else if (GetVirtualKeyState(VK_UP) == KEY_HOLD) {
+            frameKeyHold++;
+            if (frameKeyHold == 30 || (frameKeyHold > 30 && (frameKeyHold % 10 == 0))) {
+                selectIndex--;
+                GS(SFX_SELECT);
+            }
+        } else if (GetVirtualKeyState(VK_DOWN) == KEY_HOLD) {
+            frameKeyHold++;
+            if (frameKeyHold == 30 || (frameKeyHold > 30 && (frameKeyHold % 10 == 0))) {
+                selectIndex++;
+                GS(SFX_SELECT);
+            }
+        } else {
+            frameKeyHold = 0;
+        }
+
+        if (selectIndex < 0) {
+            selectIndex = countMenu - 1;
+        } else {
+            selectIndex %= countMenu;
+        }
+        yield;
+    }
+}

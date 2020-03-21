@@ -1,0 +1,139 @@
+#TouhouDanmakufu[Stage]
+#Title["Stage Template"]
+#Text["Stage Template[r]By Sparen"]
+#Background["./Background.dnh"]
+#ScriptVersion[3]
+#System["./system/System.dnh"]
+
+let bgm;
+let bgm2;
+let stagepart = 0;
+let finished = false;
+let onboss = false;
+
+let DEBUGMODE = false;
+
+#include "./lib/FxnStage.dnh"
+#include "./lib/FxnItem.dnh"
+
+#include "./stgenemy/StgEnemyCommon.dnh"
+//Above includes ALL SFX and common resources used by stage enemies. Load once, no duplication.
+
+#include "./stgenemy/S1E1.dnh"
+
+#include "./lib/FxnStageEvent.dnh"
+
+@Loading {
+    let apm = LoadScript(GetCurrentScriptDirectory() ~ "./lib/SparenDNHAPM.dnh");
+    //Set Common Data
+    SetAreaCommonData("dnhapm", "ScriptName", "Name");
+    SetAreaCommonData("dnhapm", "UserNoteSlots", 3);
+    SetAreaCommonData("dnhapm", "GraphScale", 1.5);
+    SetAreaCommonData("dnhapm", "EnableAggregate", false);
+    //StartScript(apm);
+}
+
+@Initialize{
+    TStage;
+    StageOver;
+    SetPlayerLife(9);
+
+    NotifyEventAll(EV_USER_STAGE + 2050, ["0", "Starting Script"]);
+    if (DEBUGMODE) { DebugKill; }
+}
+
+@MainLoop{
+    if(!onboss){ActivateHitboxes(48);}//if not on boss, activate hitboxes. Needs to be turned off to prevent duplicate calls.
+
+    yield;
+}
+
+task TStage{
+    let dir = GetCurrentScriptDirectory();
+    let pathboss = dir ~ "./script/PS1B.dnh";
+    let bossScript = LoadScriptInThread(pathboss);
+
+    yield; // So that the common data can be set in @Initialize for reading below.
+
+    bgm2 = ObjSound_Create;
+    ObjSound_Load(bgm2, GetCurrentScriptDirectory() ~ "music/Boss1.ogg");
+    Sound(bgm2, 2);
+    bgm = ObjSound_Create;
+    ObjSound_Load(bgm, GetCurrentScriptDirectory() ~ "music/Stg1.ogg");
+    Sound(bgm, 1);
+    ObjSound_Play(bgm);
+
+    ascent(i in 0..30){
+        SetCommonData("StageBGAlpha", 255/30*i);
+        yield;
+    }
+    loop(30){yield;}
+
+    // Phase
+ 
+    WaitForZeroEnemy;
+    wait(180);
+
+    //STAGE BANNER
+    DrawStageBanner(1);
+    WriteBGM("BGM Name");
+    wait(120);
+
+    wait(120);
+
+    // Phase
+
+    WaitForZeroEnemy;
+    wait(180);
+
+    wait(180);
+
+    //BOSS. ALL BULLETS MUST BE CLEARED
+    onboss = true;
+    StartScript(bossScript);
+    S1Event1;
+    while(!IsCloseScript(bossScript) && GetPlayerState() != STATE_END){
+        yield;
+    }
+    wait(90);
+    S1Event2;
+
+    wait(240);
+
+    DrawStageClearText;
+
+    wait(180);
+
+    descent(i in 0..30){
+        SetCommonData("StageBGAlpha", 255/30*i);
+        yield;
+    }
+
+    finished = true; //Call for the Stage End task to run
+
+    #include "./script/event_stage.txt"
+}
+
+function Sound(obj, ID){
+    ObjSound_SetSoundDivision(obj, SOUND_BGM);
+    ObjSound_SetRestartEnable(obj, true);
+    ObjSound_SetLoopEnable(obj, true);
+    ObjSound_SetLoopTime(obj, 0,300);
+    if(ID == 1){ObjSound_SetLoopTime(obj, 0, 300);}
+    if(ID == 2){ObjSound_SetLoopTime(obj, 0, 300);}
+    ObjSound_SetVolumeRate(obj, 95);
+    return obj;
+}
+
+task DebugKill { // Kill an attack if ongoing
+    while(!finished) {
+        if (GetKeyState(KEY_K) == KEY_PULL && GetEnemyBossSceneObjectID() != ID_INVALID) {
+            ObjEnemyBossScene_SetSpellTimer(GetEnemyBossSceneObjectID(), 1);
+        }
+        yield;
+    }
+}
+
+@Finalize{
+
+}

@@ -1,0 +1,62 @@
+task S1E1(x, y, angleE, speedE, graph, itemevent) {
+    let count = -60; //Counter
+    //let vanishtime = 1200;
+    let item = 0;
+    let Xmin = -32;
+    let Xmax = GetStgFrameWidth + 32;
+    let Ymin = -32; 
+    let Ymax = GetStgFrameHeight + 32;
+
+    let circ = false; // toggle if this enemy type will have a magic circle
+
+    let objEnemy;
+    TInitialize;
+
+    task TInitialize {
+        objEnemy = ObjEnemy_Create(OBJ_ENEMY);
+        ObjEnemy_Regist(objEnemy);
+        ObjEnemy_SetLife(objEnemy, 15);
+        SetDamageRateAtFrameEnm(objEnemy, 80, 50, 30); // 120 delay for slowly appearing enemies
+        ObjMove_SetPosition(objEnemy, x, y);
+        ObjMove_SetAngle(objEnemy, angleE);
+        ObjMove_SetSpeed(objEnemy, speedE);
+        TDrawLoopButterfly(objEnemy, graph); // Specify draw style here
+        TMainLoop;
+        TFinalize;
+
+        if (circ) {
+            MiniMagicCircleCustom(objEnemy, -1, 0.2);
+            MiniMagicCircleCustom(objEnemy, 1, 0.14);
+            StgEnemyLifebar(objEnemy, 15, 1); //obj, life, stage no
+        }
+    }
+
+    task TMainLoop {
+        while(ObjEnemy_GetInfo(objEnemy, INFO_LIFE) > 0) {
+            ObjEnemy_SetIntersectionCircleToShot(objEnemy, ObjMove_GetX(objEnemy), ObjMove_GetY(objEnemy), 32); 
+            ObjEnemy_SetIntersectionCircleToPlayer(objEnemy, ObjMove_GetX(objEnemy), ObjMove_GetY(objEnemy), 8);
+
+            ObjMove_SetPosition(objEnemy, GetEnemyX(objEnemy), y+(count*speedE)*sin(angleE)+30*cos(count*4));
+
+            if (count > 120) { // Allow spawning at top of screen
+                if (GetEnemyX(objEnemy) < Xmin || GetEnemyX(objEnemy) > Xmax || GetEnemyY(objEnemy) < Ymin || GetEnemyY(objEnemy) > Ymax) {
+                    item = 1;
+                    ObjEnemy_SetLife(objEnemy, -1000);
+                }
+            }
+            //if (vanishtime == 0) {item = 1; ObjEnemy_SetLife(ObjEnemy, -1000);} else {vanishtime--;}
+            count++;
+            yield;
+        }
+    }
+
+    task TFinalize {
+        while (ObjEnemy_GetInfo(objEnemy, INFO_LIFE) > 0) {yield;}
+        if (item == 0) {
+            NotifyEventAll(EV_USER_STAGE+itemevent, [ObjMove_GetX(objEnemy), ObjMove_GetY(objEnemy)]);
+            NotifyEventAll(EV_USER_STAGE+999, [ObjMove_GetX(objEnemy), ObjMove_GetY(objEnemy)]); 
+            GS(SFX_ENEMYDIE);
+        }
+        Obj_Delete(objEnemy);
+    }
+}

@@ -1,0 +1,61 @@
+#UserItemData
+
+item_image = "./../img/STTJ_Item.png"
+
+
+ItemData{
+    id = 1 //Small Point
+    //type = POINTS
+    rect = (2, 20, 16, 34) 
+    render = ALPHA 
+    out = (0, 36, 18, 50)
+}
+
+ItemData{
+    id = 2 //Big Point
+    //type = POINTB
+    rect = (0, 0, 18, 18) 
+    render = ALPHA
+    out = (0, 36, 18, 50)
+}
+
+ItemData{
+    id = 3 //Life Shard
+    //type = LIFE
+    rect = (18, 0, 36, 18) 
+    render = ALPHA 
+    out = (18, 36, 36, 50)
+}
+
+ItemData{
+    id = 4 //1UP
+    //type = LIFEEX
+    rect = (36, 0, 54, 19) 
+    render = ALPHA 
+    out = (18, 36, 36, 50)
+}
+
+ItemData{
+    id = 5 //Spell Shard
+    //type = SPELL
+    rect = (54, 0, 72, 19) 
+    render = ALPHA 
+    out = (36, 36, 54, 50)
+}
+
+ItemData{
+    id = 6 //Spell Extend
+    //type = SPELLEX
+    rect = (72, 0, 90, 19) 
+    render = ALPHA 
+    out = (36, 36, 54, 50)
+}
+
+ItemData{
+    id = 7 //Piezo
+    //type = PIEZO
+    rect = (17, 17, 37, 37) 
+    render = ALPHA 
+    out = (54, 36, 72, 50)
+}
+

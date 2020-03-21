@@ -1,0 +1,46 @@
+//This file should be included by all attacks
+
+//Below functions add Ultima's hitbox functionality, where hitboxes are only turned on if the bullets are in a certain radius of the player. Code by Sparen
+
+function CreateShotA1Alt(x, y, v, a, g, d) {
+	let obj = CreateShotA1(x, y, v, a, g, d);
+	Obj_SetValue(obj, "TYPE_HIT", 1); //true
+	ObjShot_SetIntersectionEnable(obj, false);
+	return obj;
+}
+
+function CreateShotA2Alt(x, y, v, a, acc, mxspd, g, d) {
+	let obj = CreateShotA2(x, y, v, a, acc, mxspd, g, d);
+	Obj_SetValue(obj, "TYPE_HIT", 1); //true
+	ObjShot_SetIntersectionEnable(obj, false);
+	return obj;
+}
+
+function CreateCurveLaserA1Alt(x, y, s, a, l, w, g, d) {
+	let obj = CreateCurveLaserA1(x, y, s, a, l, w, g, d);
+	Obj_SetValue(obj, "TYPE_HIT", 1); //true
+	ObjShot_SetIntersectionEnable(obj, false);
+	return obj;
+}
+
+//turns on hitboxes of shots in radius. 36 is appropriate for normal attacks. 
+//Limitations and notes: Bubbles have a hitbox of radius 32. 
+//Stages and attacks where large bullets are involved should use rad = 48 instead of rad = 36
+//Only affects bullets created with Alt functions
+//Curvy lasers and loose lasers's locations are at their tips, straight lasers at their bases.
+//Note that turning hitboxes back off when bullets are out of range
+//is not as important as turning then on when in range. So rad*1.5 should be sufficient
+function ActivateHitboxes(rad) {
+	let arr = GetShotIdInCircleA2(GetPlayerX, GetPlayerY, rad*1.5, TARGET_ENEMY);
+	ascent(i in 0..length(arr)) {
+	    if (Obj_GetValueD(arr[i], "TYPE_HIT", 0) == 1) {
+    		if (GetDistance(GetPlayerX, GetPlayerY, ObjMove_GetX(arr[i]), ObjMove_GetY(arr[i])) <= rad) {
+    		    ObjShot_SetIntersectionEnable(arr[i], true);
+    		    //ObjRender_SetColor(arr[i], 255, 0, 0);
+    		} else {
+    		    ObjShot_SetIntersectionEnable(arr[i], false);
+    		    //ObjRender_SetColor(arr[i], 0, 0, 255);
+    		}
+	    } //else do nothing
+	}
+}

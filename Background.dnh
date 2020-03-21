@@ -1,0 +1,344 @@
+let bSpell = false;
+
+let currcolor = [128, 128, 128];
+let targetcolor = [128, 128, 128];
+
+@Initialize {
+    CallBG;
+    SetAutoDeleteObject(true);
+    SetCameraPerspectiveClip(10, 3600);
+}
+
+@MainLoop {
+    let objScene = GetEnemyBossSceneObjectID();
+    if (objScene != ID_INVALID && ObjEnemyBossScene_GetInfo(objScene, INFO_IS_SPELL)) {
+        bSpell = true;
+    } else {
+        bSpell = false;
+    }
+    yield;
+}
+
+task CallBG {
+    TNormalBackground;
+    TSpellBackground;
+}
+
+task TNormalBackground { 
+    SetFogEnable(true);
+    SetFogParam(400, 2000, 192, 255, 255); //set once
+
+    let path1 = GetCurrentScriptDirectory() ~ "img/s2a.jpg";
+    let path2 = GetCurrentScriptDirectory() ~ "img/Gradient2.png";
+    let path3 = GetCurrentScriptDirectory() ~ "img/Gradient.png";
+    let path4 = GetCurrentScriptDirectory() ~ "img/s2c.jpg";
+    let path5 = GetCurrentScriptDirectory() ~ "img/s2b.jpg";
+    let path5a = GetCurrentScriptDirectory() ~ "img/s2ba.png";
+    let path6 = GetCurrentScriptDirectory() ~ "img/bgfog.png";
+    let path7 = GetCurrentScriptDirectory() ~ "img/s2d.png";
+
+    let cameracount = 0;
+
+    SetCameraFocusX(0);
+    SetCameraFocusY(0);
+    SetCameraFocusZ(90);
+    SetCameraRadius(300);
+    SetCameraElevationAngle(285);
+    SetCameraAzimuthAngle(90);
+    let ypos = 0; 
+    let ypos2 = 0;
+
+    let obj4 = ObjPrim_Create(OBJ_SPRITE_2D); //background
+    ObjRender_SetBlendType(obj4, BLEND_ALPHA);
+    Obj_SetRenderPriority(obj4, 0.20);
+    ObjPrim_SetTexture(obj4, path1);
+    ObjSprite2D_SetSourceRect(obj4, 0, 0, 720, 480);
+    ObjSprite2D_SetDestCenter(obj4);
+    ObjRender_SetPosition(obj4, 384/2, 448/2 - 148, 1);
+    ObjRender_SetAlpha(obj4, GetCommonData("StageBGAlpha", 0));
+    ObjRender_SetScaleXYZ(obj4, 0.75, 0.75, 1);
+    //ObjRender_SetColor(obj4, 192, 192, 192);
+
+    let obj5 = ObjPrim_Create(OBJ_SPRITE_3D); //Gravel
+    ObjRender_SetBlendType(obj5, BLEND_ALPHA);
+    Obj_SetRenderPriority(obj5, 0.20);
+    ObjPrim_SetTexture(obj5, path5);
+    ObjSprite3D_SetSourceRect(obj5, 0, 0, 512*16, 512*16);
+    ObjSprite3D_SetDestRect(obj5, -512*2, -512*2, 512*2, 512*2);
+    ObjRender_SetAlpha(obj5, GetCommonData("StageBGAlpha", 0));
+
+    let obj1 = ObjPrim_Create(OBJ_SPRITE_3D); //water
+    ObjRender_SetBlendType(obj1, BLEND_ALPHA);
+    Obj_SetRenderPriority(obj1, 0.20);
+    ObjPrim_SetTexture(obj1, path4);
+    ObjSprite3D_SetSourceRect(obj1, 0, 0, 512*16, 512*16);
+    ObjSprite3D_SetDestRect(obj1, -512*2, -512*2, -512*2 + 320, 512*2);
+    ObjRender_SetAlpha(obj1, GetCommonData("StageBGAlpha", 0));
+    ObjRender_SetX(obj1, 1112); //1024 is halfway down screen
+
+    let obj1a = ObjPrim_Create(OBJ_SPRITE_3D); //water
+    ObjRender_SetBlendType(obj1a, BLEND_ALPHA);
+    Obj_SetRenderPriority(obj1a, 0.20);
+    ObjPrim_SetTexture(obj1a, path4);
+    ObjSprite3D_SetSourceRect(obj1a, 0, 0, 512*16, 512*16);
+    ObjSprite3D_SetDestRect(obj1a, -512*2, -512*2, -512*2 + 320, 512*2);
+    ObjRender_SetAlpha(obj1a, GetCommonData("StageBGAlpha", 0));
+    ObjRender_SetX(obj1a, 1112); //1024 is halfway down screen
+
+    let obj5a = ObjPrim_Create(OBJ_SPRITE_3D); //Gravel border
+    ObjRender_SetBlendType(obj5a, BLEND_ALPHA);
+    Obj_SetRenderPriority(obj5a, 0.20);
+    ObjPrim_SetTexture(obj5a, path5a);
+    ObjSprite3D_SetSourceRect(obj5a, 0, 0, 512, 512);
+    ObjSprite3D_SetDestRect(obj5a, -64, -512*2, 64, 512*2);
+    ObjRender_SetAlpha(obj5a, GetCommonData("StageBGAlpha", 0));
+    ObjRender_SetX(obj5a, 92); //1024 is halfway down screen
+
+    let obj7 = ObjPrim_Create(OBJ_SPRITE_3D); //grass
+    ObjRender_SetBlendType(obj7, BLEND_ALPHA);
+    Obj_SetRenderPriority(obj7, 0.20);
+    ObjPrim_SetTexture(obj7, path7);
+    ObjSprite3D_SetSourceRect(obj7, 0, 0, 512, 512*16);
+    ObjSprite3D_SetDestRect(obj7, -256, -512*2, 256, 512*2);
+    ObjRender_SetAlpha(obj7, GetCommonData("StageBGAlpha", 0));
+    ObjRender_SetX(obj7, -256); //1024 is halfway down screen
+
+    let obj6 = ObjPrim_Create(OBJ_SPRITE_3D); //Fog
+    ObjRender_SetBlendType(obj6, BLEND_SUBTRACT);
+    Obj_SetRenderPriority(obj6, 0.22);
+    ObjPrim_SetTexture(obj6, path6);
+    ObjSprite3D_SetSourceRect(obj6, 0, 0, 512, 512*3);
+    ObjSprite3D_SetDestRect(obj6, -512, -512*2, 512, 512*2);
+    ObjRender_SetAlpha(obj6, GetCommonData("StageBGAlpha", 0));
+    ObjRender_SetZ(obj6, 0);
+    ObjRender_SetColor(obj6, 0, 0, 0);
+
+    let obj2 = ObjPrim_Create(OBJ_SPRITE_2D); //gradient bottom
+    ObjRender_SetBlendType(obj2, BLEND_ALPHA);
+    Obj_SetRenderPriority(obj2, 0.21);
+    ObjPrim_SetTexture(obj2, path2);
+    ObjRender_SetAngleXYZ(obj2, 0, 0, 0);
+    ObjSprite2D_SetSourceRect(obj2, 0, 0, 512*3, 512);
+    ObjSprite2D_SetDestRect(obj2, -512, -32, 512*2, 448+32);
+    ObjRender_SetAlpha(obj2, 128);
+
+    let obj3 = ObjPrim_Create(OBJ_SPRITE_2D); //gradient top
+    ObjRender_SetBlendType(obj3, BLEND_ALPHA);
+    Obj_SetRenderPriority(obj3, 0.21);
+    ObjPrim_SetTexture(obj3, path3);
+    ObjSprite2D_SetSourceRect(obj3, 0, 0, 512*3, 512);
+    ObjSprite2D_SetDestRect(obj3, -512, -32, 512*2, 448+32);
+    ObjRender_SetAlpha(obj3, 128);
+
+    let frameInvisible = 0;
+    loop {
+        if (bSpell) { //TRANSITION TO SPELL BACKGROUND. VERY IMPORTANT
+            frameInvisible++;
+            if (frameInvisible >= 60) { //Transition to spell
+                Obj_SetVisible(obj4, false);
+                Obj_SetVisible(obj1, false);
+                Obj_SetVisible(obj1a, false);
+                Obj_SetVisible(obj2, false);
+                Obj_SetVisible(obj3, false);
+                Obj_SetVisible(obj5, false);
+                Obj_SetVisible(obj5a, false);
+                Obj_SetVisible(obj6, false);
+                Obj_SetVisible(obj7, false);
+            }
+        } else {
+            frameInvisible = 0;
+            Obj_SetVisible(obj1, true);
+            Obj_SetVisible(obj1a, true);
+            Obj_SetVisible(obj2, true);
+            Obj_SetVisible(obj3, true);
+            Obj_SetVisible(obj4, true);
+            Obj_SetVisible(obj5, true);
+            Obj_SetVisible(obj5a, true);
+            Obj_SetVisible(obj6, true);
+            Obj_SetVisible(obj7, true);
+        }
+
+        if (cameracount % 30 == 0 && !bSpell) { //Only create lag-inducing wisps if not in a spellcard. Otherwise... RIP FPS
+            CreateWisp;
+        }
+
+        // Set targetcolor here if color should change.
+
+        //Insert 3D Magic for clouds here. 
+        ObjSprite3D_SetSourceRect(obj1, 0 + ypos, -ypos*8, 512*16 + ypos, 512*16 - ypos*8); //Scrolls the water
+        ObjSprite3D_SetSourceRect(obj1a, 0 - ypos, -ypos*4, 512*16 - ypos, 512*16 - ypos*4); //Scrolls the water
+        ObjSprite3D_SetSourceRect(obj5, 0, ypos*2, 512*16, 512*16 + ypos*2); //Scrolls the gravel
+        ObjSprite3D_SetSourceRect(obj5a, 0, ypos*2, 512, 512*16 + ypos*2); //Scrolls the gravel
+        ObjSprite3D_SetSourceRect(obj6, 0, -ypos2*0.25, 512*4, 512*4 - ypos2*0.25); //Scrolls the background fog
+        ObjSprite3D_SetSourceRect(obj7, 0, ypos*2, 512, 512*16 + ypos*2); //Scrolls the grass
+
+        ObjRender_SetAlpha(obj1, GetCommonData("StageBGAlpha", 255)/2); //partially transparent
+        ObjRender_SetAlpha(obj1a, GetCommonData("StageBGAlpha", 255)/2); //partially transparent
+        ObjRender_SetAlpha(obj4, GetCommonData("StageBGAlpha", 255));
+        ObjRender_SetAlpha(obj5, GetCommonData("StageBGAlpha", 255));
+        ObjRender_SetAlpha(obj5a, GetCommonData("StageBGAlpha", 255));
+        ObjRender_SetAlpha(obj6, GetCommonData("StageBGAlpha", 255));
+        ObjRender_SetAlpha(obj7, GetCommonData("StageBGAlpha", 255));
+
+        ObjRender_SetColor(obj2, currcolor[0], currcolor[1], currcolor[2]);
+        ObjRender_SetColor(obj3, currcolor[0], currcolor[1], currcolor[2]);
+
+        ypos++;
+        ypos2++;
+        if (ypos > 2048){ypos = 0;}
+        if (ypos2 > 2048){ypos2 = 0;}
+        cameracount++;
+        yield;
+    }
+}
+
+// Over 30 frames, set old color to new color
+task SetNewColor() {
+    let dest = targetcolor;
+    let source = currcolor;
+    let diff = [dest[0] - source[0], dest[1] - source[1], dest[2] - source[2]];
+    loop (30) {
+        currcolor = [currcolor[0] + diff[0]/30, currcolor[1] + diff[1]/30, currcolor[2] + diff[2]/30];
+        yield;
+    }
+    currcolor = dest;
+}
+
+task CreateWisp(){
+    let path = GetCurrentScriptDirectory ~ "img/Wisp.png";
+
+    let scale = rand(0.5,1.5);
+    let id = round(rand(0, 4));
+    let posx = rand(0, 384);
+    let posy = rand(448 - 64, 448 + 32);
+    let maxcount = rand(120, 360);
+    let speed = rand(0.1, 1.2);
+    let scalefactor = rand(1, 4);
+    let alpha = 0;
+    let count = 0;
+
+    let obj = ObjPrim_Create(OBJ_SPRITE_2D);//Tree
+    ObjRender_SetBlendType(obj, BLEND_ALPHA);
+    Obj_SetRenderPriority(obj, 0.21);
+    ObjPrim_SetTexture(obj, path);
+    ObjSprite2D_SetSourceRect(obj, 0 + 64 * id, 0, 64 + 64 * id, 64);
+    ObjSprite2D_SetDestCenter(obj);
+    ObjRender_SetPosition(obj, posx, posy, 0);
+    ObjRender_SetScaleXYZ(obj, scale, scale, scale);
+    ObjRender_SetAlpha(obj, alpha);
+    ObjRender_SetAngleZ(obj, rand(0, 360));
+    ObjRender_SetColor(obj, rand(160, 255), rand(160, 255), rand(160, 255));
+    let frameInvisible = 0;
+    loop {
+        if(bSpell) { //TRANSITION TO SPELL BACKGROUND. VERY IMPORTANT
+            frameInvisible++;
+            //if(frameInvisible >= 60){//Transition to spell
+                Obj_SetVisible(obj, false);
+            //}
+        } else {
+            frameInvisible = 0;
+            Obj_SetVisible(obj, true);
+        }
+
+        if (alpha < 96 && count < maxcount) {
+            alpha += 4;
+            ObjRender_SetAlpha(obj, alpha);
+        }
+        ObjRender_SetPosition(obj, posx, posy - count * speed, 0);
+        count++;
+
+        ObjRender_SetScaleXYZ(obj, scale + 0.2 * cos(count * scalefactor), scale + 0.2 * cos(count * scalefactor), scale);
+
+        if (count > maxcount){
+            alpha -= 96/30; 
+            ObjRender_SetAlpha(obj, alpha);
+        }
+        if (alpha <= 0) {break;}
+
+        yield;
+    }
+    Obj_Delete(obj);
+}
+
+task TSpellBackground {
+    let path4 = GetCurrentScriptDirectory() ~ "img/sp3b.png";
+    let path5 = GetCurrentScriptDirectory() ~ "img/sp3c.png";
+    let path3 = GetCurrentScriptDirectory() ~ "img/bgfog.png";
+
+    let obj3 = ObjPrim_Create(OBJ_SPRITE_2D);
+    ObjRender_SetBlendType(obj3, BLEND_ALPHA);
+    Obj_SetRenderPriority(obj3, 0.23);
+    ObjPrim_SetTexture(obj3, path3);
+    ObjSprite2D_SetSourceRect(obj3, 0, 0, 339, 225);
+    ObjSprite2D_SetDestRect(obj3, 0, 0, 512*2, 512*4);
+
+    let obj4 = ObjPrim_Create(OBJ_SPRITE_2D);
+    ObjRender_SetBlendType(obj4, BLEND_ALPHA);
+    Obj_SetRenderPriority(obj4, 0.23);
+    ObjPrim_SetTexture(obj4, path3);
+    ObjSprite2D_SetSourceRect(obj4, 0, 0, 339, 225);
+    ObjSprite2D_SetDestRect(obj4, 0, 0, 512*2, 512*4);
+
+    let obj5 = ObjPrim_Create(OBJ_SPRITE_2D); //light
+    ObjRender_SetBlendType(obj5, BLEND_ADD_ARGB);
+    Obj_SetRenderPriority(obj5, 0.21);
+    ObjPrim_SetTexture(obj5, path5);
+    ObjSprite2D_SetSourceRect(obj5, 0, 0, 512, 512);
+    ObjSprite2D_SetDestRect(obj5, -256, -256, 256, 256);
+    ObjRender_SetPosition(obj5, 384/2, 448/2, 1);
+
+    let obj7 = ObjPrim_Create(OBJ_SPRITE_2D); //light
+    ObjRender_SetBlendType(obj7, BLEND_ADD_ARGB);
+    Obj_SetRenderPriority(obj7, 0.21);
+    ObjPrim_SetTexture(obj7, path5);
+    ObjSprite2D_SetSourceRect(obj7, 0, 0, 512, 512);
+    ObjSprite2D_SetDestRect(obj7, -256, -256, 256, 256);
+    ObjRender_SetPosition(obj7, 384/2, 448/2, 1);
+
+    let obj6 = ObjPrim_Create(OBJ_SPRITE_2D); //hex
+    ObjRender_SetBlendType(obj6, BLEND_ALPHA);
+    Obj_SetRenderPriority(obj6, 0.22);
+    ObjPrim_SetTexture(obj6, path4);
+    ObjSprite2D_SetSourceRect(obj6, 0, 0, 220*2, 130*4);
+    ObjSprite2D_SetDestRect(obj6, -220, -260, 220, 260);
+    ObjRender_SetPosition(obj6, 384/2, 448/2, 1);
+
+    let frame = 0;
+    let alpha = 0;
+
+    //Unchanging Alpha values and Colors - pull things from loop() that don't need refreshing each frame
+    ObjRender_SetColor(obj4, 0, 0, 0);
+    // Obj 5 and 7 change color based on color. See loop.
+    ObjRender_SetAlpha(obj3, 128);
+    ObjRender_SetAlpha(obj4, 128);
+
+    loop {
+        if (bSpell) { //Transition from stage background
+            alpha = 255;
+        } else {
+            alpha = 0; //If no longer spell
+        }
+
+        // Set targetcolor here
+
+        ObjRender_SetColor(obj5, currcolor[0], currcolor[1], currcolor[2]);
+        ObjRender_SetColor(obj7, currcolor[0], currcolor[1], currcolor[2]);
+
+        Obj_SetVisible(obj3, alpha > 0); //fog
+        ObjSprite2D_SetSourceRect(obj3, 0, 0 + (frame*2)%1024, 512*2, 512*4 + (frame*2)%1024);
+        ObjRender_SetColor(obj3, 128, 128, 128);
+
+        Obj_SetVisible(obj4, alpha > 0); //fog
+        ObjSprite2D_SetSourceRect(obj4, 0, 0 - (frame*4)%1024, 512*2, 512*4 - (frame*4)%1024);
+
+        Obj_SetVisible(obj6, alpha > 0);
+
+        Obj_SetVisible(obj5, alpha > 0); //color layer
+        ObjSprite2D_SetSourceRect(obj5, 0, 0 - (frame*2)%1024, 512*2, 512*2 - (frame*2)%1024);
+        Obj_SetVisible(obj7, alpha > 0); //color layer
+        ObjSprite2D_SetSourceRect(obj7, 256, 0 + (frame*4)%1024, 256 + 512*2, 512*2 + (frame*4)%1024);
+
+        frame++;
+        yield;
+    }
+}

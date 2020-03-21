@@ -1,0 +1,502 @@
+#include "./../lib/const_sfx.dnh"
+#include "./../lib/FxnSystem.dnh"
+
+let dirCurrent = GetCurrentScriptDirectory();
+let hudhelp = dirCurrent ~ "../img/hudhelp.png";
+let line = dirCurrent ~ "../img/line.png";
+
+@Loading {
+    // Start up GlobalSound script
+    // NOTE: Since it is being started here, sound effects will not play during Pause Scene since the sound manager will also be paused! In fact, they will be enqueued and all played at once once the pause is lifted!
+    // Naturally, the script has terminated before the End Scene and so sound effects will not play there either.
+    let gsscript = LoadScript(GetCurrentScriptDirectory() ~ "./../lib/GlobalSound.dnh");
+    StartScript(gsscript);
+}
+
+@Initialize{
+    InstallFont(GetCurrentScriptDirectory() ~ "./Helvetica.dfont");
+    InstallFont(GetCurrentScriptDirectory() ~ "./Russell Square Regular.ttf");
+    InstallFont(GetCurrentScriptDirectory() ~ "./Fairview_Regular.otf");
+    InstallFont(GetCurrentScriptDirectory() ~ "./KGModernMonogramPlain.ttf");
+    //if(!test) {RaiseError("Font Install Failed");} //Test code
+    InitFrame();
+    TGraze();
+    TPlayerLife();
+    TPlayerSpell();
+    TBossLife();
+    TBossTimer();
+    TCurrentFps();
+    TReplayFps();
+    POC;
+    EXTEND;
+    SPELLEXTEND;
+    SetPauseScriptPath(dirCurrent ~ "./Pause.dnh");
+    SetEndSceneScriptPath(dirCurrent ~ "./EndScene.dnh");
+    SetReplaySaveSceneScriptPath(dirCurrent ~ "./ReplaySaveScene.dnh");
+
+    let STTJbullet = GetCurrentScriptDirectory ~ "./../lib/STTJ_Shot.dnh";
+    LoadEnemyShotData(STTJbullet);
+    LoadTexture(hudhelp);
+    LoadTexture(line);
+    StartItemScript(GetCurrentScriptDirectory() ~ "./../lib/Item_data.dnh");
+    LoadItemData(GetCurrentScriptDirectory() ~ "./../lib/item_def.dnh");
+    
+    SetItemRenderPriorityI(49);//Bullets are 50, default items are 60.
+}
+
+//25 pixels between menu items!!! 
+//Score=>Player and Spell=>Graze, 12 and 13 respectively.
+
+@MainLoop{
+    yield;
+}
+
+@Event{
+    alternative(GetEventType())
+    case(EV_START_BOSS_SPELL) {
+        GS(SFX_SPELL);
+    }
+}
+
+//----------------------------------------------------
+//Initialize Stg Frame
+//----------------------------------------------------
+function InitFrame() {
+    let path = GetCurrentScriptDirectory() ~ "../img/Default_SystemBackground.png";
+    let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+    ObjPrim_SetTexture(obj, path);
+    Obj_SetRenderPriority(obj, 0);
+    ObjSprite2D_SetSourceRect(obj, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    ObjSprite2D_SetDestRect(obj, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+}
+
+//----------------------------------------------------
+//Player miss #
+//----------------------------------------------------
+task TPlayerLife{
+    let objText = ObjText_Create();
+    ObjText_SetText(objText, "Player");
+    ObjText_SetFontSize(objText, 20);
+    ObjText_SetFontType(objText, "Fairview Regular");
+    ObjText_SetFontBold(objText, false);
+    ObjText_SetFontColorTop(objText, 255, 255, 255);
+    ObjText_SetFontColorBottom(objText, 255, 255, 255);
+    ObjText_SetFontBorderType(objText, BORDER_FULL);
+    ObjText_SetFontBorderColor(objText, 255, 96, 192);
+    ObjText_SetFontBorderWidth(objText, 2);
+    Obj_SetRenderPriority(objText, 0.01);
+    ObjRender_SetX(objText, 446);
+    ObjRender_SetY(objText, 42);
+
+    CreateLineImage(62);
+
+    let bases = [];
+    ascent(i in 0..7) { //6 items visible
+        let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+        ObjRender_SetPosition(obj, 498 + i*16, 42, 0);
+        ObjPrim_SetTexture(obj, hudhelp);
+        Obj_SetRenderPriority(obj, 0.1);
+        ObjSprite2D_SetSourceRect(obj, 16, 0, 32, 16);
+        ObjSprite2D_SetDestRect(obj, 0, 5, 16, 21); //Stagger lower by 5 pixels
+        bases = bases ~ [obj];
+    }
+
+    let objNum2 = ObjText_Create(); //Next
+    ObjText_SetText(objNum2, "000000");
+    ObjText_SetFontSize(objNum2, 12);
+    ObjText_SetFontType(objNum2, "Helvetica");
+    ObjText_SetFontBold(objNum2, true);
+    ObjText_SetFontColorTop(objNum2, 255, 255, 255);
+    ObjText_SetFontColorBottom(objNum2, 255, 255, 255);
+    ObjText_SetFontBorderType(objNum2, BORDER_FULL);
+    ObjText_SetFontBorderColor(objNum2, 0, 0, 0);
+    ObjText_SetFontBorderWidth(objNum2, 2);
+    Obj_SetRenderPriority(objNum2, 0.1);
+    ObjRender_SetX(objNum2, 498);
+    ObjRender_SetY(objNum2, 64); //22 below former
+
+    while(true) {
+        let score = GetPlayerLife();
+        score = min(score, 9); //99 for number
+        score = max(score, 0); //99 for number
+        ascent(i in 0..length(bases)) {
+            if(i < score) { //0th life in DNH doesn't show. If GPL = 1, one should show b/c it is num EXTRA lives
+                ObjSprite2D_SetSourceRect(bases[i], 0, 0, 16, 16);
+            }else{
+                ObjSprite2D_SetSourceRect(bases[i], 16, 0, 32, 16);
+            }
+        }
+        ObjText_SetText(objNum2, "Next: " ~ rtos("0", 3 - GetCommonData("CurrLifeFrag", 0)));
+        yield;
+    }
+}
+
+//----------------------------------------------------
+//Player Spell #
+//----------------------------------------------------
+task TPlayerSpell{
+    let objText = ObjText_Create();
+    ObjText_SetText(objText, "Spell");
+    ObjText_SetFontSize(objText, 20);
+    ObjText_SetFontType(objText, "Fairview Regular");
+    ObjText_SetFontBold(objText, false);
+    ObjText_SetFontColorTop(objText, 255, 255, 255);
+    ObjText_SetFontColorBottom(objText, 255, 255, 255);
+    ObjText_SetFontBorderType(objText, BORDER_FULL);
+    ObjText_SetFontBorderColor(objText, 32, 192, 255);
+    ObjText_SetFontBorderWidth(objText, 2);
+    Obj_SetRenderPriority(objText, 0.01);
+    ObjRender_SetX(objText, 446);
+    ObjRender_SetY(objText, 89);
+
+    CreateLineImage(109);
+
+    let bases = [];
+    ascent(i in 0..7) { //6 items visible
+        let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+        ObjRender_SetPosition(obj, 498 + i*16, 89, 0);
+        ObjPrim_SetTexture(obj, hudhelp);
+        Obj_SetRenderPriority(obj, 0.1);
+        ObjSprite2D_SetSourceRect(obj, 16, 16, 32, 32);
+        ObjSprite2D_SetDestRect(obj, 0, 5, 16, 21); //Stagger lower by 5 pixels
+        bases = bases ~ [obj];
+    }
+
+    let objNum2 = ObjText_Create(); //Next
+    ObjText_SetText(objNum2, "000000");
+    ObjText_SetFontSize(objNum2, 12);
+    ObjText_SetFontType(objNum2, "Helvetica");
+    ObjText_SetFontBold(objNum2, true);
+    ObjText_SetFontColorTop(objNum2, 255, 255, 255);
+    ObjText_SetFontColorBottom(objNum2, 255, 255, 255);
+    ObjText_SetFontBorderType(objNum2, BORDER_FULL);
+    ObjText_SetFontBorderColor(objNum2, 0, 0, 0);
+    ObjText_SetFontBorderWidth(objNum2, 2);
+    Obj_SetRenderPriority(objNum2, 0.1);
+    ObjRender_SetX(objNum2, 498);
+    ObjRender_SetY(objNum2, 111); //22 below former
+
+    while(true) {
+        let score = GetPlayerSpell();
+        score = min(score, 9); //99 for number
+        score = max(score, 0); //99 for number
+        ascent(i in 0..length(bases)) {
+            if(i < score) {
+                ObjSprite2D_SetSourceRect(bases[i], 0, 16, 16, 32);
+            }else{
+                ObjSprite2D_SetSourceRect(bases[i], 16, 16, 32, 32);
+            }
+        }
+        ObjText_SetText(objNum2, "Next: " ~ rtos("0", 5 - GetCommonData("NextFlashBomb", 0)));
+        yield;
+    }
+}
+
+//----------------------------------------------------
+//Graze
+//----------------------------------------------------
+task TGraze() {
+    let objGraze = ObjText_Create();
+    ObjText_SetText(objGraze, "Graze");
+    ObjText_SetFontSize(objGraze, 20);
+    ObjText_SetFontType(objGraze, "Fairview Regular");
+    ObjText_SetFontBold(objGraze, false);
+    ObjText_SetFontColorTop(objGraze, 255, 255, 255);
+    ObjText_SetFontColorBottom(objGraze, 255, 255, 255);
+    ObjText_SetFontBorderType(objGraze, BORDER_FULL);
+    ObjText_SetFontBorderColor(objGraze, 255, 128, 128);
+    ObjText_SetFontBorderWidth(objGraze, 2);
+    Obj_SetRenderPriority(objGraze, 0.01);
+    ObjRender_SetX(objGraze, 446);
+    ObjRender_SetY(objGraze, 139); //-2 pixels to be in-line with Helvetica numbers.
+
+    let objNum = ObjText_Create();
+    ObjText_SetText(objNum, "000000");
+    ObjText_SetFontSize(objNum, 20);
+    ObjText_SetFontType(objNum, "Helvetica");
+    ObjText_SetFontBold(objNum, true);
+    ObjText_SetFontColorTop(objNum, 255, 255, 255);
+    ObjText_SetFontColorBottom(objNum, 255, 255, 255);
+    ObjText_SetFontBorderType(objNum, BORDER_FULL);
+    ObjText_SetFontBorderColor(objNum, 0, 0, 0);
+    ObjText_SetFontBorderWidth(objNum, 2);
+    Obj_SetRenderPriority(objNum, 0.1);
+    ObjRender_SetX(objNum, 498);
+    ObjRender_SetY(objNum, 141);
+
+    while(true) {
+        let score = GetGraze();
+        score = min(score, 999999);
+        ObjText_SetText(objNum, rtos("000000", score));
+        yield;
+    }
+}
+
+//Line Image creator
+task CreateLineImage(y) {
+    let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+    ObjRender_SetPosition(obj, 500, y, 0);
+    ObjPrim_SetTexture(obj, line);
+    Obj_SetRenderPriority(obj, 0.1);
+    ObjSprite2D_SetSourceRect(obj, 0, 0, 192, 16);
+    ObjSprite2D_SetDestRect(obj, 0, 0, 110, 2);
+    ObjRender_SetAlpha(obj, 200);
+}
+
+//----------------------------------------------------
+//Idk this one
+//----------------------------------------------------
+task TBossLife{
+    let path = GetCurrentScriptDirectory() ~ "../img/Default_System.png";
+    let obj = ObjPrim_Create(OBJ_SPRITE_LIST_2D);
+    ObjPrim_SetTexture(obj, path);
+    Obj_SetRenderPriority(obj, 0.7);
+
+    let lastRemStep = -1;
+    let lifeRateRender = 0;
+
+    let objScene = ID_INVALID;
+    loop{
+        objScene = GetEnemyBossSceneObjectID();
+        ObjSpriteList2D_ClearVertexCount(obj);
+        if(objScene != ID_INVALID) {
+            RenderLife();
+        }
+        yield;
+    }
+
+
+    function RenderLife() {
+        let countRemStep = ObjEnemyBossScene_GetInfo(objScene, INFO_REMAIN_STEP_COUNT);
+        if(lastRemStep != countRemStep) {
+            lifeRateRender = 0;
+        }
+
+        let lifeTotalMax = ObjEnemyBossScene_GetInfo(objScene, INFO_ACTIVE_STEP_TOTAL_MAX_LIFE);
+        let lifeTotal = ObjEnemyBossScene_GetInfo(objScene, INFO_ACTIVE_STEP_TOTAL_LIFE);
+        let lifeRate = min(lifeTotal / lifeTotalMax, lifeRateRender);
+        ObjSpriteList2D_SetSourceRect(obj, 1, 1, 127, 11);
+        ObjSpriteList2D_SetDestRect(obj, 72, 8, 72 + 270 * lifeRate, 12);
+        ObjSpriteList2D_AddVertex(obj);
+
+        ObjSpriteList2D_SetSourceRect(obj, 132, 1, 137, 11);
+        let listLifeDiv = [0] ~ ObjEnemyBossScene_GetInfo(objScene, INFO_ACTIVE_STEP_LIFE_RATE_LIST);
+        ascent(iDiv in 0 .. length(listLifeDiv)) {
+            let rate = listLifeDiv[iDiv];
+            let x = 72 + 270 * (1-rate);
+            ObjSpriteList2D_SetDestRect(obj, x - 1, 4, x + 1, 14);
+            ObjSpriteList2D_AddVertex(obj);
+        }
+
+        ObjSpriteList2D_SetSourceRect(obj, 1, 1, 127, 11);
+        ascent(iStep in 0 .. countRemStep) {
+            let remStepRate = 58 / countRemStep;
+            ObjSpriteList2D_SetDestRect(obj, 4 + iStep * remStepRate + 2, 8,
+                4 + (iStep + 1) * remStepRate, 12);
+            ObjSpriteList2D_AddVertex(obj);
+        }
+
+        lifeRateRender += 0.01;
+        lifeRateRender = min(lifeRateRender, 1);
+        lastRemStep = countRemStep;
+    }
+}
+
+//----------------------------------------------------
+//Timer
+//----------------------------------------------------
+
+task TBossTimer{
+    let objTimer = ObjText_Create();
+    ObjText_SetText(objTimer, "");
+    ObjText_SetFontSize(objTimer, 24);
+    ObjText_SetFontType(objTimer, "Russell Square Regular");
+    ObjText_SetFontBold(objTimer, false);
+    ObjText_SetFontColorTop(objTimer, 255, 255, 255);
+    ObjText_SetFontColorBottom(objTimer, 255, 255, 255);
+    ObjText_SetFontBorderType(objTimer, BORDER_NONE);
+    ObjText_SetFontBorderColor(objTimer, 255, 255, 255);
+    ObjText_SetFontBorderWidth(objTimer, 0);
+    ObjText_SetHorizontalAlignment(objTimer, ALIGNMENT_LEFT);
+
+    Obj_SetRenderPriority(objTimer, 0.79);
+    ObjRender_SetX(objTimer, 352);
+    ObjRender_SetY(objTimer, 0);
+
+    let count = 2;
+
+    let objScene = ID_INVALID;
+
+    loop{
+        objScene = GetEnemyBossSceneObjectID();
+        if(objScene != ID_INVALID) {
+            Obj_SetVisible(objTimer, true);
+            RenderTimer();
+        }else{
+            Obj_SetVisible(objTimer, false);
+        }
+        yield;
+    }
+
+    function RenderTimer() {
+        let timer = ObjEnemyBossScene_GetInfo(objScene, INFO_TIMER);
+        timer = min(timer, 99);
+        ObjText_SetText(objTimer, IntToString(timer));
+    }
+
+}
+
+//----------------------------------------------------
+//Spellcard Bonus text
+//----------------------------------------------------
+task TGainSpell(score) {
+    let objText = ObjText_Create();
+    ObjText_SetText(objText, "Spellcard Capture!");
+    ObjText_SetFontSize(objText, 32);
+    ObjText_SetFontType(objText, "Russell Square Regular");
+    ObjText_SetFontBold(objText, false);
+    ObjText_SetFontColorTop(objText, 255, 255, 255);
+    ObjText_SetFontColorBottom(objText, 128, 128, 255);
+    ObjText_SetFontBorderType(objText, BORDER_FULL);
+    ObjText_SetFontBorderColor(objText, 255, 255, 255);
+    ObjText_SetFontBorderWidth(objText, 1);
+    ObjText_SetHorizontalAlignment(objText, ALIGNMENT_CENTER);
+    ObjText_SetMaxWidth(objText, 360);
+    Obj_SetRenderPriority(objText, 0.6);
+    ObjRender_SetX(objText, 194 - 180); //Minus half the max width. 194 = 388/2 (388 is GetStgFrameWidth w/ r.p.<80)
+    ObjRender_SetY(objText, 98);
+
+    loop(120) {
+        yield;
+    }
+    Obj_Delete(objText);
+}
+
+//----------------------------------------------------
+//FPS
+//----------------------------------------------------
+task TCurrentFps() {
+    let objText = ObjText_Create();
+    ObjText_SetFontSize(objText, 14);
+    ObjText_SetFontType(objText, "Helvetica");
+    ObjText_SetFontBold(objText, true);
+    ObjText_SetFontColorTop(objText, 160, 160, 255);
+    ObjText_SetFontColorBottom(objText, 64, 64, 255);
+    ObjText_SetFontBorderType(objText, BORDER_FULL);
+    ObjText_SetFontBorderColor(objText, 255, 255, 255);
+    ObjText_SetFontBorderWidth(objText, 2);
+    ObjText_SetHorizontalAlignment(objText, ALIGNMENT_RIGHT);
+    ObjText_SetMaxWidth(objText, GetScreenWidth() - 8);
+    Obj_SetRenderPriority(objText, 1.0);
+    ObjRender_SetX(objText, 0);
+    ObjRender_SetY(objText, GetScreenHeight() - 20);
+
+    loop{
+        let fps = GetCurrentFps();
+        let text = vtos("1.2f", fps) ~ "fps";
+        ObjText_SetText(objText, text);
+        yield;
+    }
+}
+
+task TReplayFps() {
+    if(!IsReplay()) {return;}
+
+    let objText = ObjText_Create();
+    ObjText_SetFontSize(objText, 12);
+    ObjText_SetFontType(objText, "Russell Square Regular");
+    ObjText_SetFontBold(objText, true);
+    ObjText_SetFontColorTop(objText, 128, 128, 255);
+    ObjText_SetFontColorBottom(objText, 64, 64, 255);
+    ObjText_SetFontBorderType(objText, BORDER_FULL);
+    ObjText_SetFontBorderColor(objText, 255, 255, 255);
+    ObjText_SetFontBorderWidth(objText, 1);
+    Obj_SetRenderPriority(objText, 1.0);
+
+    let px = GetStgFrameLeft() + GetStgFrameWidth() - 18;
+    let py = GetStgFrameTop() + GetStgFrameHeight() - 14;
+    ObjRender_SetX(objText, px);
+    ObjRender_SetY(objText, py);
+
+    loop{
+        let fps = GetReplayFps();
+        let text = vtos("02d", fps);
+        ObjText_SetText(objText, text);
+        yield;
+    }
+}
+
+//----------------------------------------------------
+//Digit to Array
+//----------------------------------------------------
+function DigitToArray(let digit, let count) {
+    let res = [];
+    digit = truncate(digit);
+
+    loop{
+        let tnum = truncate(digit % 10);
+        digit /= 10;
+        res = [tnum] ~ res;
+        if(truncate(digit) == 0) {break;}
+    }
+
+    loop(max(0, count - length(res))) {
+        res = [0] ~ res;
+    }
+
+    return res;
+}
+
+//----------------------------------------------------
+//Point Extend System
+//----------------------------------------------------
+
+task EXTEND{
+    if(GetCommonData("CurrLifeFrag", 0) == 0) { //Don't reset if there are shards!
+        SetCommonData("CurrLifeFrag", 0);
+    }
+    while(true) {
+        if(GetCommonData("CurrLifeFrag", 0) >= 3) {
+            SetPlayerLife(GetPlayerLife + 1);
+            GS(SFX_EXTEND);
+            LifeExtendGraphic;
+            SetCommonData("CurrLifeFrag", GetCommonData("CurrLifeFrag", 0) - 3);
+        }
+        yield;
+    }
+}
+
+//----------------------------------------------------
+//Bomb Extend System
+//----------------------------------------------------
+
+task SPELLEXTEND{ //Getting a certain amount of Piezo will grant a spell fragment
+    if(GetCommonData("CurrSpellFrag", 0) == 0) { //Don't reset if there are shards!
+        SetCommonData("CurrSpellFrag", 0);
+    }
+    while(true) {
+        if(GetCommonData("CurrSpellFrag", 0) >= 5) {
+            SetPlayerSpell(GetPlayerSpell + 1);
+            GS(SFX_EXTEND);
+            SpellExtendGraphic;
+            SetCommonData("CurrSpellFrag", GetCommonData("CurrSpellFrag", 0) - 5);
+        }
+        yield;
+    }
+}
+
+//----------------------------------------------------
+//POC Indicator
+//----------------------------------------------------
+
+task POC{
+    let texture = GetCurrentScriptDirectory() ~ "../img/POC.png";
+    let objPOC = ObjPrim_Create(OBJ_SPRITE_2D);
+    ObjRender_SetPosition(objPOC, 16, 196, 1); 
+    ObjRender_SetBlendType(objPOC, BLEND_ALPHA);
+    Obj_SetRenderPriority(objPOC, 0.81);
+    ObjPrim_SetTexture(objPOC, texture);
+    ObjRender_SetAlpha(objPOC, 255);
+    ObjSprite2D_SetSourceRect(objPOC, 0, 0, 32, 32); //With enemy
+    ObjSprite2D_SetDestCenter(objPOC);
+}

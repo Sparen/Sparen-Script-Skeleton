@@ -1,0 +1,108 @@
+@Event{
+    alternative(GetEventType())
+    case(EV_USER_STAGE+1) { //Single small point
+        let arg = GetEventArgument(0); //x, y
+        ItemPointSmall(arg[0], arg[1], 20000);
+    }
+    case(EV_USER_STAGE+2) { //Single big point
+        let arg = GetEventArgument(0); //x, y
+        ItemPointBig(arg[0], arg[1], 50000);
+    }
+    case(EV_USER_STAGE+100) { //Life Shard
+        let arg = GetEventArgument(0); //x, y
+        ItemLifeShard(arg[0], arg[1], 1000);
+        GS(SFX_BONUS);
+    }
+    case(EV_USER_STAGE+101) { //Spell Shard
+        let arg = GetEventArgument(0); //x, y
+        ItemSpellShard(arg[0], arg[1], 1000);
+    }
+    case(EV_USER_STAGE+150) { //Life Extend
+        let arg = GetEventArgument(0); //x, y
+        ItemLifeExtend(arg[0], arg[1], 2000);
+    }
+    case(EV_USER_STAGE+151) { //Spell Extend
+        let arg = GetEventArgument(0); //x, y
+        ItemSpellExtend(arg[0], arg[1], 2000);
+    }
+    case(EV_USER_STAGE+200) { //Piezo
+        let arg = GetEventArgument(0); //x, y
+        ItemPiezo(arg[0], arg[1], 1000);
+    }
+    case(EV_USER_STAGE+201) { //Piezo
+        let arg = GetEventArgument(0); //x, y
+        let ang = 0;
+        loop(3) {
+            ItemPiezo(arg[0] + 15*cos(ang), arg[1] + 15*sin(ang), 1000);
+            ang += 120;
+        }
+    }
+    case(EV_USER_STAGE+250) { //Boss Spell drop. WORKS. DO NOT EDIT!!
+        let arg = GetEventArgument(0); //x, y
+        ascent(i in 0..6) {
+            ItemPointSmall(arg[0] + 30*cos(30 + 60*i), arg[1] + 30*sin(30 + 60*i), 20000);
+        }
+        ascent(i in 0..6) {
+            ItemPiezo(arg[0] + 30*cos(60*i), arg[1] + 30*sin(60*i), 1000);
+        }
+    }
+    case(EV_USER_STAGE+251) { //Mixed item drop.
+        let arg = GetEventArgument(0); //x, y
+        ascent(i in 0..3) {
+            ItemPointSmall(arg[0] + 30*cos(60 + 120*i), arg[1] + 30*sin(60 + 120*i), 20000);
+        }
+        ascent(i in 0..3) {
+            ItemPiezo(arg[0] + 30*cos(120*i), arg[1] + 30*sin(120*i), 1000);
+        }
+    }
+    case(EV_USER_STAGE+666) { //Boss Spell Capture
+        GS(SFX_CAPTURE);
+    }
+    case(EV_USER_STAGE+750) { //Bullet Delete Effect
+        let arg = GetEventArgument(0); //id
+        BulletDeleteEffect(arg);
+    }
+    case(EV_USER_STAGE+777) { //Boss Explosion
+        let arg = GetEventArgument(0); //x, y
+        BossExplosion(arg[0], arg[1]);
+    }
+    case(EV_USER_STAGE+999) { //Stage Enemy Death
+        let arg = GetEventArgument(0); //x, y
+        EnemyDieEffect(arg[0], arg[1]);
+    }
+    case(EV_PAUSE_ENTER) {
+        if(stagepart == 0) {
+            ObjSound_Stop(bgm);
+        } 
+        if(stagepart == 1) {
+            ObjSound_Stop(bgm2);
+        } 
+    }
+    case(EV_PAUSE_LEAVE) {
+        if(stagepart == 0) {
+            ObjSound_Play(bgm);
+        } 
+        if(stagepart == 1) {
+            ObjSound_Play(bgm2);
+        } 
+    }
+}
+
+//This task is the ONLY place where the stage can be killed. It is NOT done in TStage.
+task StageOver{
+    while(!finished && GetPlayerState() != STATE_END) {yield;}
+    NotifyEventAll(EV_USER_STAGE + 2048, ""); // Finalize APM report
+    loop(60) {yield;}
+    if(stagepart == 0) {
+        ObjSound_Stop(bgm);
+    } 
+    if(stagepart == 1) {
+        ObjSound_Stop(bgm2);
+    } 
+
+    //Delete bgm sound objects so that music room won't reuse them
+    Obj_Delete(bgm);
+    Obj_Delete(bgm2);
+
+    CloseStgScene();
+}

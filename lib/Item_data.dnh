@@ -1,0 +1,85 @@
+#include "./const_sfx.dnh"
+#include "./FxnSystem.dnh"
+let dir = GetCurrentScriptDirectory();
+
+@Initialize{
+    SetDefaultBonusItemEnable(false);
+    let dir = GetCurrentScriptDirectory();
+    LoadItemData(dir ~ "item_def.dnh");
+}
+
+@MainLoop{
+    yield;
+}
+
+@Event{
+    alternative(GetEventType())
+    case(EV_GET_ITEM){
+        let dir = GetCurrentScriptDirectory();
+        let itemType = GetEventArgument(0); //Item ID, object ID
+        let itemID = GetEventArgument(1); //Item ID, object ID
+            if(itemType == 1){
+                AddPoint(1);
+            }
+            if(itemType == 2){
+                AddPoint(1);
+            }
+            if(itemType == 3){
+                SetCommonData("CurrLifeFrag", GetCommonData("CurrLifeFrag", 0) + 1);
+            }
+            if(itemType == 4){
+                SetPlayerLife(GetPlayerLife + 1);
+                LifeExtendGraphic()
+            }
+            if(itemType == 5){
+                SetCommonData("CurrSpellFrag", GetCommonData("CurrSpellFrag", 0) + 1);
+            }
+            if(itemType == 6){
+                SetPlayerSpell(GetPlayerSpell + 1);
+                SpellExtendGraphic();
+            }
+            if(itemType == 7){
+                SetCommonData("CurrPiezo", GetCommonData("CurrPiezo", 0) + 1);
+            }
+            if(itemType == 1 || itemType == 2 || itemType == 3 || itemType == 5 || itemType == 7){
+                GS(SFX_ITEM);
+            } 
+            if(itemType == 4 || itemType == 6){
+                GS(SFX_EXTEND);
+            } 
+
+            CreateItemClearText(ObjRender_GetX(itemID), ObjRender_GetY(itemID), IntToString(ObjItem_GetInfo(itemID, INFO_ITEM_SCORE)));
+        }
+        case(EV_DELETE_SHOT_TO_ITEM){
+            let objShot = GetEventArgument(0);
+            let objPos = GetEventArgument(1); //([0]=x, [1]=y)
+            AddScore(100);
+            CreateItemClearText(objPos[0], objPos[1], "100");
+            SetCommonData("CurrPiezo", GetCommonData("CurrPiezo", 0) + 0.01);
+        }
+}
+
+task CreateItemClearText(x, y, num){
+    let objText = ObjText_Create();
+    ObjText_SetText(objText, num);
+    ObjText_SetFontSize(objText, 8);
+    ObjText_SetFontType(objText, "Russell Square Regular");
+    ObjText_SetFontBold(objText, false);
+    ObjText_SetFontColorTop(objText, 255, 255, 255);
+    ObjText_SetFontColorBottom(objText, 255, 255, 255);
+    ObjText_SetFontBorderType(objText, BORDER_FULL);
+    ObjText_SetFontBorderColor(objText, 128, 128, 128);
+    ObjText_SetFontBorderWidth(objText, 1);
+    ObjRender_SetPosition(objText, x, y, 1);
+    let basey = y;
+    descent(i in 0..15){
+        y -= i/8;
+        ObjRender_SetPosition(objText, x, y, 1);
+        loop(2){yield;}
+    }
+    ascent(i in 0..30){
+        ObjRender_SetAlpha(objText, 255 - i*255/30);
+        yield;
+    }
+    Obj_Delete(objText);
+}

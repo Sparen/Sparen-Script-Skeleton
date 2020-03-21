@@ -1,0 +1,56 @@
+//#TouhouDanmakufu[Single]
+#Title["Stage 1 Boss Event Control Single"]
+#Text[""]
+#Background["./../Background.dnh"]
+#ScriptVersion[3]
+#System["./../system/System.dnh"]
+
+#include "./../lib/FxnList.dnh"
+#include "./BossCommon.dnh"
+#include "./../system/Default_Effect.Txt"
+let count = -5; //Counter
+
+let objBoss;
+let objScene=GetEnemyBossSceneObjectID();
+
+let hasmoved = false;
+
+@Initialize {
+    SetCommonData("Boss", 0);
+    objBoss = ObjEnemy_Create(OBJ_ENEMY_BOSS);
+    ObjEnemy_Regist(objBoss);
+    SetDamageRateAtFrame(objBoss, 0, 0, 0);
+    ObjMove_SetPosition(objBoss, GetCenterX-30, -96); //For boss moving in middle of event. Usually y=-30
+    //ObjMove_SetDestAtFrame(objBoss, GetCenterX, GetCenterY-60, 60); //disabled for bosses that appear during middle of event
+    SetShotAutoDeleteClip(32, 32, 32, 32);
+
+    EnemySetup(objBoss);
+    TDrawLoop(GetCurrentScriptDirectory() ~ "./../img/sprite_name.png");
+    TFinalizeEvent;
+}
+
+@Event{
+    alternative(GetEventType())
+    case(EV_REQUEST_LIFE){SetScriptResult(1);}
+    case(EV_REQUEST_TIMER){SetScriptResult(999);}
+}
+
+@MainLoop {
+    //ObjEnemy_SetIntersectionCircleToShot(objBoss, ObjMove_GetX(objBoss), ObjMove_GetY(objBoss), 32); 
+    ObjEnemy_SetIntersectionCircleToPlayer(objBoss, ObjMove_GetX(objBoss), ObjMove_GetY(objBoss), 24);
+
+    if(count > 0){
+        if(GetCommonData("OnEvent", true) == false){ObjEnemy_SetLife(objBoss, -5);}
+    }
+
+    if(!hasmoved && GetCommonData("BossAppear", false) == true){
+        ObjMove_SetDestAtFrame(objBoss, GetCenterX, GetCenterY-90, 60); 
+        hasmoved = true;
+    }
+
+    //DEBUG ONLY. ALLOW FOR UNLOCKING PRACTICE BOSS
+    //if(GetKeyState(KEY_O) == KEY_PUSH){ObjEnemy_SetLife(objBoss, -5);}
+
+    count++;
+    yield;
+}

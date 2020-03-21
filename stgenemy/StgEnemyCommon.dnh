@@ -1,0 +1,209 @@
+/* ----- Notes ----- */
+// - Orbs are the robotic spinning things
+// - Spirits are standard souls
+// - Butterflies are the... uh... butterflies
+
+//Below are enemy graphic constants
+let SENEMY_ORB_BLUE = 0;
+let SENEMY_ORB_RED = 1;
+let SENEMY_ORB_YELLOW = 2;
+let SENEMY_ORB_GREEN = 3;
+let SENEMY_SPIRIT_BLUE = 0;
+let SENEMY_SPIRIT_RED = 1;
+let SENEMY_SPIRIT_YELLOW = 2;
+let SENEMY_SPIRIT_GREEN = 3;
+let SENEMY_BFLY_BLUE = 0;
+let SENEMY_BFLY_PURPLE = 1;
+let SENEMY_BFLY_ORANGE = 2;
+let SENEMY_BFLY_GREEN = 3;
+let SENEMY_BFLY_YELLOW = 4;
+let SENEMY_ELEM_WATER_BLUE = 0;
+let SENEMY_ELEM_WATER_GREEN = 1;
+
+//Below are enemy drawing tasks
+
+//New, has no wobbling. Used for normal orbs.
+task TDrawLoopOrb1(objEnemy, graph) {
+    let BossImage = GetCurrentScriptDirectory() ~ "./../img/StgEnemy.png"; //Define path
+    let obj = ObjPrim_Create(OBJ_PRIMITIVE_2D);//This is the outer solar panel part.
+    let obj2 = ObjPrim_Create(OBJ_PRIMITIVE_2D);//This is the inner solar panel part.
+    let animframe = 1;
+
+    ObjPrim_SetPrimitiveType(obj2, PRIMITIVE_TRIANGLESTRIP);
+    ObjPrim_SetVertexCount(obj2, 4);
+    ObjPrim_SetTexture(obj2, BossImage);
+    ObjRender_SetScaleXYZ(obj2, 1.5, 1.5, 1.5);
+    ObjPrim_SetVertexUVT(obj2, 0, 0+33*graph, 66);
+    ObjPrim_SetVertexUVT(obj2, 1, 33+33*graph, 66);
+    ObjPrim_SetVertexUVT(obj2, 2, 0+33*graph, 99);
+    ObjPrim_SetVertexUVT(obj2, 3, 33+33*graph, 99);
+
+    ObjPrim_SetPrimitiveType(obj, PRIMITIVE_TRIANGLESTRIP);
+    ObjPrim_SetVertexCount(obj, 4);
+    ObjPrim_SetTexture(obj, BossImage);
+    ObjRender_SetScaleXYZ(obj, 1.5, 1.5, 1.5);
+    ObjPrim_SetVertexUVT(obj, 0, 0+33*graph, 33);
+    ObjPrim_SetVertexUVT(obj, 1, 33+33*graph, 33);
+    ObjPrim_SetVertexUVT(obj, 2, 0+33*graph, 66);
+    ObjPrim_SetVertexUVT(obj, 3, 33+33*graph, 66);
+
+    while(!Obj_IsDeleted(objEnemy)) {
+        ObjRender_SetPosition(obj, ObjMove_GetX(objEnemy), ObjMove_GetY(objEnemy), 1);//move the outer portion
+        ObjRender_SetPosition(obj2, ObjMove_GetX(objEnemy), ObjMove_GetY(objEnemy), 1);//move the outer portion
+
+        ObjPrim_SetVertexPosition(obj2, 0, 16.5*cos(2*animframe),       16.5*sin(2*animframe),        1);
+        ObjPrim_SetVertexPosition(obj2, 1, 16.5*cos(2*animframe+90),    16.5*sin(2*animframe+90),     1);
+        ObjPrim_SetVertexPosition(obj2, 2, 16.5*cos(2*animframe+270),   16.5*sin(2*animframe+270),    1);
+        ObjPrim_SetVertexPosition(obj2, 3, 16.5*cos(2*animframe+180),   16.5*sin(2*animframe+180),    1);
+        ObjPrim_SetVertexPosition(obj, 0, 16.5*cos(-(2*animframe)),     16.5*sin(-(2*animframe)),     1);
+        ObjPrim_SetVertexPosition(obj, 1, 16.5*cos(-(2*animframe)+90),  16.5*sin(-(2*animframe)+90),  1);
+        ObjPrim_SetVertexPosition(obj, 2, 16.5*cos(-(2*animframe)+270), 16.5*sin(-(2*animframe)+270), 1);
+        ObjPrim_SetVertexPosition(obj, 3, 16.5*cos(-(2*animframe)+180), 16.5*sin(-(2*animframe)+180), 1);
+
+        animframe++;
+        yield;
+    }
+    Obj_Delete(obj);
+    Obj_Delete(obj2);
+}
+
+//New, has no wobbling. Used for infading orbs.
+task TDrawLoopOrb2(objEnemy, graph) {
+    let BossImage = GetCurrentScriptDirectory() ~ "./../img/StgEnemy.png"; //Define path
+    let obj = ObjPrim_Create(OBJ_PRIMITIVE_2D);//This is the outer solar panel part.
+    let obj2 = ObjPrim_Create(OBJ_PRIMITIVE_2D);//This is the inner solar panel part.
+    let animframe = 1;
+    let count = 0;
+
+    ObjPrim_SetPrimitiveType(obj2, PRIMITIVE_TRIANGLESTRIP);
+    ObjPrim_SetVertexCount(obj2, 4);
+    ObjPrim_SetTexture(obj2, BossImage);
+    ObjRender_SetScaleXYZ(obj2, 1.5, 1.5, 1.5);
+    ObjPrim_SetVertexUVT(obj2, 0, 0+33*graph, 66);
+    ObjPrim_SetVertexUVT(obj2, 1, 33+33*graph, 66);
+    ObjPrim_SetVertexUVT(obj2, 2, 0+33*graph, 99);
+    ObjPrim_SetVertexUVT(obj2, 3, 33+33*graph, 99);
+
+    ObjPrim_SetPrimitiveType(obj, PRIMITIVE_TRIANGLESTRIP);
+    ObjPrim_SetVertexCount(obj, 4);
+    ObjPrim_SetTexture(obj, BossImage);
+    ObjRender_SetScaleXYZ(obj, 1.5, 1.5, 1.5);
+    ObjPrim_SetVertexUVT(obj, 0, 0+33*graph, 33);
+    ObjPrim_SetVertexUVT(obj, 1, 33+33*graph, 33);
+    ObjPrim_SetVertexUVT(obj, 2, 0+33*graph, 66);
+    ObjPrim_SetVertexUVT(obj, 3, 33+33*graph, 66);
+
+    while(!Obj_IsDeleted(objEnemy)) {
+        ObjRender_SetPosition(obj, ObjMove_GetX(objEnemy), ObjMove_GetY(objEnemy), 1);//move the outer portion
+        ObjRender_SetPosition(obj2, ObjMove_GetX(objEnemy), ObjMove_GetY(objEnemy), 1);//move the outer portion
+
+        ObjPrim_SetVertexPosition(obj2, 0, 16.5*cos(2*animframe),       16.5*sin(2*animframe),        1);
+        ObjPrim_SetVertexPosition(obj2, 1, 16.5*cos(2*animframe+90),    16.5*sin(2*animframe+90),     1);
+        ObjPrim_SetVertexPosition(obj2, 2, 16.5*cos(2*animframe+270),   16.5*sin(2*animframe+270),    1);
+        ObjPrim_SetVertexPosition(obj2, 3, 16.5*cos(2*animframe+180),   16.5*sin(2*animframe+180),    1);
+        ObjPrim_SetVertexPosition(obj, 0, 16.5*cos(-(2*animframe)),     16.5*sin(-(2*animframe)),     1);
+        ObjPrim_SetVertexPosition(obj, 1, 16.5*cos(-(2*animframe)+90),  16.5*sin(-(2*animframe)+90),  1);
+        ObjPrim_SetVertexPosition(obj, 2, 16.5*cos(-(2*animframe)+270), 16.5*sin(-(2*animframe)+270), 1);
+        ObjPrim_SetVertexPosition(obj, 3, 16.5*cos(-(2*animframe)+180), 16.5*sin(-(2*animframe)+180), 1);
+
+        if(count < 90) {
+            ascent(i in 0..4) {
+                ObjPrim_SetVertexAlpha(obj2, i, count*255/90);
+                ObjPrim_SetVertexAlpha(obj, i, count*255/90);
+            }
+            count++;
+        }
+
+        animframe++;
+        yield;
+    }
+    Obj_Delete(obj);
+    Obj_Delete(obj2);
+}
+
+
+task TDrawLoopSpirit(objEnemy, graph) {
+    let BossImage = GetCurrentScriptDirectory() ~ "./../img/StgEnemy.png";
+    let BossImage2 = GetCurrentScriptDirectory() ~ "./../img/Aura.png";
+    let animframe = 1;
+
+    let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+
+    ObjPrim_SetTexture(obj, BossImage2);
+    ObjRender_SetScaleXYZ(obj, 1, 1, 1);
+    ObjSprite2D_SetSourceRect(obj, 0+64*graph, 0, 64+64*graph, 64);//graph: 0-3
+    ObjSprite2D_SetDestCenter(obj);
+    ObjRender_SetBlendType(obj, BLEND_ADD_ARGB);
+    ObjRender_SetAlpha(obj, 176);
+
+    ObjPrim_SetTexture(objEnemy, BossImage);
+    ObjRender_SetScaleXYZ(objEnemy, 1, 1, 1);
+    ObjSprite2D_SetSourceRect(objEnemy, 0+33*graph, 99, 33+33*graph, 132);//graph: 0-3
+    ObjSprite2D_SetDestCenter(objEnemy);
+
+    while(!Obj_IsDeleted(objEnemy)){
+        ObjRender_SetPosition(obj, ObjMove_GetX(objEnemy), ObjMove_GetY(objEnemy), 1);//move the aura
+        ObjSprite2D_SetSourceRect(obj, 0+64*graph, 0+64*floor(animframe/8), 64+64*graph, 64+64*floor(animframe/8));//graph: 0-3
+        animframe++;
+        if(animframe>=32){animframe = 0;}
+        yield;
+    }
+    Obj_Delete(obj);
+}
+
+task TDrawLoopButterfly(objEnemy, graph) {
+    let BossImage = GetCurrentScriptDirectory() ~ "./../img/StgEnemy.png"; //Define path
+    let animframe = 1;
+
+    ObjPrim_SetTexture(objEnemy, BossImage);
+    ObjRender_SetScaleXYZ(objEnemy, 1, 1, 1);
+    ObjSprite2D_SetSourceRect(objEnemy, 0, 132 + 33*graph, 33, 165 + 33*graph);
+    ObjSprite2D_SetDestCenter(objEnemy);
+
+    while(!Obj_IsDeleted(objEnemy)){
+        ObjSprite2D_SetSourceRect(objEnemy, 0 + 33*floor(animframe/8), 132 + 33*graph, 33 + 33*floor(animframe/8), 165 + 33*graph);
+        animframe++;
+        if(animframe>=32){animframe = 0;}
+        yield;
+    }
+}
+
+task TDrawLoopElemental1(objEnemy, graph) {
+    let BossImage = GetCurrentScriptDirectory() ~ "./../img/StgEnemy.png"; //Define path
+    let animframe = 1;
+
+    ObjPrim_SetTexture(objEnemy, BossImage);
+    ObjRender_SetScaleXYZ(objEnemy, 1, 1, 1);
+    ObjSprite2D_SetSourceRect(objEnemy, 132, 132 + 33*graph, 165, 165 + 33*graph);
+    ObjSprite2D_SetDestCenter(objEnemy);
+
+    while(!Obj_IsDeleted(objEnemy)){
+        ObjSprite2D_SetSourceRect(objEnemy, 132 + 33*floor(animframe/6), 132 + 33*graph, 165 + 33*floor(animframe/6), 165 + 33*graph);
+        animframe++;
+        if(animframe>=24){animframe = 0;}
+        yield;
+    }
+}
+
+task TDrawLoopElemental2(objEnemy, graph) { //Fade In
+    let BossImage = GetCurrentScriptDirectory() ~ "./../img/StgEnemy.png"; //Define path
+    let animframe = 1;
+    let count = 0;
+
+    ObjPrim_SetTexture(objEnemy, BossImage);
+    ObjRender_SetScaleXYZ(objEnemy, 1, 1, 1);
+    ObjSprite2D_SetSourceRect(objEnemy, 132, 132 + 33*graph, 165, 165 + 33*graph);
+    ObjSprite2D_SetDestCenter(objEnemy);
+
+    while(!Obj_IsDeleted(objEnemy)) {
+        ObjSprite2D_SetSourceRect(objEnemy, 132 + 33*floor(animframe/6), 132 + 33*graph, 165 + 33*floor(animframe/6), 165 + 33*graph);
+
+        if(count < 90){
+            ObjRender_SetAlpha(objEnemy, count*255/90);
+            count++;
+        }
+        animframe++;
+        if(animframe>=24){animframe = 0;}
+        yield;
+    }
+}

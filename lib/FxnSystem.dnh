@@ -1,0 +1,45 @@
+task SpellExtendGraphic {
+    let objText = ObjText_Create();
+    ObjText_SetText(objText, "SPELL EXTEND!");
+    ObjText_SetFontSize(objText, 24);
+    ObjText_SetFontType(objText, "KG Modern Monogram Plain");
+    ObjText_SetFontBold(objText, false);
+    ObjText_SetFontColorTop(objText, 224, 255, 255);
+    ObjText_SetFontColorBottom(objText, 208, 240, 240);
+    ObjText_SetFontBorderType(objText, BORDER_FULL);
+    ObjText_SetFontBorderColor(objText, 96, 192, 192);
+    ObjText_SetFontBorderWidth(objText, 2);
+    ObjText_SetHorizontalAlignment(objText, ALIGNMENT_CENTER);
+    ObjText_SetMaxWidth(objText, 360);
+    Obj_SetRenderPriority(objText, 0.6);
+    ObjRender_SetX(objText, 194 - 180); //Minus half the max width. 194 = 388/2 (388 is GetStgFrameWidth w/ r.p.<80)
+    ObjRender_SetY(objText, 50);
+
+    loop(120) {
+        yield;
+    }
+    Obj_Delete(objText);
+}
+
+task LifeExtendGraphic {
+    let objText = ObjText_Create();
+    ObjText_SetText(objText, "EXTEND!");
+    ObjText_SetFontSize(objText, 24);
+    ObjText_SetFontType(objText, "KG Modern Monogram Plain");
+    ObjText_SetFontBold(objText, false);
+    ObjText_SetFontColorTop(objText, 255, 224, 255);
+    ObjText_SetFontColorBottom(objText, 240, 208, 240);
+    ObjText_SetFontBorderType(objText, BORDER_FULL);
+    ObjText_SetFontBorderColor(objText, 192, 96, 192);
+    ObjText_SetFontBorderWidth(objText, 2);
+    ObjText_SetHorizontalAlignment(objText, ALIGNMENT_CENTER);
+    ObjText_SetMaxWidth(objText, 360);
+    Obj_SetRenderPriority(objText, 0.6);
+    ObjRender_SetX(objText, 194 - 180); //Minus half the max width. 194 = 388/2 (388 is GetStgFrameWidth w/ r.p.<80)
+    ObjRender_SetY(objText, 75);
+
+    loop(120) {
+        yield;
+    }
+    Obj_Delete(objText);
+}

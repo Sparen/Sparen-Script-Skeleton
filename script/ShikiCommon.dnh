@@ -1,0 +1,167 @@
+//This file should be included by attacks using the custom non-collidable familiar graphics
+//This library was first made in June 2018 for the RaNGE 19 contest.
+
+//Takes a scale, rotation direction and speed, and three sets of RGB values and returns a Render Object.
+//Rotation speed only affects the primary shiki and not the rings, while the rings go in the opposite direction of the shiki main.
+function CreateSparenShikiA1(scale, countVertex, rotdir, rotspeed, mainr, maing, mainb, ringr, ringg, ringb, ringr2, ringg2, ringb2) {
+    let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+    CreateSparenShikiA1Helper(obj, scale, countVertex, rotdir, rotspeed, mainr, maing, mainb, ringr, ringg, ringb, ringr2, ringg2, ringb2);
+    return obj;
+}
+task CreateSparenShikiA1Helper(obj, scale, countVertex, rotdir, rotspeed, mainr, maing, mainb, ringr, ringg, ringb, ringr2, ringg2, ringb2) {
+    let imgpath = GetCurrentScriptDirectory() ~ "./../img/MarisaShiki.png";
+    let objcount = 0;
+    let alpha = 0;
+    
+    Obj_SetRenderPriority(obj, 0.40); //Right above magic circles and boss aura; same as enemy magic circle
+    ObjPrim_SetTexture(obj, imgpath);
+    ObjSprite2D_SetSourceRect(obj, 0, 0, 70, 70);
+    ObjSprite2D_SetDestCenter(obj);
+    ObjRender_SetColor(obj, mainr, maing, mainb);
+    ObjRender_SetScaleXYZ(obj, scale, scale, 1);
+    ObjRender_SetAlpha(obj, alpha);
+    //Create Sub-Rings
+    SubRingA1;
+    SubRingA2(0);
+    SubRingA2(1);
+    while (!Obj_IsDeleted(obj)) {
+        if (alpha < 192) {
+            alpha += 6;
+            ObjRender_SetAlpha(obj, alpha);
+        }
+        ObjRender_SetAngleZ(obj, objcount * rotdir * rotspeed);
+        objcount += 1;
+        yield;
+    }
+    task SubRingA1{
+        let listRadius = [];
+        loop(countVertex){
+            listRadius = listRadius ~ [0];
+        }
+
+        let objCirc = ObjPrim_Create(OBJ_SPRITE_2D);
+        Obj_SetRenderPriority(objCirc, 0.40); //Right above magic circles and boss aura; same as enemy magic circle
+        ObjPrim_SetTexture(objCirc, imgpath);
+        ObjPrim_SetPrimitiveType(objCirc, PRIMITIVE_TRIANGLESTRIP);
+        ObjPrim_SetVertexCount(objCirc, countVertex);
+        ObjRender_SetColor(objCirc, ringr, ringg, ringb);
+        ObjRender_SetScaleXYZ(objCirc, scale * 0.5, scale * 0.5, 1);
+        ascent(iVert in 0..countVertex / 2){
+            let left = iVert * 240/countVertex; //Recall that the texture is only 240px long.
+            let indexVert = iVert * 2;
+            ObjPrim_SetVertexUVT(objCirc, indexVert + 0, left, 105);
+            ObjPrim_SetVertexUVT(objCirc, indexVert + 1, left, 121);     
+        }
+
+        let maxRadius = 96;
+        let angleRender = 0;
+
+        while(!Obj_IsDeleted(obj)){
+            angleRender += 360 / countVertex / 8 * rotdir * -1; //Last number is best way to control rotation speed. Lower is faster
+            Obj_SetVisible(objCirc, true);
+
+            let rRate = 100 / 100; //Radius rate. 
+
+            ascent(iVert in 0..countVertex / 2){
+                let indexVert = iVert * 2;
+                let angle = 360 / (countVertex / 2 - 1) * iVert;
+                let vx1 = listRadius[indexVert] * cos(angle);
+                let vy1 = listRadius[indexVert] * sin(angle);
+                ObjPrim_SetVertexPosition(objCirc, indexVert + 0, vx1, vy1, 0);
+                let vx2 = listRadius[indexVert+1] * cos(angle);
+                let vy2 = listRadius[indexVert+1] * sin(angle);
+                ObjPrim_SetVertexPosition(objCirc, indexVert + 1, vx2, vy2, 0);
+                if(objcount >= 0){
+                    let dr = (maxRadius * rRate - listRadius[indexVert]) / 8;
+                    listRadius[indexVert] = listRadius[indexVert] + dr;
+                }
+                if(objcount > 10){
+                    let rRateIn = rRate - 0.12;
+                    if(rRateIn < 0){rRateIn = 0;}
+                    let dr = (maxRadius * rRateIn - listRadius[indexVert + 1]) / 16;
+                    listRadius[indexVert + 1] = listRadius[indexVert + 1] + dr;
+                }
+
+            }
+            ObjRender_SetColor(objCirc, ringr, ringg, ringb);
+            ObjRender_SetPosition(objCirc, ObjRender_GetX(obj), ObjRender_GetY(obj), 1);
+            ObjRender_SetAngleZ(objCirc, angleRender);
+
+            yield;
+        }
+        ascent(i in 0..6) {
+            ObjRender_SetAlpha(objCirc, 255 - 255/6*i);
+            yield;
+        }
+        Obj_Delete(objCirc);
+    }
+    task SubRingA2(num) {
+        let listRadius = [];
+        loop(countVertex){
+            listRadius = listRadius ~ [0];
+        }
+
+        let objCirc = ObjPrim_Create(OBJ_SPRITE_2D);
+        Obj_SetRenderPriority(objCirc, 0.40); //Right above magic circles and boss aura; same as enemy magic circle
+        ObjPrim_SetTexture(objCirc, imgpath);
+        ObjPrim_SetPrimitiveType(objCirc, PRIMITIVE_TRIANGLESTRIP);
+        ObjPrim_SetVertexCount(objCirc, countVertex);
+        ObjRender_SetColor(objCirc, ringr, ringg, ringb);
+        ObjRender_SetScaleXYZ(objCirc, scale * 0.66, scale * 0.66, 1);
+        ascent(iVert in 0..countVertex / 2){
+            let left = iVert * 240/countVertex; //Recall that the texture is only 240px long.
+            let indexVert = iVert * 2;
+            ObjPrim_SetVertexUVT(objCirc, indexVert + 0, left, 125);
+            ObjPrim_SetVertexUVT(objCirc, indexVert + 1, left, 141);     
+        }
+
+        let maxRadius = 96;
+        let angleRender = 0;
+
+        while(!Obj_IsDeleted(obj)){
+            angleRender += 360 / countVertex / 8 * rotdir * -1; //Last number is best way to control rotation speed. Lower is faster
+            Obj_SetVisible(objCirc, true);
+
+            let rRate = 100 / 100; //Radius rate. 
+
+            ascent(iVert in 0..countVertex / 2){
+                let indexVert = iVert * 2;
+                let angle = 360 / (countVertex / 2 - 1) * iVert;
+                let vx1 = listRadius[indexVert] * cos(angle);
+                let vy1 = listRadius[indexVert] * sin(angle);
+                ObjPrim_SetVertexPosition(objCirc, indexVert + 0, vx1, vy1, 0);
+                let vx2 = listRadius[indexVert+1] * cos(angle);
+                let vy2 = listRadius[indexVert+1] * sin(angle);
+                ObjPrim_SetVertexPosition(objCirc, indexVert + 1, vx2, vy2, 0);
+                if(objcount >= 0){
+                    let dr = (maxRadius * rRate - listRadius[indexVert]) / 8;
+                    listRadius[indexVert] = listRadius[indexVert] + dr;
+                }
+                if(objcount > 10){
+                    let rRateIn = rRate - 0.12;
+                    if(rRateIn < 0){rRateIn = 0;}
+                    let dr = (maxRadius * rRateIn - listRadius[indexVert + 1]) / 16;
+                    listRadius[indexVert + 1] = listRadius[indexVert + 1] + dr;
+                }
+
+            }
+            ObjRender_SetColor(objCirc, ringr2, ringg2, ringb2);
+            ObjRender_SetPosition(objCirc, ObjRender_GetX(obj), ObjRender_GetY(obj), 1);
+            ObjRender_SetAngleZ(objCirc, angleRender);
+            if (num == 0) {
+                ObjRender_SetAngleX(objCirc, objcount * 0.75);
+                ObjRender_SetAngleY(objCirc, objcount);
+            } else {
+                ObjRender_SetAngleX(objCirc, -1 * objcount * 0.75);
+                ObjRender_SetAngleY(objCirc, objcount);
+            }
+
+            yield;
+        }
+        ascent(i in 0..6) {
+            ObjRender_SetAlpha(objCirc, 255 - 255/6*i);
+            yield;
+        }
+        Obj_Delete(objCirc);
+    }
+}

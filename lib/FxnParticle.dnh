@@ -1,0 +1,611 @@
+/* ******************************************************************
+* Sparen's Particle Effect Library
+* For use with Touhou Danmakufu ph3
+* (C) Sparen of Iria 2015-2018
+*
+* Code in this library is under the MIT License and may be 
+* redistributed/modified without express permission
+****************************************************************** */
+
+/* ******************************************************************
+* This library is meant to store all tasks used for particle effects
+* in the main game, including charge effects and the like.
+* This library assumes that Object AutoDelete is turned on.
+****************************************************************** */
+
+/* *************************************************************************
+*EnemyDieEffect(double, double) -- Creates effects at given location. Used in Stage Enemy Death
+*Param: x (double) - X coordinate to render at
+*Param: y (double) - Y coordinate to render at
+************************************************************************* */
+task EnemyDieEffect(x, y) {
+    let img = GetCurrentScriptDirectory() ~ "../img/enemydie.png";
+    loop(18) {
+        SEDEffect;
+    }
+
+    task SEDEffect{
+        let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+        let spinA   = rand(0, 180); //X and Z spin
+        let spinB   = rand(0, 180); //Y spin
+        let no = rand_int(0, 1);
+        let angleE = rand(0, 360);
+        let countE = 0;
+        let speedE = rand(0.25, 0.75); //Controls how fast the effect will fly
+        let scale = rand(0.1, 0.5);
+        ObjRender_SetPosition(obj, x, y, 1); 
+        ObjPrim_SetTexture(obj, img);
+        Obj_SetRenderPriority(obj, 0.36);
+        ObjRender_SetBlendType(obj, BLEND_ALPHA);
+        ObjSprite2D_SetSourceRect(obj, 0 + 32*no, 0, 32 + 32*no, 32);
+        ObjSprite2D_SetDestCenter(obj);
+        ObjRender_SetColor(obj, 255, 255, 255);
+        ObjRender_SetAlpha(obj, 255);
+        ObjRender_SetScaleXYZ(obj, scale, scale, scale);
+        loop(90) {
+            spinA += rand(1, 2);
+            spinB += rand(-1, -2);
+            ObjRender_SetPosition(obj, x + countE*speedE*cos(angleE), y + countE*speedE*sin(angleE), 1); 
+            ObjRender_SetAlpha(obj, 255 - countE*(255/90));
+            ObjRender_SetAngleXYZ(obj, spinA, spinB, spinA);
+            countE++;
+            yield;
+        }
+        Obj_Delete(obj);
+    }
+}
+
+/* *************************************************************************
+*BossDieEffect(double, double) -- Creates effects at given location. Used in Boss Death
+*Param: x (double) - X coordinate to render at
+*Param: y (double) - Y coordinate to render at
+************************************************************************* */
+task BossDieEffect(x, y) {
+    let img = GetCurrentScriptDirectory() ~ "../img/enemydie.png";
+    loop(32) {
+        loop(2) { SEDEffect; }
+        yield;
+    }
+
+    task SEDEffect{ //same as enemy, but with a few adjustments to color and speed
+        let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+        let spinA   = rand(0, 180); //X and Z spin
+        let spinB   = rand(0, 180); //Y spin
+        let no = rand_int(0, 1);
+        let angleE = rand(0, 360);
+        let countE = 0;        
+        let speedE = rand(1, 12); //Controls how fast the effect will fly
+        let scale = rand(0.1, 0.5);
+        ObjRender_SetPosition(obj, x, y, 1); 
+        ObjPrim_SetTexture(obj, img);
+        Obj_SetRenderPriority(obj, 0.36);
+        ObjRender_SetBlendType(obj, BLEND_ALPHA);
+        ObjSprite2D_SetSourceRect(obj, 0 + 32*no, 0, 32 + 32*no, 32);
+        ObjSprite2D_SetDestCenter(obj);
+
+        //Should be far brighter than other variants
+        let bossindex = GetCommonData("Boss", 0); 
+        if(bossindex == 0) {
+            ObjRender_SetColor(obj, 255, 255, 255);
+        }
+        ObjRender_SetAlpha(obj, 255);
+        ObjRender_SetScaleXYZ(obj, scale, scale, scale);
+        loop(120) {
+            spinA += rand(1, 2);
+            spinB += rand(-1, -2);
+            ObjRender_SetPosition(obj, x + countE*speedE*cos(angleE), y + countE*speedE*sin(angleE), 1); 
+            ObjRender_SetAlpha(obj, 255 - countE*(255/120));
+            ObjRender_SetAngleXYZ(obj, spinA, spinB, spinA);
+            countE++;
+            yield;
+        }
+        Obj_Delete(obj);
+    }
+}
+
+/* *************************************************************************
+*SpiralEffect(double, double) -- Creates a spiral effect at given location. Used in Boss Death
+*Param: x (double) - X coordinate to render at
+*Param: y (double) - Y coordinate to render at
+************************************************************************* */
+task SpiralEffect(x, y) {
+    let img = GetCurrentScriptDirectory() ~ "../img/fog.png";
+    let duration = 90;
+    let numinring = 24;
+
+    task EffectShot(effx, effy, r, g, b) {
+        let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+        let countE = 0;        
+        ObjRender_SetPosition(obj, effx, effy, 1); 
+        ObjPrim_SetTexture(obj, img);
+        Obj_SetRenderPriority(obj, 0.36);
+        ObjRender_SetBlendType(obj, BLEND_ADD_ARGB);
+        ObjSprite2D_SetSourceRect(obj, 0, 0, 59, 58);
+        ObjSprite2D_SetDestCenter(obj);
+        ObjRender_SetColor(obj, r, g, b);
+        ObjRender_SetScaleXYZ(obj, 0.25, 0.25, 1);
+
+        ObjRender_SetAlpha(obj, 255);
+        ascent(i in 0.. duration) {
+            ObjRender_SetAlpha(obj, 255 - countE*(255/duration));
+            ObjRender_SetScaleXYZ(obj, 0.25 - countE*(0.25/duration), 0.25 - countE*(0.25/duration), 0);
+            countE++;
+            yield;
+        }
+        Obj_Delete(obj);
+    }
+
+    let rgb1 = [255, 255, 255];
+    let rgb2 = [255, 255, 255];
+
+    let bossindex = GetCommonData("Boss", 0); 
+    if(bossindex == 0) { 
+        rgb1 = [255, 255, 255];
+        rgb2 = [255, 255, 255];
+    }
+
+    ascent(j in 0..30) {
+        ascent(i in 0.. numinring) {
+            EffectShot(x + j * 15 * cos(i*360/numinring + j * 3), y + j * 15 * sin(i*360/numinring + j * 3), rgb1[0], rgb1[1], rgb1[2]);
+            EffectShot(x + j * 15 * cos(i*360/numinring - j * 3), y + j * 15 * sin(i*360/numinring - j * 3), rgb2[0], rgb2[1], rgb2[2]);
+        }
+        wait(3);
+    }
+}
+
+/* *************************************************************************
+*EnemyCharge(obj) -- Calls charge effects at enemy's position. Does not move with enemy.
+*Param: obj (obj) - Enemy object to render under
+************************************************************************* */
+task EnemyCharge(obj) {
+    let totaldist;
+    let angleC = rand(0, 360);
+    ChargeCircle(obj, false);
+    ChargeA1(obj);
+}
+
+/* *************************************************************************
+*StgEnemyCharge(obj) -- Calls charge effects at enemy's position. Does not move with enemy.
+*Param: obj (obj) - Enemy object to render under
+************************************************************************* */
+task StgEnemyCharge(obj) {
+    let totaldist;
+    let angleC = rand(0, 360);
+    ChargeCircle(obj, true);
+    ChargeA2(obj);
+}
+
+/* *************************************************************************
+*ChargeA1(obj) -- Determines and executes charge effect to use
+*Param: obj (obj) - Enemy object to render under
+************************************************************************* */
+task ChargeA1(obj) {
+    // Can specify ChargeDot, ChargeLightning, or both
+    if(GetCommonData("Boss", 0) == 0) {ChargeDot(obj);} 
+}
+
+/* *************************************************************************
+*ChargeDot(obj) -- Creates dark dot effects at location of enemy
+*Param: obj (obj) - Enemy object to render under
+************************************************************************* */
+task ChargeDot(obj) {
+    let imgdot = GetCurrentScriptDirectory() ~ "../img/dot.png";
+    let totaldist; 
+    let angleC = 0;
+    ascent(i in 0..72) {
+        totaldist = rand_int(30, 360);
+        ChargeDotHelp(angleC, totaldist, totaldist/45);
+        angleC += 360/72 + rand(-5, 5);
+    }
+
+    task ChargeDotHelp(ang, xdist, speedX) {
+        let objcharge = ObjPrim_Create(OBJ_SPRITE_2D);
+        let count = 0;
+        ObjRender_SetPosition(objcharge, ObjMove_GetX(obj) + xdist*cos(ang), ObjMove_GetY(obj) + xdist*sin(ang), 1); 
+        ObjPrim_SetTexture(objcharge, imgdot);
+        Obj_SetRenderPriority(objcharge, 0.36);
+        ObjRender_SetBlendType(objcharge, BLEND_SUBTRACT);
+        ObjSprite2D_SetSourceRect(objcharge, 0, 0, 64, 64);
+        ObjSprite2D_SetDestRect(objcharge, -32, -32, 32, 32);
+        ObjRender_SetColor(objcharge, 255, 192, 255);
+        ObjRender_SetAlpha(objcharge, 150);
+        descent(i in 0..45) {
+            ObjRender_SetPosition(objcharge, ObjMove_GetX(obj) + (xdist - speedX*(45 - i))*cos(ang), ObjMove_GetY(obj) + (xdist - speedX*(45 - i))*sin(ang), 1); 
+
+            if(count < 15) {
+                ObjRender_SetAlpha(objcharge, count*100/15); //gradually fade in
+            }
+            count++;
+            ang += 5;
+            if(ObjEnemy_GetInfo(obj, INFO_LIFE) <= 0) {Obj_Delete(objcharge);}
+            yield;
+        }
+        Obj_Delete(objcharge);
+    }
+}
+
+/* *************************************************************************
+*ChargeLightning(obj) -- Creates lightning effects at location of enemy
+*Param: obj (obj) - Enemy object to render under
+************************************************************************* */
+task ChargeLightning(obj) {
+    let imgelec = GetCurrentScriptDirectory() ~ "../img/elecharge.png";
+    let totaldist; 
+    let angleC = 0; 
+    let wvel = 1;
+    ascent(i in 0..48) {
+        totaldist = rand_int(30, 360);
+        ChargeLightningHelp(angleC, totaldist, totaldist/45, wvel);
+        angleC += 360/48 + rand(-5, 5);
+        wvel *= -1;
+    }
+
+    task ChargeLightningHelp(ang, xdist, speedX, dir) {
+        let objcharge = ObjPrim_Create(OBJ_SPRITE_2D);
+        let spinA   = rand(0, 180); //X and Z spin
+        let count = 0;
+        ObjRender_SetPosition(objcharge, ObjMove_GetX(obj) + xdist*cos(ang), ObjMove_GetY(obj) + xdist*sin(ang), 1); 
+        ObjPrim_SetTexture(objcharge, imgelec);
+        Obj_SetRenderPriority(objcharge, 0.36);
+        ObjRender_SetBlendType(objcharge, BLEND_ADD_ARGB);
+        ObjSprite2D_SetSourceRect(objcharge, 0, 0, 128, 128);
+        ObjSprite2D_SetDestCenter(objcharge);
+        ObjRender_SetScaleXYZ(objcharge, 1, 1, 1);
+        ObjRender_SetColor(objcharge, 255, 255, 255);
+        descent(i in 0..45) {
+            spinA += rand(1, 2);
+            ObjRender_SetAngleXYZ(objcharge, 0, 0, spinA); //Altering spin, color, and alpha values
+            ObjRender_SetPosition(objcharge, ObjMove_GetX(obj) + (xdist - speedX*(45 - i))*cos(ang), ObjMove_GetY(obj) + (xdist - speedX*(45 - i))*sin(ang), 1);
+
+            if(count < 15) {
+                ObjRender_SetAlpha(objcharge, count*100/15); //gradually fade in
+            }
+
+            ObjSprite2D_SetSourceRect(objcharge, 0 + 128*floor(count/3), 0, 128 + 128*floor(count/3), 128);
+            count++;
+            ang += dir*5;
+            if(ObjEnemy_GetInfo(obj, INFO_LIFE) <= 0) {Obj_Delete(objcharge);}
+            yield;
+        }
+        Obj_Delete(objcharge);
+    }
+}
+
+/* *************************************************************************
+*ChargeA2(obj) -- Creates enemy charge effects at location of enemy
+*Param: obj (obj) - Enemy object to render under
+************************************************************************* */
+task ChargeA2(obj) {
+    let img = GetCurrentScriptDirectory() ~ "../img/enemydie.png";
+    let totaldist; 
+    let angleC = 0;
+    loop(36) {
+        totaldist = rand_int(30, 180);
+        ChargeStgEnemy(angleC, totaldist, totaldist/45);
+        angleC += 360/36 + rand(-5, 5);
+    }
+
+    task ChargeStgEnemy(ang, xdist, speedX) { //Altered from SED Effect task
+        let objcharge = ObjPrim_Create(OBJ_SPRITE_2D);
+        let spinA   = rand(0, 180); //X and Z spin
+        let spinB   = rand(0, 180); //Y spin
+        let no = rand_int(0, 1);
+        let scale = rand(0.1, 0.5);
+        ObjRender_SetPosition(objcharge, ObjMove_GetX(obj) + xdist*cos(ang), ObjMove_GetY(obj) + xdist*sin(ang), 1); 
+        ObjPrim_SetTexture(objcharge, img);
+        Obj_SetRenderPriority(objcharge, 0.36);
+        ObjRender_SetBlendType(objcharge, BLEND_ALPHA);
+        ObjSprite2D_SetSourceRect(objcharge, 0 + 32*no, 0, 32 + 32*no, 32);
+        ObjSprite2D_SetDestCenter(objcharge);
+        ObjRender_SetColor(objcharge, 255, 255, 255);
+        ObjRender_SetAlpha(objcharge, 255);
+        ObjRender_SetScaleXYZ(objcharge, scale, scale, scale);
+        descent(i in 0..45) {
+            spinA += rand(1, 2);
+            spinB += rand(-1, -2);
+            ObjRender_SetPosition(objcharge, ObjMove_GetX(obj) + (xdist - speedX*(45 - i))*cos(ang), ObjMove_GetY(obj) + (xdist - speedX*(45 - i))*sin(ang), 1);
+            ObjRender_SetAngleXYZ(objcharge, spinA, spinB, spinA);
+            if(ObjEnemy_GetInfo(obj, INFO_LIFE) <= 0) {Obj_Delete(objcharge);}
+            yield;
+        }
+        Obj_Delete(objcharge);
+    }
+}
+
+/* *************************************************************************
+*ChargeCircle(obj, boolean) -- Creates charge circle under enemy
+*Param: obj (obj) - Enemy object to render under
+*Param: isstgenemy (boolean) - If true, defaults to a color. Otherwise, the CommonData determines the color.
+************************************************************************* */
+task ChargeCircle(obj, isstgenemy) {
+    let objcharge = ObjPrim_Create(OBJ_SPRITE_2D);
+    let chargecircle = GetCurrentScriptDirectory() ~ "../img/chargecircle.png";
+    ObjRender_SetPosition(objcharge, ObjMove_GetX(obj), ObjMove_GetY(obj), 1); 
+    ObjPrim_SetTexture(objcharge, chargecircle);
+    Obj_SetRenderPriority(objcharge, 0.36);
+    ObjRender_SetBlendType(objcharge, BLEND_ADD_ARGB);
+    ObjSprite2D_SetSourceRect(objcharge, 0, 0, 256, 256);
+    ObjSprite2D_SetDestCenter(objcharge);
+    ObjRender_SetScaleXYZ(objcharge, 1, 1, 1);
+    ObjRender_SetColor(objcharge, 59, 248, 80);
+    if(!isstgenemy) {
+        if(GetCommonData("Boss", 0) == 0) {ObjRender_SetColor(objcharge, 255, 255, 255);}
+    }
+    ObjRender_SetAlpha(objcharge, 96);
+    descent(i in 0..45) {
+        ObjRender_SetPosition(objcharge, ObjMove_GetX(obj), ObjMove_GetY(obj), 1);
+        ObjRender_SetScaleXYZ(objcharge, 1/45*i, 1/45*i, 1/45*i);
+      
+        if(ObjEnemy_GetInfo(obj, INFO_LIFE) <= 0) {Obj_Delete(objcharge);}
+        yield;
+    }
+    Obj_Delete(objcharge);
+}
+
+/* *************************************************************************
+*ChargeCircleOBJ(obj) -- Creates charge circle under object. Color defaults to (59, 248, 80).
+*Param: obj (obj) - Object to render under
+************************************************************************* */
+task ChargeCircleOBJ(obj) {
+    let objcharge = ObjPrim_Create(OBJ_SPRITE_2D);
+    let chargecircle = GetCurrentScriptDirectory() ~ "../img/chargecircle.png";
+    ObjRender_SetPosition(objcharge, ObjMove_GetX(obj), ObjMove_GetY(obj), 1); 
+    ObjPrim_SetTexture(objcharge, chargecircle);
+    Obj_SetRenderPriority(objcharge, 0.36);
+    ObjRender_SetBlendType(objcharge, BLEND_ADD_ARGB);
+    ObjSprite2D_SetSourceRect(objcharge, 0, 0, 256, 256);
+    ObjSprite2D_SetDestCenter(objcharge);
+    ObjRender_SetScaleXYZ(objcharge, 1, 1, 1);
+    ObjRender_SetColor(objcharge, 59, 248, 80);
+    ObjRender_SetAlpha(objcharge, 96);
+    descent(i in 0..45) {
+        if (Obj_IsDeleted(obj)) {Obj_Delete(objcharge); return;}
+        ObjRender_SetPosition(objcharge, ObjMove_GetX(obj), ObjMove_GetY(obj), 1);
+        ObjRender_SetScaleXYZ(objcharge, 1/45*i, 1/45*i, 1/45*i);
+        yield;
+    }
+    Obj_Delete(objcharge);
+}
+
+/* *************************************************************************
+*ChargeCircleCO(double, double, int, int, int) -- Creates charge circle at given coordinates with given color
+*Param: x (double) - X position to render at
+*Param: y (double) - Y position to render at
+*Param: r (int) - Red portion of color
+*Param: g (int) - Green portion of color
+*Param: b (int) - Blue portion of color
+************************************************************************* */
+task ChargeCircleCO(x, y, r, g, b) {
+    let objcharge = ObjPrim_Create(OBJ_SPRITE_2D);
+    let chargecircle = GetCurrentScriptDirectory() ~ "../img/chargecircle.png";
+    ObjRender_SetPosition(objcharge, x, y, 1); 
+    ObjPrim_SetTexture(objcharge, chargecircle);
+    Obj_SetRenderPriority(objcharge, 0.36);
+    ObjRender_SetBlendType(objcharge, BLEND_ADD_ARGB);
+    ObjSprite2D_SetSourceRect(objcharge, 0, 0, 256, 256);
+    ObjSprite2D_SetDestCenter(objcharge);
+    ObjRender_SetScaleXYZ(objcharge, 1, 1, 1);
+    ObjRender_SetColor(objcharge, r, g, b);
+    ObjRender_SetAlpha(objcharge, 96);
+    descent(i in 0..45) {
+        ObjRender_SetPosition(objcharge, x, y, 1);
+        ObjRender_SetScaleXYZ(objcharge, 1/45*i, 1/45*i, 1/45*i);
+        yield;
+    }
+    Obj_Delete(objcharge);
+}
+
+/* *************************************************************************
+*ChargeCircleCOA(double, double, int, int, int) -- Creates charge circle at given coordinates with given color
+*Param: x (double) - X position to render at
+*Param: y (double) - Y position to render at
+*Param: r (int) - Red portion of color
+*Param: g (int) - Green portion of color
+*Param: b (int) - Blue portion of color
+*Param: a (int) - Target alpha
+************************************************************************* */
+task ChargeCircleCOA(x, y, r, g, b, a) {
+    let objcharge = ObjPrim_Create(OBJ_SPRITE_2D);
+    let chargecircle = GetCurrentScriptDirectory() ~ "../img/chargecircle.png";
+    ObjRender_SetPosition(objcharge, x, y, 1); 
+    ObjPrim_SetTexture(objcharge, chargecircle);
+    Obj_SetRenderPriority(objcharge, 0.36);
+    ObjRender_SetBlendType(objcharge, BLEND_ADD_ARGB);
+    ObjSprite2D_SetSourceRect(objcharge, 0, 0, 256, 256);
+    ObjSprite2D_SetDestCenter(objcharge);
+    ObjRender_SetScaleXYZ(objcharge, 1, 1, 1);
+    ObjRender_SetColor(objcharge, r, g, b);
+    descent(i in 0..45) {
+        ObjRender_SetPosition(objcharge, x, y, 1);
+        ObjRender_SetScaleXYZ(objcharge, 1/45*i, 1/45*i, 1/45*i);
+        ObjRender_SetAlpha(objcharge, i * a/45);
+        yield;
+    }
+    Obj_Delete(objcharge);
+}
+
+/* *************************************************************************
+*ExpandCircleCO(double, double, int, int, int) -- Creates expand circle at given coordinates with given color
+*Param: x (double) - X position to render at
+*Param: y (double) - Y position to render at
+*Param: r (int) - Red portion of color
+*Param: g (int) - Green portion of color
+*Param: b (int) - Blue portion of color
+************************************************************************* */
+task ExpandCircleCO(x, y, r, g, b) {
+    let objcharge = ObjPrim_Create(OBJ_SPRITE_2D);
+    let chargecircle = GetCurrentScriptDirectory() ~ "../img/chargecircle.png";
+    ObjRender_SetPosition(objcharge, x, y, 1); 
+    ObjPrim_SetTexture(objcharge, chargecircle);
+    Obj_SetRenderPriority(objcharge, 0.36);
+    ObjRender_SetBlendType(objcharge, BLEND_ADD_ARGB);
+    ObjSprite2D_SetSourceRect(objcharge, 0, 0, 256, 256);
+    ObjSprite2D_SetDestCenter(objcharge);
+    ObjRender_SetScaleXYZ(objcharge, 1, 1, 1);
+    ObjRender_SetColor(objcharge, r, g, b);
+    ObjRender_SetAlpha(objcharge, 96);
+    ascent(i in 0..45) {
+        ObjRender_SetPosition(objcharge, x, y, 1);
+        ObjRender_SetScaleXYZ(objcharge, 1/45*i, 1/45*i, 1/45*i);
+        ObjRender_SetAlpha(objcharge, 96 - i*2);
+        yield;
+    }
+    Obj_Delete(objcharge);
+}
+
+/* *************************************************************************
+*MiniMagicCircleCustom(obj, int, double) -- Creates a magic circle behind the target object. Used for strong stage enemies
+*Param: obj (obj) - Object to render the magic circle under
+*Param: dir (int) - Spin direction of magic circle
+*Param: scale (double) - Scaling of magic circle
+************************************************************************* */
+task MiniMagicCircleCustom(obj, dir, scale) {
+    let imgcirc = GetCurrentScriptDirectory() ~ "../img/MagCirc.png";
+    let circlecount = 0;
+    let objCirc = ObjPrim_Create(OBJ_SPRITE_2D);
+    ObjRender_SetPosition(objCirc, GetEnemyX(obj), GetEnemyY(obj), 1); 
+    ObjPrim_SetPrimitiveType(objCirc, PRIMITIVE_TRIANGLESTRIP);
+    ObjRender_SetBlendType(objCirc, BLEND_ADD_ARGB);
+    Obj_SetRenderPriority(objCirc, 0.39);
+    ObjPrim_SetTexture(objCirc, imgcirc);
+    ObjRender_SetColor(objCirc, 59, 248, 80);
+    ObjSprite2D_SetSourceRect(objCirc, 0, 0, 512, 512);
+    ObjSprite2D_SetDestCenter(objCirc);
+    ObjRender_SetScaleXYZ(objCirc, scale, scale, 1); 
+    while(ObjEnemy_GetInfo(obj, INFO_LIFE) > 0) {
+        if(circlecount <= 30) {ObjRender_SetAlpha(objCirc, 5*circlecount);} //Max Alpha 150
+        ObjRender_SetAngleXYZ(objCirc, 0, 0, circlecount*3*dir);
+        ObjRender_SetPosition(objCirc, GetEnemyX(obj), GetEnemyY(obj), 1);
+        circlecount++;
+        yield;
+    }
+    Obj_Delete(objCirc);
+}
+
+/* *************************************************************************
+*BulletDeleteEffect(obj) -- Creates a shot deletion effect
+*Param: objparent (obj) - Shot Object to render effect at
+************************************************************************* */
+task BulletDeleteEffect(objparent) {
+    let path = GetCurrentScriptDirectory~"../img/bulletdelete.png";
+    let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+    ObjPrim_SetTexture(obj, path);
+    ObjRender_SetPosition(obj, ObjMove_GetX(objparent), ObjMove_GetY(objparent), 1);
+    ObjRender_SetBlendType(obj, BLEND_ADD_ARGB);
+    ObjRender_SetScaleXYZ(obj, 0.5, 0.5, 0);
+    if(Obj_IsDeleted(objparent) || ObjShot_GetImageID(objparent) <= 0) {return;} //Next Line will error so hard otherwise.
+    let shotinfo = GetShotDataInfoA1(ObjShot_GetImageID(objparent), TARGET_ENEMY, INFO_DELAY_COLOR);
+    ObjRender_SetColor(obj, shotinfo[0], shotinfo[1], shotinfo[2]);
+    ascent(i in 0..8) {
+        ObjSprite2D_SetSourceRect(obj, i*64, 0, (i + 1)*64, 64);
+        ObjSprite2D_SetDestCenter(obj);
+        loop(5) {yield;}
+    }
+    Obj_Delete(obj);
+}
+
+// WARNING: BELOW IS UNUSED AND UNTESTED.
+/* *************************************************************************
+*BulletDeleteEffectBatch([obj]) -- Creates a shot deletion effect for all in list
+*Param: objparentlist ([obj]) - Shot Objects to render effect at
+************************************************************************* */
+task BulletDeleteEffectBatch(objparents) {
+    let path = GetCurrentScriptDirectory~"../img/bulletdelete.png";
+    let obj = ObjPrim_Create(OBJ_SPRITE_LIST_2D);
+    ObjPrim_SetTexture(obj, path);
+    // Get positions and colors
+    let numshots = length(objparents);
+    let colors = [];
+    let positions = [];
+    ascent(i in 0..numshots) {
+        positions = positions ~ [[ObjMove_GetX(objparents[i]), ObjMove_GetY(objparents[i])]];
+        if(Obj_IsDeleted(objparents[i]) || ObjShot_GetImageID(objparents[i]) <= 0) {
+            colors = colors ~ [[0, 0, 0]]; // Default to 0 for bad objects
+        } else {
+            let shotinfo = GetShotDataInfoA1(ObjShot_GetImageID(objparents[i]), TARGET_ENEMY, INFO_DELAY_COLOR);
+            colors = colors ~ [[ObjMove_GetX(objparents[i]), ObjMove_GetY(objparents[i])]];
+        }
+    }
+    ObjRender_SetBlendType(obj, BLEND_ADD_ARGB);
+    ObjRender_SetScaleXYZ(obj, 0.5, 0.5, 0);
+    ascent(i in 0..8) {
+        ObjSpriteList2D_ClearVertexCount(obj); // Clear
+        ascent(j in 0..numshots) { // Re-add
+            ObjRender_SetPosition(obj, positions[j][0], positions[j][1], 1);
+            ObjRender_SetColor(obj, colors[j][0], colors[j][1], colors[j][2]);
+            ObjSpriteList2D_SetSourceRect(obj, i*64, 0, (i + 1)*64, 64);
+            ObjSpriteList2D_SetDestCenter(obj);
+            ObjSpriteList2D_AddVertex(obj);
+        }
+        ObjSpriteList2D_CloseVertex(obj);
+        loop(5) {yield;}
+    }
+    Obj_Delete(obj);
+}
+
+/* *************************************************************************
+*StgEnemyLifebar(obj, int, int) -- Creates a stage enemy lifebar
+*Param: objparent (obj) - Enemy Object to render lifebar over
+*Param: maxlife (int) - Maximum life of enemy
+*Param: stage (int) - Current stage. Used for color swaps.
+************************************************************************* */
+task StgEnemyLifebar(objparent, maxlife, stage) {
+    let currlife = maxlife;
+    let currmaxratio = 1;
+    let path = GetCurrentScriptDirectory() ~ "../img/Default_System.png";
+    let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+    ObjPrim_SetTexture(obj, path);
+    ObjRender_SetPosition(obj, ObjMove_GetX(objparent), ObjMove_GetY(objparent) - 16, 1);
+    ObjSprite2D_SetSourceRect(obj, 0, 0, 128, 12);
+    //Override stages here
+    //if(stage == 1) {ObjRender_SetColor(obj, 0, 0, 256);}
+    while(!Obj_IsDeleted(objparent)) {
+        currlife = ObjEnemy_GetInfo(objparent, INFO_LIFE);
+        currmaxratio = currlife/maxlife;
+        ObjSprite2D_SetDestRect(obj, -24*currmaxratio, -1, 24*currmaxratio, 1);
+        ObjRender_SetPosition(obj, ObjMove_GetX(objparent), ObjMove_GetY(objparent) - 16, 1);
+        yield;
+    }
+    Obj_Delete(obj);
+}
+
+/* *************************************************************************
+*CreateEffectTrailA1(objparent, texture, texl, text, texr, texb, freq, fade, rpri, yflip) -- Creates a trail effect for an object
+ This task is based off of the version used in DNH Wars Ran
+ Note: Recommended to use Render Priority 49 (shots are 50) so as to not obscure shots.
+ Note: Frequency and Fade interaction with effect config settings should be handled on a case by case basis
+ Note: yflip is necessary for shotsheet samples as the bullet graphics are flipped
+ Note: It is not recommended to use this effect on ADD_ARGB graphics that are stationary as the entire thing turns white
+*Param: objparent (obj) - Object to render trail effect for
+*Param: texture (string) - Texture to use for the effect
+*Param: texl (int) - Coordinate to use for texture: Left
+*Param: text (int) - Coordinate to use for texture: Top
+*Param: texr (int) - Coordinate to use for texture: Right
+*Param: texb (int) - Coordinate to use for texture: Bottom
+*Param: freq (int) - How often to spawn the effect, in frames
+*Param: fade (int) - How long the effect lasts, in frames
+*Param: rpri (int) - Render priority of the effect
+*Param: yflip (int) - Whether or not to flip texture selection in y direction [-1 or 1]
+************************************************************************* */
+task CreateEffectTrailA1(objparent, texture, texl, text, texr, texb, freq, fade, rpri, yflip) {
+    while (!Obj_IsDeleted(objparent)) {
+        CreateEffectTrailComponentA1();
+        wait(freq);
+    }
+    
+    task CreateEffectTrailComponentA1() {
+        let objEffect = ObjPrim_Create(OBJ_SPRITE_2D);
+        ObjPrim_SetTexture(objEffect, texture);
+        ObjRender_SetPosition(objEffect, ObjMove_GetX(objparent), ObjMove_GetY(objparent), 0);
+        ObjRender_SetBlendType(objEffect, BLEND_ADD_ARGB);
+        ObjSprite2D_SetSourceRect(objEffect, texl, text, texr, texb);
+        ObjSprite2D_SetDestCenter(objEffect);
+        Obj_SetRenderPriorityI(objEffect, 49);
+        descent(i in 0..fade) {
+            ObjRender_SetScaleXYZ(objEffect, 1/fade*i, 1/fade*i*yflip, 1);
+            ObjRender_SetAlpha(objEffect, i*255/fade);
+            yield;
+        }
+        Obj_Delete(objEffect);
+    }
+}

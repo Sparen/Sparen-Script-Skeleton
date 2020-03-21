@@ -1,0 +1,953 @@
+/* ******************************************************************
+* Sparen's Danmakufu ph3 Application Monitoring System
+* For use with Touhou Danmakufu ph3
+* (C) Sparen of Iria 2018 (as well as contributions from the Danmakufu Community)
+* Repo: https://github.com/Sparen/Sparen-DNH-APM
+* Version 1.0
+****************************************************************** */
+
+/* ******************************************************************
+* This script is meant to be run in parallel with a stage script or 
+* lower. Set up this system in @Loading of your preferred script
+* using LoadScript(), SetCommonData(), and StartScript().
+****************************************************************** */
+
+#include "./SparenDNHAPM_userdef.dnh"
+
+// Global Variables used regardless of which tracking mechanisms are enabled
+let currdir = GetCurrentScriptDirectory();
+let starttime = GetCurrentDateTimeS(); // Log start time for use in output report
+let player = GetPlayerID(); // Player #ID, used in output report
+
+// Variables to be updated
+let elapsedtime = 0;
+let finished = false;
+let finished_fps = false;
+let finished_graze = false;
+let finished_score = false;
+let finished_shotcount = false;
+
+// Variables to be customized
+let EVENT_DNHAPM_FINALIZE; // Event to call via NotifyEvent/NotifyEventAll when the user wishes to generate the output report.
+let OUTPUT_DIRECTORY; // Directory to output the report to
+let SCRIPT_NAME; // Name of the script being monitored
+let OUTPUT_NAME; // Central part of the output file filename that uniquely identifies the settings for aggregation
+let ENABLE_AGGREGATE; // Whether or not to aggregate all data in directory when making graphs
+let GRAPH_SCALE; // Scale of the x axis on the graph. To be implemented later.
+let AGGREGATE_LINE_OPACITY; // Opacity of the paths representing former data points.
+
+let USER_TEXT; // User defined text
+let USER_NOTE_SLOTS; // Number of User Note slots to use
+let EVENT_USER_NOTE; // Event to call via NotifyEvent/NotifyEventAll when the user wishes to log a note
+let ENABLE_NOTE_LINE; // Whether or not to render a line up through the graph at a note
+
+let ENABLE_STEP; // Whether or not to log steps
+let STEP_NONSPELLCOLOR; // Color for nonspells when using step logging
+let STEP_SPELLCOLOR; // Color for nonspells when using step logging
+let ENABLE_STEP_LINE; // Whether or not to render line at top of graph for step.
+
+// Feature Set Customization
+let FEATURE_FPS_ENABLE; // Enable or disable FPS logging
+let FEATURE_FPS_UPDATEFREQ; // Update frequency, in frames.
+let FEATURE_FPS_LINECOLOR; // Color of the line, in HTML supported color
+let FEATURE_FPS_ENABLE_LINE; // Enable or disable line at 60 FPS
+let FEATURE_FPS_MODE; // GetCurrentFPS or GetStageTime
+let FEATURE_FPS_CORRECTIONFACTOR; // Correction factor for GetStageTime mode
+
+let FEATURE_GRAZE_ENABLE; // Enable or disable Graze logging
+let FEATURE_GRAZE_UPDATEFREQ; // Update frequency, in frames.
+let FEATURE_GRAZE_LINECOLOR; // Color of the line, in HTML supported color
+
+let FEATURE_SCORE_ENABLE; // Enable or disable Score logging
+let FEATURE_SCORE_UPDATEFREQ; // Update frequency, in frames.
+let FEATURE_SCORE_LINECOLOR; // Color of the line, in HTML supported color
+
+let FEATURE_SHOTCOUNT_ENABLE; // Enable or disable Shot count logging
+let FEATURE_SHOTCOUNT_UPDATEFREQ; // Update frequency, in frames.
+let FEATURE_SHOTCOUNT_LINECOLOR; // Color of the line, in HTML supported color
+
+let FEATURE_BOMBDEATH_ENABLE; // Enable or disable Bomb and Death logging
+let FEATURE_BOMBDEATH_BOMBCOLOR; // Color of the bomb circle, in HTML supported color
+let FEATURE_BOMBDEATH_DEATHCOLOR; // Color of the death circle, in HTML supported color
+let FEATURE_BOMBDEATH_MAINBULLETSIZE; // Radius of the main bullet (current run), in pixels
+let FEATURE_BOMBDEATH_SUBBULLETSIZE; // Radius of the aggregate bullets, in pixels
+let FEATURE_BOMBDEATH_TEXTSIZE; // Radius of the bullet text size, in pixels
+
+@Loading {
+    if (!IsCommonDataAreaExists("dnhapm")) {
+        CreateCommonDataArea("dnhapm");
+    }
+}
+
+@Initialize {
+    WriteLog("DNHAPM: Now running");
+    // Load customizable variables
+    EVENT_DNHAPM_FINALIZE = GetAreaCommonData("dnhapm", "FinalizeEvent", EV_USER_STAGE + 2048);
+    OUTPUT_DIRECTORY = GetAreaCommonData("dnhapm", "OutputDirectory", currdir ~ "./dnhapm-output/");
+    SCRIPT_NAME = GetAreaCommonData("dnhapm", "ScriptName", "--Unnamed Script--");
+    OUTPUT_NAME = GetAreaCommonData("dnhapm", "OutputName", SCRIPT_NAME ~ "_" ~ player);
+    ENABLE_AGGREGATE = GetAreaCommonData("dnhapm", "EnableAggregate", true);
+    GRAPH_SCALE = GetAreaCommonData("dnhapm", "GraphScale", 2);
+    AGGREGATE_LINE_OPACITY = GetAreaCommonData("dnhapm", "AggregateLineOpacity", 0.25);
+
+    USER_TEXT = GetAreaCommonData("dnhapm", "UserText", "");
+    USER_NOTE_SLOTS = GetAreaCommonData("dnhapm", "UserNoteSlots", 2);
+    EVENT_USER_NOTE = GetAreaCommonData("dnhapm", "UserNoteEvent", EV_USER_STAGE + 2050);
+    ENABLE_NOTE_LINE = GetAreaCommonData("dnhapm", "EnableNoteLine", true);
+
+    ENABLE_STEP = GetAreaCommonData("dnhapm", "EnableStep", true);
+    STEP_NONSPELLCOLOR = GetAreaCommonData("dnhapm", "StepNonspellColor", "#CACACA");
+    STEP_SPELLCOLOR = GetAreaCommonData("dnhapm", "StepSpellColor", "#DDBBDD");
+    ENABLE_STEP_LINE = GetAreaCommonData("dnhapm", "EnableStepLine", true);
+
+    FEATURE_FPS_ENABLE = GetAreaCommonData("dnhapm", "FPSEnable", true);
+    FEATURE_FPS_UPDATEFREQ = GetAreaCommonData("dnhapm", "FPSUpdateFreq", 10);
+    FEATURE_FPS_LINECOLOR = GetAreaCommonData("dnhapm", "FPSLineColor", "#2266FF");
+    FEATURE_FPS_ENABLE_LINE = GetAreaCommonData("dnhapm", "FPSEnableLine", true);
+    FEATURE_FPS_MODE = GetAreaCommonData("dnhapm", "FPSMode", "MODE_CURRENTFPS");
+    FEATURE_FPS_CORRECTIONFACTOR = GetAreaCommonData("dnhapm", "FPSCorrFactor", 1.0325);
+
+    FEATURE_GRAZE_ENABLE = GetAreaCommonData("dnhapm", "GrazeEnable", true);
+    FEATURE_GRAZE_UPDATEFREQ = GetAreaCommonData("dnhapm", "GrazeUpdateFreq", 10);
+    FEATURE_GRAZE_LINECOLOR = GetAreaCommonData("dnhapm", "GrazeLineColor", "#887777");
+
+    FEATURE_SCORE_ENABLE = GetAreaCommonData("dnhapm", "ScoreEnable", true);
+    FEATURE_SCORE_UPDATEFREQ = GetAreaCommonData("dnhapm", "ScoreUpdateFreq", 10);
+    FEATURE_SCORE_LINECOLOR = GetAreaCommonData("dnhapm", "ScoreLineColor", "#FF5555");
+
+    FEATURE_SHOTCOUNT_ENABLE = GetAreaCommonData("dnhapm", "ShotCountEnable", true);
+    FEATURE_SHOTCOUNT_UPDATEFREQ = GetAreaCommonData("dnhapm", "ShotCountUpdateFreq", 10);
+    FEATURE_SHOTCOUNT_LINECOLOR = GetAreaCommonData("dnhapm", "ShotCountLineColor", "#FFCC55");
+
+    FEATURE_BOMBDEATH_ENABLE = GetAreaCommonData("dnhapm", "BombDeathEnable", true);
+    FEATURE_BOMBDEATH_BOMBCOLOR = GetAreaCommonData("dnhapm", "BombCircleColor", "#44DD44");
+    FEATURE_BOMBDEATH_DEATHCOLOR = GetAreaCommonData("dnhapm", "DeathCircleColor", "#DD44DD");
+    FEATURE_BOMBDEATH_MAINBULLETSIZE = GetAreaCommonData("dnhapm", "BDMainBulletSize", 8);
+    FEATURE_BOMBDEATH_SUBBULLETSIZE = GetAreaCommonData("dnhapm", "BDSubBulletSize", 2);
+    FEATURE_BOMBDEATH_TEXTSIZE = GetAreaCommonData("dnhapm", "BDBulletTextSize", 9);
+
+    //Initialize non-event based trackers
+    if (FEATURE_FPS_ENABLE) {
+        APM_StartFPS;
+    }
+    if (FEATURE_GRAZE_ENABLE) {
+        APM_StartGraze;
+    }
+    if (FEATURE_SCORE_ENABLE) {
+        APM_StartScore;
+    }
+    if (FEATURE_SHOTCOUNT_ENABLE) {
+        APM_StartShotCount;
+    }
+    APM_StartUserLogging;
+}
+
+// We must catch all notable events.
+@Event {
+    alternative(GetEventType())
+    case(EVENT_DNHAPM_FINALIZE) {
+        GenerateReport;
+    }
+    case(EVENT_USER_NOTE) {
+        let arg = GetEventArgument(0); // Number of event, Contents of event
+        LogNote(arg[0], arg[1]);
+    }
+    case(EV_PLAYER_SPELL) {
+        if (FEATURE_BOMBDEATH_ENABLE) {
+            LogBombDeath("b");
+        }
+    }
+    case(EV_PLAYER_SHOOTDOWN) {
+        if (FEATURE_BOMBDEATH_ENABLE) {
+            LogBombDeath("d");
+        }
+    }
+    case(EV_START_BOSS_STEP) {
+        if (ENABLE_STEP) {
+            LogStep("s");
+        }
+    }
+    case(EV_END_BOSS_STEP) {
+        if (ENABLE_STEP) {
+            LogStep("e");
+        }
+    }
+    case(EV_START_BOSS_SPELL) {
+        if (ENABLE_STEP) {
+            LogStep("sp");
+        }
+    }
+}
+
+@MainLoop {
+    elapsedtime += 1; // update counter
+    yield;
+}
+
+/* ============================================================================== */
+/* ================================ Note Logging ================================ */
+/* ============================================================================== */
+// For now, we will store notes per-run and will not save them to disk.
+//let notefile = ObjFile_Create(OBJ_FILE_TEXT);
+//let notefilepath = OUTPUT_DIRECTORY ~ "apmcsv/"  ~ "apmnote-" ~ OUTPUT_NAME ~ "_" ~ starttime ~ ".txt";
+//ObjFile_OpenNW(notefile, notefilepath);
+let notestring = "";
+
+function LogNote(key, val) {
+    if (!finished) {
+        let newnote = IntToString(elapsedtime) ~ "," ~ key ~ "," ~ val;
+        //ObjFileT_AddLine(notefile, newnote);
+        //ObjFile_Store(notefile);
+        notestring = notestring ~ newnote ~ "|";
+    }
+}
+
+// Takes the notes and generates SVG paths and text for them.
+function NotesToSVG {
+    WriteLog("NotesToSVG: Writing with: " ~ notestring);
+    let svg = "";
+    // Parse note by new line, then by comma.
+    let notes = SplitString(notestring, "|");
+    // Must do all paths, then all notes. Otherwise the paths will render over the text.
+    ascent(i in 0..length(notes)) {
+        if (notes[i] != "") {
+            let note = SplitString(notes[i], ",");
+            let notex = 64 + atoi(note[0]) * GRAPH_SCALE/60;
+            let notey = 328 + atoi(note[1]) * 12;
+            let notepath = "<path d=\"M " ~ ToString(notex) ~ " 304 V " ~ ToString(notey) ~ " H " ~ ToString(notex + 2) ~ "\" stroke=\"#DDDDDD\" stroke-width=\"1\" fill=\"none\"></path>";
+            let notepath2 = "";
+            // If the note line is enabled, add another path upwards.
+            if (ENABLE_NOTE_LINE) {
+                notepath2 = "<path d=\"M " ~ ToString(notex) ~ " 304 V 0\" stroke=\"#DDDDDD\" stroke-width=\"1\" fill=\"none\"></path>";
+            }
+            svg = svg ~ notepath ~ notepath2;
+        }
+    }
+    ascent(i in 0..length(notes)) {
+        if (notes[i] != "") {
+            let note = SplitString(notes[i], ",");
+            let notex = 64 + atoi(note[0]) * GRAPH_SCALE/60;
+            let notey = 328 + atoi(note[1]) * 12;
+            let notetext = "<text x=\"" ~ ToString(notex + 4) ~ "\" y=\"" ~ ToString(notey) ~ "\" font-family=\"Andale Mono, Monospace\" font-size=\"10px\" fill=\"#222222\" text-anchor=\"start\" dominant-baseline=\"central\">";
+            notetext = notetext ~ note[2];
+            notetext = notetext ~ "</text>";
+            svg = svg ~ notetext;
+        }
+    }
+    return svg;
+}
+
+/* ============================================================================== */
+/* ================================ Step Logging ================================ */
+/* ============================================================================== */
+// For now, we will store steps per-run and will not save them to disk.
+//let stepfile = ObjFile_Create(OBJ_FILE_TEXT);
+//let stepfilepath = OUTPUT_DIRECTORY ~ "apmstep-" ~ OUTPUT_NAME ~ "_" ~ starttime ~ ".txt";
+//ObjFile_OpenNW(stepfile, stepfilepath);
+let stepstring = "";
+
+function LogStep(str) {
+    if (!finished) {
+        let newstep = IntToString(elapsedtime) ~ "," ~ str;
+        //ObjFileT_AddLine(stepfile, newstep);
+        //ObjFile_Store(stepfile);
+        stepstring = stepstring ~ newstep ~ "|";
+    }
+}
+
+// Takes the steps and generates SVG paths and text for them.
+function StepsToSVG {
+    WriteLog("StepsToSVG: Writing with: " ~ stepstring);
+    let svg = "";
+    // Parse step by new line, then by comma.
+    let steps = SplitString(stepstring, "|");
+    let stepleft = 64; // Left bound of rect
+    let stepright = 64; // Right bound of rect
+    let onspell = false;
+    ascent(i in 0..length(steps)) {
+        if (steps[i] != "") {
+            let step = SplitString(steps[i], ",");
+            if (step[1] == "s") {
+                stepleft = 64 + atoi(step[0]) * GRAPH_SCALE/60;
+            } else if (step[1] == "sp") {
+                onspell = true;
+            } else if (step[1] == "e") {
+                stepright = 64 + atoi(step[0]) * GRAPH_SCALE/60;
+                // We only add a new block if we see the End event.
+                let blockcolor = STEP_NONSPELLCOLOR;
+                if (onspell) {
+                    blockcolor = STEP_SPELLCOLOR;
+                }
+                let stepblock = "<rect x=\"" ~ ToString(stepleft) ~ "\" y=\"0\" height=\"304\" width=\"" ~ ToString(stepright - stepleft) ~ "\" fill=\"" ~ blockcolor ~ "\" opacity=\"0.1\"></rect>";
+                let stepline = "<path d=\"M " ~ ToString(stepleft) ~ " 0 H " ~ ToString(stepright) ~ "\" stroke=\"" ~ blockcolor ~ "\" stroke-width=\"2\" fill=\"none\"></path>";
+                svg = svg ~ stepblock;
+                if (ENABLE_STEP_LINE) {
+                    svg = svg ~ stepline;
+                }
+                onspell = false;
+            }
+        }
+    }
+    return svg;
+}
+
+/* ============================================================================= */
+/* ================================ FPS Logging ================================ */
+/* ============================================================================= */
+task APM_StartFPS {
+    // Create output file
+    let outputfile = ObjFile_Create(OBJ_FILE_TEXT);
+    let outputfilepath = OUTPUT_DIRECTORY ~ "apmcsv/" ~ "apmfps-" ~ OUTPUT_NAME ~ "_" ~ starttime ~ ".csv";
+    ObjFile_OpenNW(outputfile, outputfilepath);
+    let csvlog = ""; // CSV log
+    let counter = 0;
+    let time_start;
+    let time_end;
+    let cfps;
+    while(!finished) {
+        time_start = GetStageTime();
+        loop(FEATURE_FPS_UPDATEFREQ){yield;}
+        time_end = GetStageTime();
+        if (FEATURE_FPS_MODE == "MODE_STAGETIME") {
+            cfps = FEATURE_FPS_CORRECTIONFACTOR * 1000 * FEATURE_FPS_UPDATEFREQ / (time_end - time_start);
+        } else if (FEATURE_FPS_MODE == "MODE_CURRENTFPS") {
+            cfps = GetCurrentFps();
+        } else {
+            // Instead of crashing on an unknown mode, just default.
+            cfps = GetCurrentFps();
+        }
+
+        csvlog = csvlog ~ vtos("1.2f", cfps) ~ ",";
+        // If csvlog is getting too long, push it to the File Object
+        if (counter % 128 == 0) {
+            ObjFileT_AddLine(outputfile, csvlog);
+            csvlog = "";
+        }
+        counter += 1;
+    }
+    // Flush to file
+    ObjFileT_AddLine(outputfile, csvlog);
+    ObjFile_Store(outputfile);
+    WriteLog("APM_StartFPS: Wrote CSV to " ~ outputfilepath);
+    Obj_Delete(outputfile);
+    // yield once before marking as complete
+    yield;
+    finished_fps = true;
+    WriteLog("APM_StartFPSDEBUG: Finished");
+}
+
+// Returns the SVG chart for FPS in its entirety.
+function APM_ChartGenFPS {
+    WriteLog("APM_ChartGenFPS: Starting.");
+    // Determine max value of interest, max time, and paths to render from the files.
+    let cgcommon = APM_ChartGenCommon("apmfps", FEATURE_FPS_UPDATEFREQ, FEATURE_FPS_LINECOLOR);
+    let maxfps = cgcommon[0];
+    let maxtime = cgcommon[1];
+    let paths = GetAreaCommonData("dnhapm", "cgcpath_apmfps", []);
+    // Chart Basics 
+    let svg = "<div class=\"bodydiv\">" ~ SVGChartGen(maxtime * FEATURE_FPS_UPDATEFREQ/60);
+    // Steps
+    if (ENABLE_STEP) {svg = svg ~ StepsToSVG;}
+    // Notes
+    svg = svg ~ NotesToSVG;
+    // X Axis Labels
+    svg = svg ~ SVGXAxisGen(maxtime * FEATURE_FPS_UPDATEFREQ/60);
+    // Y Axis Labels
+    let maxval = max(maxfps, 60);
+    svg = svg ~ SVGYAxisGen(maxval, "FPS");
+    // 60FPS line
+    if (FEATURE_FPS_ENABLE_LINE) {
+        svg = svg ~ "<path d=\"M 64 " ~ ToString(4 + (300 - 300*(60/maxval))) ~ " H 99999\" stroke=\"#AAAAAA\" stroke-width=\"1\" fill=\"none\" stroke-dasharray=\"4\" opacity=\"0.5\"></path>";
+    }
+    // Add paths
+    ascent(i in 0..length(paths)) {
+        svg = svg ~ paths[i];
+    }
+    // Close SVG
+    svg = svg ~ "</svg>";
+    svg = svg ~ "<p>Logged a maximum of " ~ IntToString(maxtime) ~ " data points spanning " ~ ToString(maxtime * FEATURE_FPS_UPDATEFREQ/60) ~ " seconds.</p>";
+    svg = svg ~ "<p>Logged a maximum FPS of " ~ vtos("1.2f", maxfps) ~ ".</p></div>";  
+    return svg;
+}
+
+/* =============================================================================== */
+/* ================================ Graze Logging ================================ */
+/* =============================================================================== */
+task APM_StartGraze {
+    // Create output file
+    let outputfile = ObjFile_Create(OBJ_FILE_TEXT);
+    let outputfilepath = OUTPUT_DIRECTORY ~ "apmcsv/" ~ "apmgraze-" ~ OUTPUT_NAME ~ "_" ~ starttime ~ ".csv";
+    ObjFile_OpenNW(outputfile, outputfilepath);
+    let csvlog = ""; // CSV log
+    let counter = 0;
+    while(!finished) {
+        let cgraze = GetGraze();
+        csvlog = csvlog ~ IntToString(cgraze) ~ ",";
+        // If csvlog is getting too long, push it to the File Object
+        if (counter % 128 == 0) {
+            ObjFileT_AddLine(outputfile, csvlog);
+            csvlog = "";
+        }
+        counter += 1;
+        loop(FEATURE_GRAZE_UPDATEFREQ){yield;}
+    }
+    // Flush to file
+    ObjFileT_AddLine(outputfile, csvlog);
+    ObjFile_Store(outputfile);
+    WriteLog("APM_StartGraze: Wrote CSV to " ~ outputfilepath);
+    Obj_Delete(outputfile);
+    // yield once before marking as complete
+    yield;
+    finished_graze = true;
+    WriteLog("APM_StartGraze: Finished");
+}
+
+// Returns the SVG chart for Graze in its entirety.
+function APM_ChartGenGraze {
+    WriteLog("APM_ChartGenGraze: Starting.");
+    // Determine max value of interest, max time, and paths to render from the files.
+    let cgcommon = APM_ChartGenCommon("apmgraze", FEATURE_GRAZE_UPDATEFREQ, FEATURE_GRAZE_LINECOLOR);
+    let maxgraze = cgcommon[0];
+    let maxtime = cgcommon[1];
+    let paths = GetAreaCommonData("dnhapm", "cgcpath_apmgraze", []);
+    // Chart Basics 
+    let svg = "<div class=\"bodydiv\">" ~ SVGChartGen(maxtime * FEATURE_GRAZE_UPDATEFREQ/60);
+    // Steps
+    if (ENABLE_STEP) {svg = svg ~ StepsToSVG;}
+    // Notes
+    svg = svg ~ NotesToSVG;
+    // X Axis Labels
+    svg = svg ~ SVGXAxisGen(maxtime * FEATURE_GRAZE_UPDATEFREQ/60);
+    // Y Axis Labels
+    svg = svg ~ SVGYAxisGen(maxgraze, "");
+    // Add paths
+    ascent(i in 0..length(paths)) {
+        svg = svg ~ paths[i];
+    }
+    // Close SVG
+    svg = svg ~ "</svg>";
+    svg = svg ~ "<p>Logged a maximum of " ~ IntToString(maxtime) ~ " data points spanning " ~ ToString(maxtime * FEATURE_GRAZE_UPDATEFREQ/60) ~ " seconds.</p>";
+    svg = svg ~ "<p>Logged a maximum Graze of " ~ IntToString(maxgraze) ~ ".</p></div>";  
+    return svg;
+}
+
+/* =============================================================================== */
+/* ================================ Score Logging ================================ */
+/* =============================================================================== */
+task APM_StartScore {
+    // Create output file
+    let outputfile = ObjFile_Create(OBJ_FILE_TEXT);
+    let outputfilepath = OUTPUT_DIRECTORY ~ "apmcsv/" ~ "apmscore-" ~ OUTPUT_NAME ~ "_" ~ starttime ~ ".csv";
+    ObjFile_OpenNW(outputfile, outputfilepath);
+    let csvlog = ""; // CSV log
+    let counter = 0;
+    while(!finished) {
+        let cscore = GetScore();
+        csvlog = csvlog ~ IntToString(cscore) ~ ",";
+        // If csvlog is getting too long, push it to the File Object
+        if (counter % 128 == 0) {
+            ObjFileT_AddLine(outputfile, csvlog);
+            csvlog = "";
+        }
+        counter += 1;
+        loop(FEATURE_SCORE_UPDATEFREQ){yield;}
+    }
+    // Flush to file
+    ObjFileT_AddLine(outputfile, csvlog);
+    ObjFile_Store(outputfile);
+    WriteLog("APM_StartScore: Wrote CSV to " ~ outputfilepath);
+    Obj_Delete(outputfile);
+    // yield once before marking as complete
+    yield;
+    finished_score = true;
+    WriteLog("APM_StartScore: Finished");
+}
+
+// Returns the SVG chart for Score in its entirety.
+function APM_ChartGenScore {
+    WriteLog("APM_ChartGenScore: Starting.");
+    // Determine max value of interest, max time, and paths to render from the files.
+    let cgcommon = APM_ChartGenCommon("apmscore", FEATURE_SCORE_UPDATEFREQ, FEATURE_SCORE_LINECOLOR);
+    let maxscore = cgcommon[0];
+    let maxtime = cgcommon[1];
+    let paths = GetAreaCommonData("dnhapm", "cgcpath_apmscore", []);
+    // Chart Basics 
+    let svg = "<div class=\"bodydiv\">" ~ SVGChartGen(maxtime * FEATURE_SCORE_UPDATEFREQ/60);
+    // Steps
+    if (ENABLE_STEP) {svg = svg ~ StepsToSVG;}
+    // Notes
+    svg = svg ~ NotesToSVG;
+    // X Axis Labels
+    svg = svg ~ SVGXAxisGen(maxtime * FEATURE_SCORE_UPDATEFREQ/60);
+    // Y Axis Labels
+    svg = svg ~ SVGYAxisGen(maxscore, "");
+    // Add paths
+    ascent(i in 0..length(paths)) {
+        svg = svg ~ paths[i];
+    }
+    // Close SVG
+    svg = svg ~ "</svg>";
+    svg = svg ~ "<p>Logged a maximum of " ~ IntToString(maxtime) ~ " data points spanning " ~ ToString(maxtime * FEATURE_SCORE_UPDATEFREQ/60) ~ " seconds.</p>";
+    svg = svg ~ "<p>Logged a maximum Score of " ~ IntToString(maxscore) ~ ".</p></div>";  
+    return svg;
+}
+
+/* =================================================================================== */
+/* ================================ ShotCount Logging ================================ */
+/* =================================================================================== */
+task APM_StartShotCount {
+    // Create output file
+    let outputfile = ObjFile_Create(OBJ_FILE_TEXT);
+    let outputfilepath = OUTPUT_DIRECTORY ~ "apmcsv/" ~ "apmscount-" ~ OUTPUT_NAME ~ "_" ~ starttime ~ ".csv";
+    ObjFile_OpenNW(outputfile, outputfilepath);
+    let csvlog = ""; // CSV log
+    let counter = 0;
+    while(!finished) {
+        let cshotcount = GetShotCount(TARGET_ENEMY);
+        csvlog = csvlog ~ IntToString(cshotcount) ~ ",";
+        // If csvlog is getting too long, push it to the File Object
+        if (counter % 128 == 0) {
+            ObjFileT_AddLine(outputfile, csvlog);
+            csvlog = "";
+        }
+        counter += 1;
+        loop(FEATURE_SHOTCOUNT_UPDATEFREQ){yield;}
+    }
+    // Flush to file
+    ObjFileT_AddLine(outputfile, csvlog);
+    ObjFile_Store(outputfile);
+    WriteLog("APM_StartShotCount: Wrote CSV to " ~ outputfilepath);
+    Obj_Delete(outputfile);
+    // yield once before marking as complete
+    yield;
+    finished_shotcount = true;
+    WriteLog("APM_StartShotCount: Finished");
+}
+
+// Returns the SVG chart for ShotCount in its entirety.
+function APM_ChartGenShotCount {
+    WriteLog("APM_ChartGenShotCount: Starting.");
+    // Determine max value of interest, max time, and paths to render from the files.
+    let cgcommon = APM_ChartGenCommon("apmscount", FEATURE_SHOTCOUNT_UPDATEFREQ, FEATURE_SHOTCOUNT_LINECOLOR);
+    let maxshotcount = cgcommon[0];
+    let maxtime = cgcommon[1];
+    let paths = GetAreaCommonData("dnhapm", "cgcpath_apmscount", []);
+    // Chart Basics 
+    let svg = "<div class=\"bodydiv\">" ~ SVGChartGen(maxtime * FEATURE_SHOTCOUNT_UPDATEFREQ/60);
+    // Steps
+    if (ENABLE_STEP) {svg = svg ~ StepsToSVG;}
+    // Notes
+    svg = svg ~ NotesToSVG;
+    // X Axis Labels
+    svg = svg ~ SVGXAxisGen(maxtime * FEATURE_SHOTCOUNT_UPDATEFREQ/60);
+    // Y Axis Labels
+    svg = svg ~ SVGYAxisGen(maxshotcount, "");
+    // Add paths
+    ascent(i in 0..length(paths)) {
+        svg = svg ~ paths[i];
+    }
+    // Close SVG
+    svg = svg ~ "</svg>";
+    svg = svg ~ "<p>Logged a maximum of " ~ IntToString(maxtime) ~ " data points spanning " ~ ToString(maxtime * FEATURE_SHOTCOUNT_UPDATEFREQ/60) ~ " seconds.</p>";
+    svg = svg ~ "<p>Logged a maximum of " ~ IntToString(maxshotcount) ~ " enemy shots at any given time.</p></div>";  
+    return svg;
+}
+
+/* ====================================================================================== */
+/* ================================ Bomb & Death Logging ================================ */
+/* ====================================================================================== */
+let bombdeathfile = ObjFile_Create(OBJ_FILE_TEXT);
+let bombdeathfilepath;
+
+function LogBombDeath(bd) {
+    if (!finished) {
+        let newbd = IntToString(elapsedtime) ~ "," ~ bd;
+        bombdeathfilepath = OUTPUT_DIRECTORY ~ "apmcsv/" ~ "apmbd-" ~ OUTPUT_NAME ~ "_" ~ starttime ~ ".txt";
+        ObjFile_OpenNW(bombdeathfile, bombdeathfilepath);
+        ObjFileT_AddLine(bombdeathfile, newbd);
+        ObjFile_Store(bombdeathfile);
+    }
+}
+
+// This task is necessary in order to log the end time of the script into the bomb/death files.
+// Without the knowledge of the end time, the bomb/death system cannot know the full length of the x axis.
+task APM_EndLogBombDeath {
+    bombdeathfilepath = OUTPUT_DIRECTORY ~ "apmcsv/" ~ "apmbd-" ~ OUTPUT_NAME ~ "_" ~ starttime ~ ".txt";
+    ObjFile_OpenNW(bombdeathfile, bombdeathfilepath);
+    ObjFileT_AddLine(bombdeathfile, IntToString(elapsedtime) ~ "," ~ "end");
+    ObjFile_Store(bombdeathfile);
+    Obj_Delete(bombdeathfile);
+}
+
+// Returns the SVG chart for Bomb/Death in its entirety.
+function APM_ChartGenBombDeath {
+    WriteLog("APM_ChartGenBombDeath: Starting.");
+    // First, CLOSE THE EXISTING HANDLE or we will have problems later
+    Obj_Delete(bombdeathfile);
+
+    // Determine max time, and circles to render from the files.
+    let circles = [];
+    // First, we will determine the scale of the x axis and log all of the necessary files.
+    let maxtime = 0; // Will be scaled later
+    let currfilepath = OUTPUT_DIRECTORY ~ "apmcsv/" ~ "apmbd-" ~ OUTPUT_NAME ~ "_" ~ starttime ~ ".txt"; // Current run, for later reference
+    let filepathlist = GetFilePathList(OUTPUT_DIRECTORY ~ "apmcsv/");
+    ascent(i in 0..length(filepathlist)) {
+        // First, retrieve the file name
+        let filename = parseFileName(filepathlist[i]);
+        let currbd = "";
+        let currtime = 0;
+        //WriteLog("APM_ChartGenBombDeath DEBUG: testing on " ~ filename);
+        // We only read the file if aggregating and a val file, or if it's the file we just set up.
+        let validstring = "apmbd-" ~ OUTPUT_NAME;
+        if (length(filename) >= length(validstring) && filename[0..length(validstring)] == validstring && ENABLE_AGGREGATE || (filepathlist[i] == currfilepath)) {
+            //WriteLog("APM_ChartGenBombDeath DEBUG: running on " ~ filepathlist[i]);
+            let handle = ObjFile_Create(OBJ_FILE_TEXT);
+            let status = ObjFile_Open(handle, filepathlist[i]);
+            while (!status) {
+                WriteLog("APM_ChartGenBombDeath: Reading file " ~ filepathlist[i] ~ " failed.");
+                status = ObjFile_Open(handle, filepathlist[i]);
+                yield;
+            }
+            WriteLog("APM_ChartGenBombDeath: Successfully read file " ~ filepathlist[i] ~ ".");
+
+            ascent(j in 0..ObjFileT_GetLineCount(handle)) { // For every line in the file
+                let line = ObjFileT_GetLineText(handle, j + 1); // Recall that lines are 1-indexed
+                let split = SplitString(line, ","); // Format: time, bomb/death
+                currtime = ator(split[0]);
+                currbd = split[1];
+
+                if (currtime > maxtime) {maxtime = currtime;} // Update max time if the time for any data point is greater than the current max
+
+                if (currbd == "b" || currbd == "d") {
+                    // Generate circles. Using opacity of 1 regardless of aggregation settings since past runs seperated physically.
+                    // Radius is 8 for current run, 2 for past runs. Text only for current run; past runs offset by 32 pixels.
+                    let basex = 64;
+                    let nodex = basex + currtime/60 * GRAPH_SCALE;
+                    let nodey = 64;
+                    let radius = FEATURE_BOMBDEATH_MAINBULLETSIZE;
+                    let circcolor = FEATURE_BOMBDEATH_DEATHCOLOR;
+                    // If Bomb rather than Death
+                    if (currbd == "b") {
+                        nodey = 192; 
+                        circcolor = FEATURE_BOMBDEATH_BOMBCOLOR;
+                    }
+                    // If different run (aggregate)
+                    if (filepathlist[i] != currfilepath) {
+                        //WriteLog("APM_ChartGenBombDeath DEBUG: Aggregate Check: " ~ filepathlist[i] ~ " != " ~ currfilepath);
+                        nodey += 32;
+                        radius = FEATURE_BOMBDEATH_SUBBULLETSIZE;
+                    }
+                    let circtext = "<text x=\"" ~ ToString(nodex) ~ "\" y=\"" ~ ToString(nodey) ~ "\" font-family=\"Andale Mono, Monospace\" font-size=\"" ~ IntToString(FEATURE_BOMBDEATH_TEXTSIZE) ~ "px\" fill=\"#FFFFFF\" text-anchor=\"middle\" dominant-baseline=\"central\">" ~ currbd ~ "</text>";
+                    let newcirc = "<circle r=\"" ~ ToString(radius) ~ "\" cx=\"" ~ ToString(nodex) ~ "\" cy=\"" ~ ToString(nodey) ~ "\" stroke=\"none\" fill=\"" ~ circcolor ~ "\"></circle>";
+                    circles = circles ~ [newcirc];
+                    if (filepathlist[i] == currfilepath) {
+                        circles = circles ~ [circtext];
+                    }
+                }
+            }
+            Obj_Delete(handle);
+        }
+    }
+    // Chart Basics 
+    let svg = "<div class=\"bodydiv\">" ~ SVGChartGen(maxtime/60);
+    // Steps
+    if (ENABLE_STEP) {svg = svg ~ StepsToSVG;}
+    // Notes
+    svg = svg ~ NotesToSVG;
+    // X Axis Labels
+    svg = svg ~ SVGXAxisGen(maxtime/60);
+    // Custom Y Axis Labels
+    svg = svg ~ "<path d=\"M 60 64 H 66\" stroke=\"#AAAAAA\" stroke-width=\"1\" fill=\"none\"></path>";
+    svg = svg ~ "<text x=\"54\" y=\"64\" font-family=\"Andale Mono, Monospace\" font-size=\"10px\" fill=\"#222222\" text-anchor=\"end\" dominant-baseline=\"central\">Deaths</text>";
+    svg = svg ~ "<path d=\"M 60 192 H 66\" stroke=\"#AAAAAA\" stroke-width=\"1\" fill=\"none\"></path>";
+    svg = svg ~ "<text x=\"54\" y=\"192\" font-family=\"Andale Mono, Monospace\" font-size=\"10px\" fill=\"#222222\" text-anchor=\"end\" dominant-baseline=\"central\">Bombs</text>";
+    if (ENABLE_AGGREGATE) {
+        svg = svg ~ "<path d=\"M 60 96 H 66\" stroke=\"#AAAAAA\" stroke-width=\"1\" fill=\"none\"></path>";
+        svg = svg ~ "<text x=\"54\" y=\"91\" font-family=\"Andale Mono, Monospace\" font-size=\"10px\" fill=\"#222222\" text-anchor=\"end\" dominant-baseline=\"central\">Deaths</text>";
+        svg = svg ~ "<text x=\"54\" y=\"101\" font-family=\"Andale Mono, Monospace\" font-size=\"10px\" fill=\"#222222\" text-anchor=\"end\" dominant-baseline=\"central\">(Past)</text>";
+        svg = svg ~ "<path d=\"M 60 224 H 66\" stroke=\"#AAAAAA\" stroke-width=\"1\" fill=\"none\"></path>";
+        svg = svg ~ "<text x=\"54\" y=\"219\" font-family=\"Andale Mono, Monospace\" font-size=\"10px\" fill=\"#222222\" text-anchor=\"end\" dominant-baseline=\"central\">Bombs</text>";
+        svg = svg ~ "<text x=\"54\" y=\"229\" font-family=\"Andale Mono, Monospace\" font-size=\"10px\" fill=\"#222222\" text-anchor=\"end\" dominant-baseline=\"central\">(Past)</text>";
+    }
+    // Add circles
+    ascent(i in 0..length(circles)) {
+        svg = svg ~ circles[i];
+    }
+    // Close SVG
+    svg = svg ~ "</svg>"; 
+    svg = svg ~ "<p>Please note that deathbombs are considered 'bombs' and not 'deaths' due to EV_PLAYER_SHOOTDOWN trigger requirements.</p></div>";  
+    return svg;
+}
+
+/* =================================================================================== */
+/* ================================ Report Generation ================================ */
+/* =================================================================================== */
+
+// Function used by all file-reading graph generation functions.
+// Parses all relevant files in current directory to retrieve max value of interest (for y axis), max time (for x axis), and an array of paths to put on the graph.
+// Returns [maxval, maxtime]
+// Parameters: apmtype (apmscore/apmfps/...) - must be UNDER 10 CHARACTERS LONG or filename[0..length(apmtype)] will give array index out of bounds.
+function APM_ChartGenCommon(apmtype, updfreq, linecolor) {
+    let paths = [];
+    // First, we will determine the scale of the x and y axes and log all of the necessary files.
+    let maxval = 0; // Maximum value of interest 
+    let maxtime = 0; // Number of DATA POINTS collected - will be scaled later
+    let currfilepath = OUTPUT_DIRECTORY ~ "apmcsv/" ~ apmtype ~ "-" ~ OUTPUT_NAME ~ "_" ~ starttime ~ ".csv"; // Current run, for later reference
+    let filepathlist = GetFilePathList(OUTPUT_DIRECTORY ~ "apmcsv/");
+    let numpaths = 0; // Number of paths we will need to generate.
+    // Iterate through all files, and determine the maxtime and maxval for x/y axis scaling. Also, save data points to CommonData.
+    ascent(i in 0..length(filepathlist)) {
+        // First, retrieve the file name
+        let filename = parseFileName(filepathlist[i]);
+        //WriteLog("APM_ChartGenScore DEBUG: testing on " ~ filename);
+        // We only read the file if aggregating and a val file, or if it's the file we just set up.
+        let validstring = apmtype ~ "-" ~ OUTPUT_NAME;
+        if (length(filename) >= length(validstring) && filename[0..length(validstring)] == validstring && ENABLE_AGGREGATE || (filepathlist[i] == currfilepath)) {
+            //WriteLog("APM_ChartGenScore DEBUG: running on " ~ filepathlist[i]);
+            // See if this one sets a new maxval
+            let filedatapoints = CSVtoArray(filepathlist[i]);
+            let filemaxval = maxarr(filedatapoints);
+            if (filemaxval > maxval) {maxval = filemaxval;}
+            // See if this one sets a new maxtime
+            if (length(filedatapoints) > maxtime) {maxtime = length(filedatapoints);}
+            // Save data points to CommonData for use later in path generation
+            SetAreaCommonData("dnhapm", "temp_" ~ apmtype ~ "_" ~ IntToString(numpaths), filedatapoints);
+            // If filepathlist[i] is the current file, then opacity is set to 1, AGGREGATE_LINE_OPACITY otherwise.
+            let opacity = 1;
+            if (filepathlist[i] != currfilepath) {opacity = AGGREGATE_LINE_OPACITY;}
+            SetAreaCommonData("dnhapm", "temp_" ~ apmtype ~ "_opac_" ~ IntToString(numpaths), opacity);
+            numpaths += 1;
+        }
+    }
+    // Generate paths from saved CommonData now that we know the final x and y axis scales.
+    ascent(i in 0..numpaths) {
+        let pathdata = GetAreaCommonData("dnhapm", "temp_" ~ apmtype ~ "_" ~ IntToString(i), []);
+        let pathopac = GetAreaCommonData("dnhapm", "temp_" ~ apmtype ~ "_opac_" ~ IntToString(i), []);
+        // Generate path. 
+        let newpath = "<path d=\"";
+        // Iterate over the data points. Recall that by default, a second is one pixel.
+        // Also recall that each data point is updfreq frames apart.
+        let basex = 64;
+        ascent(j in 0..length(pathdata)) {
+            let nodex = basex + j * updfreq/60 * GRAPH_SCALE;
+            let nodey = 304 - 300 * ator(pathdata[j])/maxval;
+            // First point should never start at (64, 304) unless the value is 0.
+            if (j == 0) {
+                newpath = newpath ~ "M " ~ ToString(nodex) ~ " " ~ ToString(nodey) ~ " ";
+            }
+            newpath = newpath ~ "L " ~ ToString(nodex) ~ " " ~ ToString(nodey) ~ " ";
+        }
+        newpath = newpath ~ "\" stroke=\"" ~ linecolor ~ "\" stroke-width=\"1\" fill=\"none\" opacity=\"" ~ ToString(pathopac) ~ "\"></path>";
+        paths = paths ~ [newpath];
+    }
+    // Return path, maxval, and maxtime data
+    SetAreaCommonData("dnhapm", "cgcpath_" ~ apmtype, paths);
+    return [maxval, maxtime];
+}
+
+// Returns the SVG chart header. Helper function.
+// Takes the amount of time to display on the graph in seconds.
+function SVGChartGen(time) {
+    let svg_width = time * GRAPH_SCALE + 128; // By default, a second is one pixel. 64 pixel buffer for left sidebar, 64 for right sidebar
+    let svg = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"" ~ ToString(svg_width) ~ "\" height=\"" ~ IntToString(328 + 12 * USER_NOTE_SLOTS) ~ "\" version=\"1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">";
+    svg = svg ~ "<path d=\"M 64 304 H " ~ ToString(svg_width) ~ "\" stroke=\"#AAAAAA\" stroke-width=\"1\" fill=\"none\"></path>";
+    svg = svg ~ "<path d=\"M 64 304 V 0\" stroke=\"#AAAAAA\" stroke-width=\"1\" fill=\"none\"></path>";
+    return svg;
+}
+
+// Returns the x axis with as many 48-pixel spaced labels as possible. Helper function.
+// Takes the amount of time to display on the graph in seconds.
+function SVGXAxisGen(time) {
+    let svg = "";
+    // Plot the labels on the x axis every 48 * GRAPH_SCALE seconds (default, every 48 pixels). Needs to be a multiple of 12 pixels to avoid awful rounding.
+    let totaltimesec = time * GRAPH_SCALE; // Number of pixels we can draw in
+    let xaxisctr = 0; // Position in time per label. Unit is NOT pixels.
+    while (xaxisctr * GRAPH_SCALE < totaltimesec) {
+        // Tick on line
+        svg = svg ~ "<path d=\"M " ~ ToString(64 + xaxisctr * GRAPH_SCALE) ~ " 302 V 308\" stroke=\"#AAAAAA\" stroke-width=\"1\" fill=\"none\"></path>";
+        // Text Label
+        svg = svg ~ "<text x=\"" ~ ToString(64 + xaxisctr * GRAPH_SCALE) ~ "\" y=\"316\" font-family=\"Andale Mono, Monospace\" font-size=\"10px\" fill=\"#222222\" text-anchor=\"middle\" dominant-baseline=\"central\">";
+        let minutes = truncate(xaxisctr/60);
+        let seconds = truncate(xaxisctr) % 60;
+        svg = svg ~ IntToString(minutes) ~ "m" ~ IntToString(seconds) ~ "s";
+        svg = svg ~ "</text>";
+        xaxisctr += 48 / GRAPH_SCALE;
+    }
+    return svg;
+}
+
+// Returns the y axis with labels. Helper function.
+// Takes the max value (for label scaling) and a supplementary label.
+function SVGYAxisGen(maxval, label) {
+    let svg = "";
+    // Add y axis labels. Note: 304 pixels worth of height to play with. We will want exactly 10 labels.
+    ascent(i in 0..10) {
+        // Tick on line
+        svg = svg ~ "<path d=\"M 60 " ~ ToString(304 - 300 * i/9) ~ " H 66\" stroke=\"#AAAAAA\" stroke-width=\"1\" fill=\"none\"></path>";
+        // Text Label
+        svg = svg ~ "<text x=\"54\" y=\"" ~ ToString(304 - 300 * i/9) ~ "\" font-family=\"Andale Mono, Monospace\" font-size=\"10px\" fill=\"#222222\" text-anchor=\"end\" dominant-baseline=\"central\">";
+        svg = svg ~ vtos("1.2f", maxval/9 * i) ~ label;
+        svg = svg ~ "</text>";
+    }
+    return svg;
+}
+
+/* *************************************************************************
+* CSVtoArray() -- Takes a newline and comma delimited file and converts it to an array.
+* Param: filepath (string) - File handle of modified CSV file
+* Return: array of string values
+************************************************************************* */
+function CSVtoArray(filepath) {
+    WriteLog("CSVtoArray: Running on " ~ filepath);
+    let handle = ObjFile_Create(OBJ_FILE_TEXT);
+    let status = ObjFile_Open(handle, filepath);
+    while (!status) {
+        WriteLog("CSVtoArray: Reading file " ~ filepath ~ " failed.");
+        status = ObjFile_Open(handle, filepath);
+        yield;
+    }
+    WriteLog("CSVtoArray: Successfully read file " ~ filepath ~ ".");
+
+    let toreturn = [];
+    ascent(i in 0..ObjFileT_GetLineCount(handle)) { // For every line
+        let line = ObjFileT_GetLineText(handle, i + 1); // Recall that lines are 1-indexed
+        let split = SplitString(line, ",");
+        ascent(j in 0..length(split)) {
+            if (split[j] != "") {
+                toreturn = toreturn ~ [ator(split[j])];
+            }
+        }
+    }
+    Obj_Delete(handle);
+    return toreturn;
+}
+
+task GenerateReport() {
+    finished = true;
+    if (FEATURE_BOMBDEATH_ENABLE) {APM_EndLogBombDeath;} // Manually add end time to the Bomb/Death file. 
+    yield; //Wait for all tasks fo terminate and flush
+
+    // Begin by creating our output HTML file.
+    let outputfilepath = OUTPUT_DIRECTORY ~ OUTPUT_NAME ~ "_" ~ starttime ~ ".html";
+    WriteLog("GenerateReport: Will write to " ~ outputfilepath);
+    let outputfile = ObjFile_Create(OBJ_FILE_TEXT);
+    ObjFile_OpenNW(outputfile, outputfilepath);
+
+    // First, write our headers
+    let headerhtml = "<!DOCTYPE html><html lang=\"en-us\"><meta charset=\utf-8\"><title>Danmakufu APM for " ~ SCRIPT_NAME ~ "</title>";
+    ObjFileT_AddLine(outputfile, headerhtml);
+
+    // Second, add CSS
+    let csshtml = "<style>body {font-family: \"Helvetica\";} .header {padding: 4px; background-color: #4466DD; color: white; border-left: 8px solid #88DDFF;} .bodydiv {padding-left: 8px;}</style>";
+    ObjFileT_AddLine(outputfile, csshtml);
+
+    // Begin body
+    let bodystarthtml = "<body>";
+    ObjFileT_AddLine(outputfile, bodystarthtml);
+
+    // Write Opening Header
+    let openingheaderhtml = "<h1 class=\"header\">Danmakufu APM Report for script: " ~ SCRIPT_NAME ~ "</h1>" ~
+        "<div class=\"bodydiv\"><p>Start Time: " ~ starttime[0..4] ~ " " ~ starttime[4..6] ~ " " ~ starttime[6..8] ~ " " ~ starttime[8..10] ~ ":" ~ starttime[10..12] ~ ":" ~ starttime[12..14] ~ "</p><p>Player ID: " ~ player ~ "</p>";
+    openingheaderhtml = openingheaderhtml ~ "<p>Notes:<br>* Notes and Note Lines are for the current run<br>* Since each run takes a different amount of time, time intervals on aggregate data may not directly correspond to time intervals on the current run<br>* Aggregate Enabled: " ~ ToString(ENABLE_AGGREGATE) ~ "</p>";
+    openingheaderhtml = openingheaderhtml ~ ToString(USER_TEXT) ~ "</div>";
+    ObjFileT_AddLine(outputfile, openingheaderhtml);
+
+    // --------------- Start Reporting ---------------
+
+    // Table of Contents
+    ObjFileT_AddLine(outputfile, "<div class=\"tableofcontents\"><h2 class=\"header\">Table of Contents</h2><ul>");
+    if (FEATURE_FPS_ENABLE) {ObjFileT_AddLine(outputfile, "<li><a href=\"#header_fps\">FPS Monitoring</a></li>");}
+    if (FEATURE_GRAZE_ENABLE) {ObjFileT_AddLine(outputfile, "<li><a href=\"#header_graze\">Graze Monitoring</a></li>");}
+    if (FEATURE_SCORE_ENABLE) {ObjFileT_AddLine(outputfile, "<li><a href=\"#header_score\">Score Monitoring</a></li>");}
+    if (FEATURE_SHOTCOUNT_ENABLE) {ObjFileT_AddLine(outputfile, "<li><a href=\"#header_shotcount\">Enemy Shot Count Monitoring</a></li>");}
+    if (FEATURE_BOMBDEATH_ENABLE) {ObjFileT_AddLine(outputfile, "<li><a href=\"#header_bombdeath\">Bomb & Death Monitoring</a></li>");}
+    APM_LogUserFieldToTOC(outputfile);
+    ObjFileT_AddLine(outputfile, "</ul></div>");
+
+    if (FEATURE_FPS_ENABLE) {
+        while (!finished_fps) {yield;} //Wait for file to be written before reading
+        if (FEATURE_FPS_MODE == "MODE_STAGETIME") {
+            ObjFileT_AddLine(outputfile, "<h3 class=\"header\" id=\"header_fps\">FPS Monitoring</h3><div class=\"bodydiv\"><p>Note: FPS values recorded here may be lower than usual due to the overhead caused by the APM.<br>In addition, the values here are not the values associated with <code>GetCurrentFps()</code> and are instead manually calculated per FEATURE_FPS_UPDATEFREQ.</p></div>");
+        } else if (FEATURE_FPS_MODE == "MODE_CURRENTFPS") {
+            ObjFileT_AddLine(outputfile, "<h3 class=\"header\" id=\"header_fps\">FPS Monitoring</h3><div class=\"bodydiv\"><p>Note: FPS values recorded here may be lower than usual due to the overhead caused by the APM.<br>The values here are the values associated with <code>GetCurrentFps()</code> and update based on Danmakufu's implementation of the function.</p></div>");
+        } else {
+            ObjFileT_AddLine(outputfile, "<h3 class=\"header\" id=\"header_fps\">FPS Monitoring</h3><div class=\"bodydiv\"><p>Note: Unknown logging type specified. Accepted values are \"MODE_STAGETIME\" and \"MODE_CURRENTFPS\"<br>The values in this chart defaulted to \"MODE_STAGETIME\"</p></div>");
+        }
+        ObjFileT_AddLine(outputfile, APM_ChartGenFPS);
+    }
+
+    if (FEATURE_GRAZE_ENABLE) {
+        while (!finished_graze) {yield;} //Wait for file to be written before reading
+        ObjFileT_AddLine(outputfile, "<h3 class=\"header\" id=\"header_graze\">Graze Monitoring</h3>");
+        ObjFileT_AddLine(outputfile, APM_ChartGenGraze);
+    }
+
+    if (FEATURE_SCORE_ENABLE) {
+        while (!finished_score) {yield;} //Wait for file to be written before reading
+        ObjFileT_AddLine(outputfile, "<h3 class=\"header\" id=\"header_score\">Score Monitoring</h3>");
+        ObjFileT_AddLine(outputfile, APM_ChartGenScore);
+    }
+
+    if (FEATURE_SHOTCOUNT_ENABLE) {
+        while (!finished_shotcount) {yield;} //Wait for file to be written before reading
+        ObjFileT_AddLine(outputfile, "<h3 class=\"header\" id=\"header_shotcount\">Enemy Shot Count Monitoring</h3>");
+        ObjFileT_AddLine(outputfile, APM_ChartGenShotCount);
+    }
+
+    if (FEATURE_BOMBDEATH_ENABLE) {
+        ObjFileT_AddLine(outputfile, "<h3 class=\"header\" id=\"header_bombdeath\">Bomb & Death Monitoring</h3>");
+        ObjFileT_AddLine(outputfile, APM_ChartGenBombDeath);
+    }
+
+    APM_LogDataToFile(outputfile);
+
+    // ---------------  End Reporting  ---------------
+
+    // End Body
+    let bodyendhtml = "<body>";
+    ObjFileT_AddLine(outputfile, bodyendhtml);
+
+    // End by closing the HTML and writing our output HTML file.
+    let endhtml = "</html>";
+    ObjFileT_AddLine(outputfile, endhtml);
+    ObjFile_Store(outputfile);
+    yield;
+    Obj_Delete(outputfile);
+
+    // Buffer
+    yield;
+    // Close script so that events are no longer listened to
+    CloseScript(GetOwnScriptID);
+}
+
+/* ================================================================================== */
+/* ================================ Helper Functions ================================ */
+/* ================================================================================== */
+
+// Returns max value in array. Assumes string inputs.
+// Thankfully DNH allows us to compare strings like so: "3.0" < "2.4"
+function maxarr(arr) {
+    if (length(arr) == 0) {
+        WriteLog("maxarr: Received empty array");
+        return -1;
+    }
+    let maxval = arr[0];
+    ascent(i in 0..length(arr)) {
+        if (arr[i] >= maxval) {
+            maxval = arr[i];
+        }
+    }
+    return ator(maxval);
+}
+
+function wait(n) {
+    loop(n) {
+        yield;
+    }
+}
+
+function parseFileName(filepath) {
+    // Essentially, split by /, get last
+    let pathunits = SplitString(filepath, "/");
+    return pathunits[length(pathunits) - 1];
+}

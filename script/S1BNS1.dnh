@@ -1,0 +1,64 @@
+#TouhouDanmakufu[Single]
+#Title["Boss Nonspell 1"]
+#Text[""]
+#Background["./../Background.dnh"]
+#ScriptVersion[3]
+#BGM["./../music/Boss1.ogg"]
+#System["./../system/System.dnh"]
+//This is made, insert date here
+
+#include "./../lib/FxnList.dnh"
+#include "./BossCommon.dnh"
+//#include "./ShikiCommon.dnh"
+// #include "./ShotFormation.dnh"
+#include"./../system/Default_Effect.Txt"
+let count = -120; //Counter
+
+let objBoss;
+let objScene = GetEnemyBossSceneObjectID();
+
+@Initialize {
+    SetCommonData("Boss", 0);
+    objBoss = ObjEnemy_Create(OBJ_ENEMY_BOSS);
+    ObjEnemy_Regist(objBoss);
+    SetDamageRateAtFrame(objBoss, 80, 50, 90);
+    //ObjMove_SetPosition(objBoss, GetCenterX-30, -30); //For initial nonspell only.
+    ObjMove_SetDestAtFrame(objBoss, GetCenterX, GetCenterY-60, 60); 
+    SetShotAutoDeleteClip(32, 32, 32, 32);
+
+    EnemySetup(objBoss);
+    TDrawLoop(GetCurrentScriptDirectory() ~ "./../img/sprite_name.png");
+    TFinalize(false);
+
+    NotifyEventAll(EV_USER_STAGE + 2050, ["1", "NS1"]);
+}
+
+@Event{
+    alternative(GetEventType())
+    case(EV_REQUEST_LIFE){SetScriptResult(2500);}//Usually 3000 for spells, 2500 for nonspells
+    case(EV_REQUEST_TIMER){SetScriptResult(60);}
+}
+
+@MainLoop {
+    ObjEnemy_SetIntersectionCircleToShot(objBoss, ObjMove_GetX(objBoss), ObjMove_GetY(objBoss), 32); 
+    ObjEnemy_SetIntersectionCircleToPlayer(objBoss, ObjMove_GetX(objBoss), ObjMove_GetY(objBoss), 24);
+
+    if(count > 0 && count % 360 == 60){
+        ObjMove_SetDestAtFrame(objBoss, rand(GetCenterX+90,GetCenterX-90), rand(GetCenterY-60,GetCenterY-120), 60);
+    }
+
+    if(count == 0){
+        MainTask;
+    }
+
+    ActivateHitboxes(36);
+    
+    count++;
+    yield;
+}
+
+task MainTask {
+    while(ObjEnemy_GetInfo(objBoss, INFO_LIFE) > 0) {
+        wait(30);
+    }
+}

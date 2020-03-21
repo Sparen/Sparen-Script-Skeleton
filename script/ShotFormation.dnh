@@ -1,0 +1,77 @@
+let BULLETTRAILPOOL = []; // Pool of objects to reuse for bullet trails. Should prevent accidental crashing
+let MAXBULLETTRAILPOOLSIZE = 256; // Max Pool Size
+
+//Every freq frames, spawns a bullet with the specified graphic and render priority in the direction opposite the parent with a random offset
+task CreateBulletTrail(parent, rp, graph, freq, offset, spd, decel) {
+    while(!Obj_IsDeleted(parent) && ObjEnemy_GetInfo(objBoss, INFO_LIFE) > 0) {
+        let angleT = ObjMove_GetAngle(parent) + 180 + rand(-offset, offset);
+
+        // Get an object from the pool or create a new one
+        let obj;
+        if (length(BULLETTRAILPOOL) > 0) {
+            // Get object from pool
+            obj = BULLETTRAILPOOL[0];
+            BULLETTRAILPOOL = erase(BULLETTRAILPOOL, 0);
+            // Set fields
+            ObjMove_SetPosition(obj, ObjMove_GetX(parent), ObjMove_GetY(parent));
+            ObjMove_SetSpeed(obj, spd);
+            ObjMove_SetAngle(obj, angleT);
+            ObjMove_SetMaxSpeed(obj, 0);
+            ObjMove_SetAcceleration(obj, decel);
+            ObjShot_SetGraphic(obj, graph);
+            ObjShot_SetIntersectionEnable(obj, true);
+            ObjRender_SetAlpha(obj, 255);
+        } else {
+            obj = CreateShotA2Alt(ObjMove_GetX(parent), ObjMove_GetY(parent), spd, angleT, decel, 0, graph, 0);
+        }
+        Obj_SetRenderPriorityI(obj, rp);
+        // Prevent destruction, or it will mess with the object pooling
+        ObjShot_SetAutoDelete(obj, false);
+        ObjShot_SetSpellResist(obj, true);
+        FadeAtZero(obj);
+        wait(freq);
+    }
+}
+
+// 'Fade deletes' object at 0 speed (in reality, disables hitbox, alpha to zero, moves offscreen, and adds to the pool)
+task FadeAtZero(obj) {
+    while(!Obj_IsDeleted(obj) && ObjMove_GetSpeed(obj) > 0 && ObjEnemy_GetInfo(objBoss, INFO_LIFE) > 0) { yield; }
+    if (Obj_IsDeleted(obj)) {return;} // Prevent deleted objects from re-entering pool
+    ObjShot_SetIntersectionEnable(obj, false);
+    ascent(i in 0..15) {
+        ObjRender_SetAlpha(obj, 255 - 255/15*i);
+        yield;
+    }
+    ObjRender_SetAlpha(obj, 0);
+    ObjMove_SetPosition(obj, -16, -16); // far away enough that bullet delete animation not visible
+    if (Obj_IsDeleted(obj)) {return;} // Prevent deleted objects from re-entering pool
+    if (length(BULLETTRAILPOOL) < MAXBULLETTRAILPOOLSIZE) {
+        BULLETTRAILPOOL = BULLETTRAILPOOL ~ [obj]; // Add to pool
+    } else {
+        Obj_Delete(obj); // Delete if pool is too large to prevent storing too many unused objects/resizing huge array too many times
+    }
+}
+
+// Expands the laser length exponentially over time, then fades it via width
+// Laser must NOT have delay on it. Initial length must not be 0. growthfactor of 1 does absolutely nothing and should be avoided.
+task Laser_ExpandFade(obj, initlen, targetlen, growthfactor, startwidth, totaltime, fadetime) {
+    let currlen = initlen;
+    let currwidth = startwidth;
+    let expandtime = totaltime - fadetime; // Total time for laser existence
+    // Expand
+    ascent(i in 0..expandtime) {
+        if(ObjEnemy_GetInfo(objBoss, INFO_LIFE) <= 0){return;}//Default kill to prevent (0,0) spawning
+        ObjLaser_SetLength(obj, currlen);
+        currlen *= growthfactor;
+        if (currlen > targetlen) {currlen = targetlen;}
+        yield;
+    }
+    // Fade
+    ascent(i in 0..fadetime) {
+        if(ObjEnemy_GetInfo(objBoss, INFO_LIFE) <= 0){return;}//Default kill to prevent (0,0) spawning
+        currwidth -= startwidth/fadetime;
+        ObjLaser_SetRenderWidth(obj, currwidth);
+        ObjLaser_SetIntersectionWidth(obj, currwidth * 2/3); //WARNING: Do not know if the actual ratio is 2/3
+        yield;
+    }
+}

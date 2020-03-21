@@ -1,0 +1,357 @@
+/* ******************************************************************
+* Sparen's General Function Library
+* For use with Touhou Danmakufu ph3
+* (C) Sparen of Iria 2015-2020
+****************************************************************** */
+
+/* ******************************************************************
+* This library is meant to store all standard functions for gameplay
+****************************************************************** */
+
+#include "./const_sfx.dnh"
+#include "./FxnBossUtil.dnh"
+#include "./FxnParticle.dnh"
+
+/* *************************************************************************
+*void wait(int) -- yields for given number of frames
+*Param: frames (int) - Number of frames to yield for
+************************************************************************* */
+function wait(frames) {
+    loop(frames) {yield;}
+}
+
+/* *************************************************************************
+*void WaitForZeroEnemy() -- Waits for there to be no enemies on screen
+************************************************************************* */
+function WaitForZeroEnemy() { //ULTIMA
+    while(length(GetAllEnemyID()) > 0) {yield;}
+}
+
+/* *************************************************************************
+*void SetEnemyLifeToZero() -- Sets the life of all enemies to zero
+************************************************************************* */
+function SetEnemyLifeToZero() { //OZZY
+    let enm = GetAllEnemyID;
+    ascent(i in 0..length(enm)) {
+        ObjEnemy_SetLife(enm[i], 0);
+    }
+}
+
+/* *************************************************************************
+*double Obj_GetAngleToPlayer(obj) -- Obtain angle from an object to the player
+*Param: obj (obj) - Move Object to use in calculations
+*Return: Angle from object to player
+************************************************************************* */
+function Obj_GetAngleToPlayer(obj) {
+    let angle = atan2(GetPlayerY - ObjMove_GetY(obj), GetPlayerX - ObjMove_GetX(obj));
+    return angle + 180;
+}
+
+/* *************************************************************************
+*double CO_GetAngleToPlayer(int, int) -- Obtain angle from an coordinates to the player
+*Param: x (int) - X coordinate to use in calculations
+*Param: y (int) - Y coordinate to use in calculations
+*Return: Angle from coordinate to player
+************************************************************************* */
+function CO_GetAngleToPlayer(x, y) {
+    let angle = atan2(GetPlayerY - y,GetPlayerX - x);
+    return angle + 180;
+}
+
+/* *************************************************************************
+*double GetEnemyX(obj) -- Obtain x position of an object
+*Param: obj (obj) - Move Object to get data from
+*Return: X position of Move Object
+************************************************************************* */
+function GetEnemyX(obj) {
+    return ObjMove_GetX(obj);
+}
+
+/* *************************************************************************
+*double GetEnemyY(obj) -- Obtain y position of an object
+*Param: obj (obj) - Move Object to get data from
+*Return: Y position of Move Object
+************************************************************************* */
+function GetEnemyY(obj) {
+    return ObjMove_GetY(obj);
+}
+
+/* *************************************************************************
+*double getAtanAngle(obj, obj) -- Obtain angle between two objects
+*Param: obj (obj) - First object
+*Param: obj2 (obj) - Second object
+*Return: Angle between two move objects
+************************************************************************* */
+function getAtanAngle(obj, obj2) { //TALOS. Angle between two objects
+    let angle = atan2(ObjMove_GetY(obj2) - ObjMove_GetY(obj), ObjMove_GetX(obj2) - ObjMove_GetX(obj));
+    return angle;
+}
+
+/* *************************************************************************
+*double GetCenterX(obj) -- Obtain x coordinate of center of playing field
+*Return: X coordinate of the center of the playing field
+************************************************************************* */
+function GetCenterX() {
+    return GetStgFrameWidth/2;
+}
+
+/* *************************************************************************
+*double GetCenterY(obj) -- Obtain y coordinate of center of playing field
+*Return: Y coordinate of the center of the playing field
+************************************************************************* */
+function GetCenterY() {
+    return GetStgFrameHeight/2;
+}
+
+/* *************************************************************************
+*double Obj_GetAngleToEnemy(obj) -- Obtain angle from the player to a given object
+*Param: obj (obj) - Move Object to use in calculations
+*Return: Angle from player to given Move Object
+************************************************************************* */
+function Obj_GetAngleToEnemy(obj) { //If more than one enemy, only hones in on the BOSS.
+    let angle = atan2(ObjMove_GetY(obj) - GetPlayerY, ObjMove_GetX(obj) - GetPlayerX);
+    return angle + 180;
+}
+
+/* *************************************************************************
+*int rand_int(double, double) -- Get a pseudorandom integer between two bounds, not including second bound
+*Param: min (double) - Lower bound for calculations
+*Param: max (double) - Upper bound for calculations
+*Return: Pseudorandom integer between min and max, not including max
+************************************************************************* */
+function rand_int(min, max) {
+    return round(rand(min, max))
+}
+
+/* *************************************************************************
+*double GetDistance(double, double, double, double) -- Get distance between two points
+*Param: x1 (double) - Point 1 x coord
+*Param: y1 (double) - Point 1 y coord
+*Param: x2 (double) - Point 2 x coord
+*Param: y2 (double) - Point 2 y coord
+*Return: Distance between (x1, y1) and (x2, y2)
+************************************************************************* */
+function GetDistance(x1, y1, x2, y2) {
+    return(((x2-x1)^2 + (y2-y1)^2)^(1/2))
+}
+
+/* *************************************************************************
+*double NormalizeAngle(double) -- Normalize the angle
+*Param: angle (double) - Angle to normalize
+*Return: Normalized angle
+************************************************************************* */
+function NormalizeAngle(angle) {
+    angle %= 360;
+    if(angle < 0) {
+        angle += 360;
+    }
+    return angle;
+}
+
+/* *************************************************************************
+*boolean IsSameAngle(double, double) -- Compare two angles
+*Param: angle1 (double) - First angle to check
+*Param: angle2 (double) - Second angle to check
+*Return: Equality of the two angles
+************************************************************************* */
+function IsSameAngle(angle1, angle2) {
+    angle1 = NormalizeAngle(angle1);
+    angle2 = NormalizeAngle(angle2);
+    return angle1 == angle2;
+}
+
+/* *************************************************************************
+*double AngularDistance(double, double) -- Obtain difference between two angles
+*Param: angle1 (double) - First angle to check
+*Param: angle2 (double) - Second angle to check
+*Return: Distance between the two angles
+************************************************************************* */
+function AngularDistance(angle1, angle2) {
+    let distance = NormalizeAngle(angle2 - angle1);
+    if(distance > 180) {
+        distance -= 360;
+    }
+    return distance;
+}
+
+/* *************************************************************************
+*int GetPlayerMoveAngle() -- Obtain direction player is moving in
+*Return: Player movement angle
+************************************************************************* */
+function GetPlayerMoveAngle() {
+    let angle = NULL;
+    if(GetKeyState(VK_DOWN) == KEY_HOLD) {
+        if(GetKeyState(VK_RIGHT) == KEY_HOLD) {
+            angle = 45;
+        } else if(GetKeyState(VK_LEFT) == KEY_HOLD) {
+            angle = 135;
+        } else {
+            angle = 90;
+        }
+    } else if(GetKeyState(VK_UP) == KEY_HOLD) {
+        if(GetKeyState(VK_RIGHT) == KEY_HOLD) {
+            angle = 315;
+        } else if(GetKeyState(VK_LEFT) == KEY_HOLD) {
+            angle = 225;
+        } else {
+            angle = 270;
+        }
+    } else if(GetKeyState(VK_RIGHT) == KEY_HOLD) {
+        angle = 0;
+    } else if(GetKeyState(VK_LEFT) == KEY_HOLD) {
+        angle = 180;
+    }
+    return angle;
+}
+
+/* *************************************************************************
+*double[2] LineToLinePoint(double, double, double, double, double, double, double, double) -- Point of intersection between two lines
+*Param: x1 (double) - Point 1 x coord
+*Param: y1 (double) - Point 1 y coord
+*Param: x2 (double) - Point 2 x coord
+*Param: y2 (double) - Point 2 y coord
+*Param: x3 (double) - Point 3 x coord
+*Param: y3 (double) - Point 3 y coord
+*Param: x4 (double) - Point 4 x coord
+*Param: y4 (double) - Point 4 y coord
+*Return: Point of intersection between two given lines
+************************************************************************* */
+function LineToLinePoint(x1, y1, x2, y2, x3, y3, x4, y4) {
+    let point = [0, 0];
+    point[0] = ( ((x1*y2 - y1*x2)*(x3 - x4) - (x1 - x2)*(x3*y4 - y3*x4)) / ((x1 - x2)*(y3 - y4) - (y1 - y2)*(x3 - x4)) );
+    point[1] = ( ((x1*y2 - y1*x2)*(y3 - y4) - (y1 - y2)*(x3*y4 - y3*x4)) / ((x1 - x2)*(y3 - y4) - (y1 - y2)*(x3 - x4)) );
+    return point;
+}
+
+/* *************************************************************************
+*double sec(double) -- Obtain secant of given angle
+*Param: n (double) - Angle to use in calculations
+*Return: Secant of n
+************************************************************************* */
+function sec(n) { return 1/cos(n); }
+
+/* *************************************************************************
+*double csc(double) -- Obtain cosecant of given angle
+*Param: n (double) - Angle to use in calculations
+*Return: Cosecant of n
+************************************************************************* */
+function csc(n) { return 1/sin(n); }
+
+/* *************************************************************************
+*double cot(double) -- Obtain cotangent of given angle
+*Param: n (double) - Angle to use in calculations
+*Return: Cotangent of n
+************************************************************************* */
+function cot(n) { return 1/tan(n); }
+
+/* *************************************************************************
+*SetDamageRateAtFrame(obj, double, double, int) -- Set damage rate of object to given values after given time
+*Param: obj (obj) - Boss Enemy Object whose damage rate to set
+*Param: shot (double) - New shot damage rate
+*Param: bomb (double) - New bomb damage rate
+*Param: frame (int) - Invincibility frames before damage rates are applied
+************************************************************************* */
+task SetDamageRateAtFrame(obj, shot, bomb, frame) { //Talos
+    ObjEnemy_SetDamageRate(obj, 0, 0);
+    let time = frame;
+    while(IsPlayerSpellActive) { //Prevents Bomb Damage from previous attack. 
+        time--; //However, makes stage enemies immune to bombs because it just yields after time hits 0.
+        yield;
+    }
+    while(time > 0) {
+        time--;
+        yield;
+    }
+    ObjEnemy_SetDamageRate(obj, shot, bomb);
+}
+
+/* *************************************************************************
+*SetDamageRateAtFrameEnm(obj, double, double, int) -- Set damage rate of object to given values after given time
+*Param: obj (obj) - Enemy Object whose damage rate to set
+*Param: shot (double) - New shot damage rate
+*Param: bomb (double) - New bomb damage rate
+*Param: frame (int) - Invincibility frames before damage rates are applied
+************************************************************************* */
+task SetDamageRateAtFrameEnm(obj, shot, bomb, frame) {
+    ObjEnemy_SetDamageRate(obj, 0,0);
+    let time = frame;
+    while(time > 0) {
+        time--;
+        yield;
+    } //No need to worry about bomb damage carrying over.
+    ObjEnemy_SetDamageRate(obj,shot,bomb);
+}
+
+/* *************************************************************************
+*ScreenShakeA1(int, double) -- Screenshake the 2D camera for a given time with a given intensity
+*Param: shaketime (int) - Time to shake for
+*Param: intensity (double) - Maximum change in position
+************************************************************************* */
+task ScreenShakeA1(shaketime, intensity) { //GTBOT
+    let x = Get2DCameraX;
+    let y = Get2DCameraY;
+    while(shaketime > 0) {
+        Set2DCameraFocusX(GetStgFrameWidth/2 + rand(-intensity, intensity));
+        Set2DCameraFocusY(GetStgFrameHeight/2 + rand(-intensity, intensity));
+        shaketime--;
+        yield;
+    }
+    Set2DCameraFocusX(GetStgFrameWidth/2);
+    Set2DCameraFocusY(GetStgFrameHeight/2);
+    yield;
+}
+
+/* *************************************************************************
+*ScreenShakeA2(int, double) -- Screenshake the 3D camera for a given time with a given intensity
+*Param: shaketime (int) - Time to shake for
+*Param: intensity (double) - Maximum change in position
+************************************************************************* */
+task ScreenShakeA2(shaketime, intensity) { //SPAREN. 3D
+    let x = GetCameraFocusX;
+    let y = GetCameraFocusY;
+    while(shaketime > 0) {
+        SetCameraFocusX(x + rand(-intensity, intensity));
+        SetCameraFocusY(y + rand(-intensity, intensity));
+        shaketime--;
+        yield;
+    }
+    SetCameraFocusX(x);
+    SetCameraFocusY(y);
+    yield;
+}
+
+/* *************************************************************************
+*ScreenShakeA3(int, double) -- Screenshake the 2D and 3D cameras for a given time with a given intensity
+*Param: shaketime (int) - Time to shake for
+*Param: intensity (double) - Maximum change in position
+************************************************************************* */
+task ScreenShakeA3(shaketime, intensity) { //SPAREN
+    let x = GetCameraFocusX;
+    let y = GetCameraFocusY;
+    let x2 = Get2DCameraX;
+    let y2 = Get2DCameraY;
+    while(shaketime > 0) {
+        Set2DCameraFocusX(GetStgFrameWidth/2 + rand(-intensity, intensity));
+        Set2DCameraFocusY(GetStgFrameHeight/2 + rand(-intensity, intensity));
+        SetCameraFocusX(x + rand(-intensity, intensity));
+        SetCameraFocusY(y + rand(-intensity, intensity));
+        shaketime--;
+        yield;
+    }
+    SetCameraFocusX(x);
+    SetCameraFocusY(y);
+    Set2DCameraFocusX(GetStgFrameWidth/2);
+    Set2DCameraFocusY(GetStgFrameHeight/2);
+    yield;
+}
+
+/* *************************************************************************
+*boolean isinbounds(obj) -- Determines if the object is in the playing field
+*Param: obj (obj) - Move Object to test
+*Return: True if the object is within the playing field, false otherwise
+************************************************************************* */
+function isinbounds(obj) { //Sparen, Oct 10 2014
+    let objx = ObjMove_GetX(obj);
+    let objy = ObjMove_GetY(obj);
+    return objx > 0 && objx < GetStgFrameWidth && objy > 0 && objy < GetStgFrameHeight;
+}

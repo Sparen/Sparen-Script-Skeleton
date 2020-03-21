@@ -1,0 +1,138 @@
+/* ******************************************************************
+* Sparen's SeitenTouji Item Spawning Library
+* For use with Touhou Danmakufu ph3
+* (C) Sparen of Iria 2015-2020
+*
+* Code in this library is under the MIT License and may be 
+* redistributed/modified without express permission
+****************************************************************** */
+
+/* ******************************************************************
+* This library is meant to store all item creation and effect functions
+****************************************************************** */
+
+/* *************************************************************************
+*ItemPointSmall(double, double, int) -- Creates small point item with score value at given coordinates
+*Param: x (double) - X coordinate to render at
+*Param: y (double) - Y coordinate to render at
+*Param: score (int) - Score value of point item
+************************************************************************* */
+task ItemPointSmall(x, y, score) {
+    let obj = CreateItemU1(1, x, y, score);
+    ObjItem_SetRenderScoreEnable(obj, false);
+    ItemAura(obj, 1);
+}
+
+/* *************************************************************************
+*ItemPointBig(double, double, int) -- Creates big point item with score value at given coordinates
+*Param: x (double) - X coordinate to render at
+*Param: y (double) - Y coordinate to render at
+*Param: score (int) - Score value of point item
+************************************************************************* */
+task ItemPointBig(x, y, score) {
+    let obj = CreateItemU1(2, x, y, score);
+    ObjItem_SetRenderScoreEnable(obj, false);
+    ItemAura(obj, 1);
+}
+
+/* *************************************************************************
+*ItemLifeShard(double, double, int) -- Creates life shard item with score value at given coordinates
+*Param: x (double) - X coordinate to render at
+*Param: y (double) - Y coordinate to render at
+*Param: score (int) - Score value of point item
+************************************************************************* */
+task ItemLifeShard(x, y, score) {
+    let obj = CreateItemU1(3, x, y, score);
+    ObjItem_SetRenderScoreEnable(obj, false);
+    ItemAura(obj, 2);
+}
+
+/* *************************************************************************
+*ItemLifeExtend(double, double, int) -- Creates life extend item with score value at given coordinates
+*Param: x (double) - X coordinate to render at
+*Param: y (double) - Y coordinate to render at
+*Param: score (int) - Score value of point item
+************************************************************************* */
+task ItemLifeExtend(x, y, score) {
+    let obj = CreateItemU1(4, x, y, score);
+    ObjItem_SetRenderScoreEnable(obj, false);
+    ItemAura(obj, 3);
+}
+
+/* *************************************************************************
+*ItemSpellShard(double, double, int) -- Creates spell shard item with score value at given coordinates
+*Param: x (double) - X coordinate to render at
+*Param: y (double) - Y coordinate to render at
+*Param: score (int) - Score value of point item
+************************************************************************* */
+task ItemSpellShard(x, y, score) {
+    let obj = CreateItemU1(5, x, y, score);
+    ObjItem_SetRenderScoreEnable(obj, false);
+    ItemAura(obj, 2);
+}
+
+/* *************************************************************************
+*ItemSpellExtend(double, double, int) -- Creates spell extend item with score value at given coordinates
+*Param: x (double) - X coordinate to render at
+*Param: y (double) - Y coordinate to render at
+*Param: score (int) - Score value of point item
+************************************************************************* */
+task ItemSpellExtend(x, y, score) {
+    let obj = CreateItemU1(6, x, y, score);
+    ObjItem_SetRenderScoreEnable(obj, false);
+    ItemAura(obj, 3);
+}
+
+/* *************************************************************************
+*ItemPiezo(double, double, int) -- Creates piezo shard item with score value at given coordinates
+*Param: x (double) - X coordinate to render at
+*Param: y (double) - Y coordinate to render at
+*Param: score (int) - Score value of point item
+************************************************************************* */
+task ItemPiezo(x, y, score) {
+    let obj = CreateItemU1(7, x, y, score);
+    ObjItem_SetRenderScoreEnable(obj, false);
+    ItemAura(obj, 0);
+}
+
+/* *************************************************************************
+*ItemAura(obj, int) -- Creates aura at given object with given color
+*Param: parent (obj) - Object to render under
+*Param: graph (int) - Color of aura
+************************************************************************* */
+task ItemAura(parent, graph) { //yellow-blue-green-purple
+    let path = GetCurrentScriptDirectory() ~ "../img/itemaura.png";
+    let obj = ObjPrim_Create(OBJ_PRIMITIVE_2D);
+    loop(2) {yield;} //to allow item to spawn. Otherwise this obj spawns at (0,0). One frame is apparently not enough
+    let objcount = 0;
+    let prevparenty = ObjRender_GetY(parent);
+    ObjPrim_SetPrimitiveType(obj, PRIMITIVE_TRIANGLESTRIP);
+    ObjPrim_SetTexture(obj, path);
+    ObjPrim_SetVertexCount(obj, 4);
+    ObjRender_SetScaleXYZ(obj, 1.5, 1.5, 1.5);
+    ObjPrim_SetVertexUVT(obj, 0, 0 + 29*graph, 0);
+    ObjPrim_SetVertexUVT(obj, 1, 29 + 29*graph, 0);
+    ObjPrim_SetVertexUVT(obj, 2, 0 + 29*graph, 29);
+    ObjPrim_SetVertexUVT(obj, 3, 29 + 29*graph, 29);
+    ObjRender_SetBlendType(obj, BLEND_ADD_ARGB);
+    Obj_SetRenderPriorityI(obj, 48); //right below item r.p. of 49
+    while(!Obj_IsDeleted(parent)) {
+        //The below code is to address the fact that the aura lags the item by one frame. By calculating the change in distance made by the parent object, it is possible to approximate the current position of the item.
+        let parenty = ObjRender_GetY(parent); //AKA location one frame before this object moves
+        let offset = prevparenty - parenty; //correct aura location based on parent's speed
+
+        if(objcount <= 15) {
+            ObjRender_SetAlpha(obj, objcount*150/15);
+        }
+        ObjRender_SetPosition(obj, ObjRender_GetX(parent), parenty - offset, 1);
+        ObjPrim_SetVertexPosition(obj, 0, 14.5*cos(-(2*objcount)),     14.5*sin(-(2*objcount)),     1);
+        ObjPrim_SetVertexPosition(obj, 1, 14.5*cos(-(2*objcount)+90),  14.5*sin(-(2*objcount)+90),  1);
+        ObjPrim_SetVertexPosition(obj, 2, 14.5*cos(-(2*objcount)+270), 14.5*sin(-(2*objcount)+270), 1);
+        ObjPrim_SetVertexPosition(obj, 3, 14.5*cos(-(2*objcount)+180), 14.5*sin(-(2*objcount)+180), 1);
+        objcount++;
+        yield;
+
+        prevparenty = parenty; //update for next loop
+    }
+    Obj_Delete(obj);
+}

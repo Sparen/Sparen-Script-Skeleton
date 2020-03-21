@@ -1,0 +1,283 @@
+//This file should be included by all attacks
+
+#include "./ShotCommon.dnh"
+#include "./../lib/STTJ_ShotConst.dnh"
+
+/* **************************************************************
+ * Shot Functions                                               *
+ ************************************************************** */
+
+task DelayLaser(x, y, ang, l, w, dt, graph, delay) { //WHOOHOO PH3 WORKAROUNDS
+    let objlaser = CreateStraightLaserA1(x, y, ang, l, w, dt, graph, delay);
+    ObjStLaser_SetSource(objlaser, false);
+    loop(delay - 1) { //So that the graphic never enlarges. Damn ph3 changing CreateLaserA so that delaytime is diff.
+        if(ObjEnemy_GetInfo(objBoss, INFO_LIFE) <= 0) {Obj_Delete(objlaser); return;}
+        yield;
+    }
+    Obj_Delete(objlaser);
+}
+
+/* *************************************************************************
+ * DelaySpreadA1(ang, num, spread, graphic, delay, offsettime) -- Creates delay laser spread at given angle from boss
+ * Param: ang (real) - Angle to spawn lasers from
+ * Param: num (real) - Number of lasers in each direction
+ * Param: spread (real) - angle between each laser
+ * Param: graphic (int) - graphic for laser
+ * Param: delay (int) - delay time on lasers
+ * Param: offsettime (int) - time between lasers
+ ************************************************************************* */
+task DelaySpreadA1(ang, num, spread, graphic, delay, offsettime) {
+    DelayLeft(ObjMove_GetX(objBoss), ObjMove_GetY(objBoss), ang, num, spread, graphic, delay, offsettime);
+    DelayRight(ObjMove_GetX(objBoss), ObjMove_GetY(objBoss), ang, num, spread, graphic, delay, offsettime);
+}
+
+/* *************************************************************************
+ * DelaySpreadA2(ang, num, spread, graphic, delay, offsettime) -- Creates delay laser spread at given angle from point
+ * Param: x (real) - X coordinate of laser source
+ * Param: y (real) - Y coordinate of laser source
+ * Param: ang (real) - Angle to spawn lasers from
+ * Param: num (real) - Number of lasers in each direction
+ * Param: spread (real) - angle between each laser
+ * Param: graphic (int) - graphic for laser
+ * Param: delay (int) - delay time on lasers
+ * Param: offsettime (int) - time between lasers
+ ************************************************************************* */
+task DelaySpreadA2(x, y, ang, num, spread, graphic, delay, offsettime) {
+    DelayLeft(x, y, ang, num, spread, graphic, delay, offsettime);
+    DelayRight(x, y, ang, num, spread, graphic, delay, offsettime);
+}
+
+task DelayLeft(x, y, ang, num, spread, graphic, delay, offsettime) {
+    ascent(i in 0..num) {
+        if(ObjEnemy_GetInfo(objBoss, INFO_LIFE) <= 0) {return;} //Default kill to prevent (0,0) spawning
+        DelayLaser(x, y, ang + i*spread, 512, 24, 0, graphic, delay);
+        wait(offsettime);
+    }
+}
+
+task DelayRight(x, y, ang, num, spread, graphic, delay, offsettime) {
+    ascent(i in 0..num) {
+        if(ObjEnemy_GetInfo(objBoss, INFO_LIFE) <= 0) {return;} //Default kill to prevent (0,0) spawning
+        DelayLaser(x, y, ang - i*spread, 512, 24, 0, graphic, delay);
+        wait(offsettime);
+    }
+}
+
+/* **************************************************************
+ * Draw Functions                                               *
+ ************************************************************** */
+
+let TDRAWSTATE_IDLE = 0;
+let TDRAWSTATE_LEFT = 1;
+let TDRAWSTATE_RGHT = 2;
+let TDRAWSTATE_CAST = 3;
+let casting = false; //Note that the boss should not be moving while casting. Otherwise it looks hella weird
+
+task TDrawLoop(path) {
+    let BossImage = path; //Define path
+    let animframe = 1;
+    let movestate = TDRAWSTATE_IDLE;
+    ObjPrim_SetTexture(objBoss, BossImage);
+    ObjRender_SetScaleXYZ(objBoss, 1, 1, 1);
+    let bossAngle = ObjMove_GetAngle(objBoss);
+    let bossSpeed = ObjMove_GetSpeed(objBoss);
+    ObjSprite2D_SetSourceRect(objBoss, 0, 0, 128, 128);
+    ObjSprite2D_SetDestCenter(objBoss);
+    while(!Obj_IsDeleted(objBoss)) {
+        bossAngle = ObjMove_GetAngle(objBoss) % 360;
+        bossSpeed = ObjMove_GetSpeed(objBoss);
+
+        if(bossSpeed > 0) { //below three cases require if statement to prevent reset of animframe.
+            if((bossAngle > 270 || bossAngle < 90) && movestate != TDRAWSTATE_RGHT) {
+                movestate = TDRAWSTATE_RGHT;
+                animframe = 0;
+            //WriteLog("Now setting drawstate to RIGHT");
+            } else if((bossAngle > 90 && bossAngle < 270) && movestate != TDRAWSTATE_LEFT) {
+                movestate = TDRAWSTATE_LEFT;
+                animframe = 0;
+            //WriteLog("Now setting drawstate to LEFT");
+            } else if((bossAngle == 90 || bossAngle == 270) && movestate != TDRAWSTATE_IDLE) {
+                movestate = TDRAWSTATE_IDLE;
+                animframe = 0;
+            //WriteLog("Now setting drawstate to IDLE");
+            }
+        } else if(movestate != TDRAWSTATE_IDLE && movestate != TDRAWSTATE_CAST) { //if transitioning back to idle (speed = 0)
+            movestate = TDRAWSTATE_IDLE;
+            animframe = 0;
+        }
+
+        if(casting) {
+            if(movestate != TDRAWSTATE_CAST) {
+                movestate = TDRAWSTATE_CAST;
+                animframe = 0;
+            //WriteLog("Now setting drawstate to CAST");
+            }
+        }
+
+        ObjSprite2D_SetSourceRect(objBoss, 0+floor(animframe/9)*128, 0 + 128*movestate, 128 + floor(animframe/9)*128, 128 + 128*movestate);
+
+        animframe++;
+        if(animframe >= 36) {
+            if(movestate == TDRAWSTATE_IDLE) { //animframe reset for idle
+                animframe = 0;
+            } else if(movestate == TDRAWSTATE_CAST) { //stop casting
+                animframe = 0; 
+                casting = false; 
+                movestate = TDRAWSTATE_IDLE;
+            } else { //keep in current position if moving.
+                animframe = 35;
+            }
+        }
+        yield;
+    }
+}
+
+task TDrawLoopOrb {
+    let BossImage = GetCurrentScriptDirectory() ~ "../img/inv_circle.png";
+    let BossBGImage = GetCurrentScriptDirectory() ~ "../img/SparenNuke.png";
+    let BossFGImage = GetCurrentScriptDirectory() ~ "../img/SparenFog.png";
+
+    let color_target = [128, 128, 128];
+
+    ObjPrim_SetTexture(objBoss, BossImage);
+    ObjRender_SetScaleXYZ(objBoss, 0.125, 0.125, 1);
+    let bossAngle = ObjMove_GetAngle(objBoss);
+    let bossSpeed = ObjMove_GetSpeed(objBoss);
+    ObjSprite2D_SetSourceRect(objBoss, 0, 0, 512, 512);
+    ObjSprite2D_SetDestCenter(objBoss);
+
+    // BG
+    let objBG = ObjPrim_Create(OBJ_SPRITE_2D);
+    ObjPrim_SetTexture(objBG, BossBGImage);
+    ObjRender_SetScaleXYZ(objBG, 0.4, 0.4, 1);
+    ObjSprite2D_SetSourceRect(objBG, 0, 0, 256, 256);
+    ObjSprite2D_SetDestCenter(objBG);
+
+    // FG
+    let objFG = ObjPrim_Create(OBJ_SPRITE_2D);
+    ObjPrim_SetTexture(objFG, BossFGImage);
+    ObjRender_SetScaleXYZ(objFG, 0.75, 0.75, 1);
+    ObjSprite2D_SetSourceRect(objFG, 0, 0, 64, 64);
+    ObjSprite2D_SetDestCenter(objFG);
+
+    while(!Obj_IsDeleted(objBoss)) {
+        let currcolor = color_target;
+        ObjRender_SetColor(objBG, (currcolor[0] + 255)/2, (currcolor[1] + 255)/2, (currcolor[2] + 255)/2);
+        ObjRender_SetColor(objFG, (currcolor[0])/2, (currcolor[1])/2, (currcolor[2])/2);
+        ObjRender_SetPosition(objBG, ObjMove_GetX(objBoss), ObjMove_GetY(objBoss), 1);
+        ObjRender_SetPosition(objFG, ObjMove_GetX(objBoss), ObjMove_GetY(objBoss), 1);
+
+        if (count % 5 == 0) { LinestripSnake(rand(0, 360), 15, currcolor); }
+        yield;
+    }
+}
+
+//Creates a moving linestrip snake
+task LinestripSnake(dir, duration, currcolor) {
+    let obj = ObjPrim_Create(OBJ_PRIMITIVE_2D);
+    ObjPrim_SetPrimitiveType(obj, PRIMITIVE_LINESTRIP);
+    ObjPrim_SetVertexCount(obj, 5);
+    //Store vertex offsets
+    let offsets = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]];
+    //Store base of snake
+    let lastx = ObjMove_GetX(objBoss);
+    let lasty = ObjMove_GetY(objBoss);
+    //Number of frames between updates this object will make
+    let frperup = 2;
+    ObjRender_SetPosition(obj, lastx, lasty, 1);
+    //Set color for the snake
+    let vtr = (255 + currcolor[0])/2 + rand(-16, 16);
+    let vtg = (255 + currcolor[1])/2 + rand(-16, 16);
+    let vtb = (255 + currcolor[2])/2 + rand(-16, 16);
+    loop(duration/frperup) {
+        //First, generate a new offset based on current direction
+        let randdist = rand(6, 18); //distance to travel
+        let randangle = dir + rand(-30, 30); //change in angle possible
+        let newoffset = [randdist * cos(randangle), randdist * sin(randangle)];
+        //Move base
+        lastx += offsets[0][0];
+        lasty += offsets[0][1];
+        //Shift positions over
+        ascent(i in 0..4) {
+            offsets[i] = offsets[i + 1];
+        }
+        offsets[4] = newoffset;
+        //Now set the positions.
+        ObjRender_SetPosition(obj, lastx, lasty, 1);
+        ascent(j in 0..5) {
+            //need to add total offsets of all previous nodes
+            let sumdiffx = 0;
+            let sumdiffy = 0;
+            ascent(k in 0..(j+1)) {
+                sumdiffx += offsets[k][0];
+                sumdiffy += offsets[k][1];
+            }
+            ObjPrim_SetVertexPosition(obj, j, sumdiffx, sumdiffy, 1);
+            ObjPrim_SetVertexColor(obj, j, vtr, vtg, vtb);
+            ObjPrim_SetVertexAlpha(obj, j, 255);
+        }
+        //Adjust direction
+        dir += rand(-5, 5);
+        loop(frperup) {yield;}
+    }
+    Obj_Delete(obj);
+}
+
+/* **************************************************************
+ * Finalize Functions                                           *
+ ************************************************************** */
+
+task TFinalize(islast) {
+    while(ObjEnemy_GetInfo(objBoss, INFO_LIFE) > 0) {yield;}
+    loop(11) {yield;}
+    let arr = GetShotIdInCircleA2(GetCenterX, GetCenterY, 1000, TARGET_ENEMY);
+    ascent(i in 0..length(arr)) {NotifyEventAll(EV_USER_STAGE+750, arr[i]);} //bullet delete effect
+    yield; //give a frame for effects to actually spawn
+    DeleteShotAll(TYPE_ALL, TYPE_IMMEDIATE);
+    if(islast) {
+        NotifyEventAll(EV_USER_STAGE+777, [ObjMove_GetX(objBoss), ObjMove_GetY(objBoss)]); 
+    }
+    Obj_Delete(objBoss);
+    DeleteShotAll(TYPE_ALL, TYPE_IMMEDIATE);
+    SetAutoDeleteObject(true);
+    Reset2DCamera; //Because of screen shaking and spell background being misplaced
+    CloseScript(GetOwnScriptID());
+    return;
+}
+
+task TFinalizeSpell(islast) {
+    while(ObjEnemy_GetInfo(objBoss, INFO_LIFE) > 0) {yield;}
+    loop(11) {yield;}
+    let arr = GetShotIdInCircleA2(GetCenterX, GetCenterY, 1000, TARGET_ENEMY);
+    ascent(i in 0..length(arr)) {NotifyEventAll(EV_USER_STAGE+750, arr[i]);} //bullet delete effect
+    yield; //give a frame for effects to actually spawn
+    DeleteShotAll(TYPE_ALL, TYPE_IMMEDIATE);
+    if(islast) {
+        NotifyEventAll(EV_USER_STAGE+777, [ObjMove_GetX(objBoss), ObjMove_GetY(objBoss)]); 
+    }
+    if(ObjEnemyBossScene_GetInfo(objScene, INFO_PLAYER_SHOOTDOWN_COUNT) + ObjEnemyBossScene_GetInfo(objScene, INFO_PLAYER_SPELL_COUNT) == 0) {
+        NotifyEventAll(EV_USER_STAGE+666, 0); 
+    }
+    Obj_Delete(objBoss);
+    DeleteShotAll(TYPE_ALL, TYPE_IMMEDIATE);
+    SetAutoDeleteObject(true);
+    Reset2DCamera; //Because of screen shaking and spell background being misplaced
+    CloseScript(GetOwnScriptID());
+    return;
+}
+
+task TFinalizeEvent { //EVENT HANDLER USAGE
+    let arr = GetShotIdInCircleA2(GetCenterX, GetCenterY, 1000, TARGET_ENEMY);
+    ascent(i in 0..length(arr)) {NotifyEventAll(EV_USER_STAGE+750, arr[i]);} //bullet delete effect
+    yield;
+    DeleteShotAll(TYPE_ALL, TYPE_ITEM); //All shots become point items
+    while(ObjEnemy_GetInfo(objBoss, INFO_LIFE) > 0) {yield;}
+    loop(11) {yield;}
+    yield;
+    Obj_Delete(objBoss);
+    DeleteShotAll(TYPE_ALL, TYPE_IMMEDIATE);
+    SetAutoDeleteObject(true);
+    Reset2DCamera; //Because of screen shaking and spell background being misplaced
+    CloseScript(GetOwnScriptID());
+    return;
+}

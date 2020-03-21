@@ -1,0 +1,204 @@
+let dirCurrent = GetCurrentScriptDirectory();
+let typeEnd = 0;
+let END_FAILED = 1;
+let END_SUCCESS = 2;
+
+@Initialize {
+    MagicCircle();
+}
+
+@MainLoop {
+    yield;
+}
+
+@Event {
+    alternative(GetEventType())
+    case(EV_END_BOSS_STEP) {
+        if(typeEnd == 0) {
+            typeEnd = END_FAILED;
+        }
+    }
+    case(EV_GAIN_SPELL) {
+        typeEnd = END_SUCCESS;
+    }
+}
+
+task MagicCircle() {
+    let countVertex = 64;
+    let listRadius = [];
+    loop(countVertex) {
+        listRadius = listRadius ~ [0];
+    }
+
+    let path = dirCurrent ~ "../img/Default_MagicCircle.png";
+    let obj = ObjPrim_Create(OBJ_PRIMITIVE_2D);
+    ObjPrim_SetPrimitiveType(obj, PRIMITIVE_TRIANGLESTRIP);
+    ObjPrim_SetVertexCount(obj, countVertex);
+    ObjRender_SetBlendType(obj, BLEND_ADD_RGB);
+    Obj_SetRenderPriority(obj, 0.3);
+    ObjPrim_SetTexture(obj, path);
+    ascent(iVert in 0..countVertex / 2) {
+        let left = iVert * 128;
+        let indexVert = iVert * 2;
+        ObjPrim_SetVertexUVT(obj, indexVert + 0, left, 0);
+        ObjPrim_SetVertexUVT(obj, indexVert + 1, left, 64);        
+    }
+
+    let objScene = GetEnemyBossSceneObjectID();
+    let objBoss = GetEnemyBossObjectID()[0];
+    let timerOrg = ObjEnemyBossScene_GetInfo(objScene, INFO_ORGTIMERF);
+    let bLastSpell = ObjEnemyBossScene_GetInfo(objScene, INFO_IS_LAST_SPELL);
+
+    let cx = 0;
+    let cy = 0;
+    let maxRadius = 256 * 1.2;
+    let alpha = 0;
+    let frame = 0;
+    let angleRender = 0;
+
+    function GetPlayerX() {
+        let objPlayer = GetPlayerObjectID();
+        return ObjRender_GetX(objPlayer);
+    }
+
+    function GetPlayerY() {
+        let objPlayer = GetPlayerObjectID();
+        return ObjRender_GetY(objPlayer);
+    }
+
+    function UpdateVertex() {
+        if(bLastSpell) {
+            ObjRender_SetColor(obj, 255 * alpha, 192 * alpha, 192 * alpha);
+        } else {
+            ObjRender_SetColor(obj, 192 * alpha, 192 * alpha, 255 * alpha);
+        }
+
+        ObjRender_SetPosition(obj, cx, cy, 0);
+        ObjRender_SetAngleZ(obj, angleRender);
+    }
+
+    let pathUseSpell = dirCurrent ~ "se/seUseSpellCard.wav";
+    LoadSound(pathUseSpell);
+    PlaySE(pathUseSpell);
+
+    while(typeEnd == 0) {
+        if(!Obj_IsDeleted(objBoss)) {
+            cx = ObjRender_GetX(objBoss);
+            cy = ObjRender_GetY(objBoss);
+        }
+
+        alpha += 1 / 120;
+        alpha = min(alpha, 1);
+        angleRender += 360 / countVertex / 4;
+
+        let timer = ObjEnemyBossScene_GetInfo(objScene, INFO_TIMERF);
+        let rRate = timer / timerOrg;
+        let bMiss = ObjEnemyBossScene_GetInfo(objScene, INFO_PLAYER_SHOOTDOWN_COUNT) > 0 ||
+                     ObjEnemyBossScene_GetInfo(objScene, INFO_PLAYER_SPELL_COUNT) > 0 ;
+
+        ascent(iVert in 0..countVertex / 2) {
+            let indexVert = iVert * 2;
+            let angle = 360 / (countVertex / 2 - 1) * iVert;
+
+            let vx1 = listRadius[indexVert] * cos(angle);
+            let vy1 = listRadius[indexVert] * sin(angle);
+            ObjPrim_SetVertexPosition(obj, indexVert + 0, vx1, vy1, 0);
+
+            let vx2 = listRadius[indexVert + 1] * cos(angle);
+            let vy2 = listRadius[indexVert + 1] * sin(angle);
+            ObjPrim_SetVertexPosition(obj, indexVert + 1, vx2, vy2, 0);
+
+            if(frame >= 0) {
+                let dr = (maxRadius * rRate - listRadius[indexVert]) / 16;
+                listRadius[indexVert] = listRadius[indexVert] + dr;
+            }
+            if(frame > 45) {
+                let rRateIn = rRate - 0.08;
+                if(bMiss) {
+                    rRateIn = rRate - 0.04;
+                }
+                if(rRateIn < 0){rRateIn=0;}
+                let dr= (maxRadius * rRateIn - listRadius[indexVert + 1]) / 64;
+                listRadius[indexVert + 1] = listRadius[indexVert + 1] + dr;
+            }
+
+        }
+
+        UpdateVertex();
+        frame++;
+
+        yield;
+    }
+
+    if(typeEnd == END_FAILED) {
+        Obj_Delete(obj);
+        CloseScript(GetOwnScriptID());
+        return;
+    }
+
+    let pathGainSpell = dirCurrent ~ "se/seGetSpellCardBonus.wav";
+    LoadSound(pathGainSpell);
+    PlaySE(pathGainSpell);
+
+    let rRate = 1.0;
+    frame = 0;
+    alpha = 1;
+    loop(105) {
+        angleRender += 360 / countVertex / 4;
+        let dx = (GetPlayerX() - cx) / 16;
+        let dy = (GetPlayerY() - cy) / 16;
+        cx += dx;
+        cy += dy;
+        if(frame >= 45) {
+            alpha -= 1 / 45;
+            alpha = max(alpha, 0);
+        }
+
+        ascent(iVert in 0..countVertex / 2) {
+            let indexVert = iVert * 2;
+            let angle = 360 / (countVertex / 2 - 1) * iVert;
+
+            let vx1 = listRadius[indexVert] * cos(angle);
+            let vy1 = listRadius[indexVert] * sin(angle);
+            ObjPrim_SetVertexPosition(obj, indexVert + 0, vx1, vy1, 0);
+
+            let vx2 = listRadius[indexVert+1] * cos(angle);
+            let vy2 = listRadius[indexVert+1] * sin(angle);
+            ObjPrim_SetVertexPosition(obj, indexVert + 1, vx2, vy2, 0);
+
+            let drOut = 0;
+            let drIn = 0;
+            if(frame <= 45) {
+                let rRateOut = 1.0;
+                drOut = (maxRadius * rRateOut - listRadius[indexVert]) / 8;
+
+                let rRateIn = rRateOut - 0.08;
+                if(rRateIn < 0){rRateIn = 0;}
+                drIn = (maxRadius * rRateIn - listRadius[indexVert + 1]) / 8;
+            } else {
+                cx = GetPlayerX();
+                cy = GetPlayerY();
+
+                rRate -= 1.0 / 60.0;
+                let rRateOut = rRate * sin(angle % 60);
+                drOut = (maxRadius * rRateOut - listRadius[indexVert]) / 16;
+
+                let rRateIn = rRate * sin(angle % 60)-0.08;
+                if(rRateIn < 0){rRateIn = 0;}
+                drIn=(maxRadius * rRateIn - listRadius[indexVert + 1])/16;
+            }
+            listRadius[indexVert] = listRadius[indexVert] + drOut;
+            listRadius[indexVert + 1] = listRadius[indexVert + 1] + drIn;
+        }
+
+        UpdateVertex();
+        frame++;
+        yield;
+    }
+
+    Obj_Delete(obj);
+    CloseScript(GetOwnScriptID());
+    
+}
+
+

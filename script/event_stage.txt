@@ -1,0 +1,145 @@
+    sub S1Event0{ // Example of a player-only event
+        SetCommonData("OnEvent", true);
+        let objs = PrepareEvent;
+	let objETextback = objs[0];
+	let objEText = objs[1];
+	let images = [objs[2], objs[3]];
+
+ 	SetForbidPlayerSpell(true);
+	SetForbidPlayerShot(true);
+
+	let pathPPlayerNorm = GetCurrentScriptDirectory~"../img/_EVENT/PPlayer Norm.png";
+
+	//INITIAL GRAPHICS HERE
+	ObjPrim_SetTexture(images[0], pathPPlayerNorm);
+	Obj_SetVisible(images[1], false);
+	Obj_SetVisible(objs[4], false);
+	Obj_SetVisible(objs[6], false);
+
+	ObjText_SetText(objEText, "Text");//Player
+	ObjText_SetFontBorderColor(objEText, 128, 128, 128);
+	ShakeImageVert(images[0], 10, 1);
+	while(GetVirtualKeyState(VK_OK) == KEY_HOLD){yield;}
+	EventWaitA3(15);
+
+	ObjText_SetText(objEText, "Text");//Player
+	ObjText_SetFontBorderColor(objEText, 128, 128, 128);
+	ShakeImageVert(images[0], 10, 1);
+	EventWaitA1(15);
+
+	Obj_Delete(objETextback);
+	Obj_Delete(objEText);
+	Obj_Delete(images[0]);//Player
+	Obj_Delete(images[1]);//Enemy
+	Obj_Delete(objs[4]);//ObjVS
+	Obj_Delete(objs[5]);//Playername
+	Obj_Delete(objs[6]);//Enemyname
+
+        SetCommonData("OnEvent", false);
+
+ 	SetForbidPlayerSpell(false);
+	SetForbidPlayerShot(false);
+    }
+
+    sub S1Event1{ // Example of a boss start event
+        SetCommonData("OnEvent", true);
+        let objs = PrepareEvent;
+	let objETextback = objs[0];
+	let objEText = objs[1];
+	let images = [objs[2], objs[3]];
+
+ 	SetForbidPlayerSpell(true);
+	SetForbidPlayerShot(true);
+
+	let pathEEnemyNorm = GetCurrentScriptDirectory~"../img/_EVENT/EEnemy Norm.png";
+	let pathPPlayerNorm = GetCurrentScriptDirectory~"../img/_EVENT/PPlayer Norm.png";
+
+	//INITIAL GRAPHICS HERE
+	ObjPrim_SetTexture(images[0], pathPPlayerNorm);
+	ObjPrim_SetTexture(images[1], pathEEnemyNorm);
+	Obj_SetVisible(images[1], false);
+	Obj_SetVisible(objs[4], false);
+	Obj_SetVisible(objs[6], false);
+
+	ObjText_SetText(objEText, "Text");//Player
+	ObjText_SetFontBorderColor(objEText, 128, 128, 128);
+	ShakeImageVert(images[0], 10, 1);
+	while(GetVirtualKeyState(VK_OK) == KEY_HOLD){yield;}
+	EventWaitA3(15);
+
+	SetCommonData("BossAppear", true);
+	Obj_SetVisible(images[1], true);
+	Obj_SetVisible(objs[4], true);
+	Obj_SetVisible(objs[6], true);
+
+	ObjText_SetText(objEText, "Text");//Boss
+	ObjText_SetFontBorderColor(objEText, 128, 128, 128);
+	ShakeImageVert(images[1], 10, 1);
+	EventWaitA1(15);
+
+	SetCommonData("BossAppear", false); // Reset
+
+	//This block will be positioned to where the music changes
+        stagepart = 1;
+        ObjSound_Stop(bgm);
+	ObjSound_Play(bgm2);
+        WriteBGM("BGM Name");
+
+        // More content can go here
+
+	Obj_Delete(objETextback);
+	Obj_Delete(objEText);
+	Obj_Delete(images[0]);//Player
+	Obj_Delete(images[1]);//Enemy
+	Obj_Delete(objs[4]);//ObjVS
+	Obj_Delete(objs[5]);//Playername
+	Obj_Delete(objs[6]);//Enemyname
+
+        SetCommonData("OnEvent", false);
+
+ 	SetForbidPlayerSpell(false);
+	SetForbidPlayerShot(false);
+    }
+
+    sub S1Event2{ // Example of a post-boss event
+        SetCommonData("OnEvent", true);
+        let objs = PrepareEvent;
+	let objETextback = objs[0];
+	let objEText = objs[1];
+	let images = [objs[2], objs[3]];
+
+ 	SetForbidPlayerSpell(true);
+	SetForbidPlayerShot(true);
+
+	let pathEEnemyNorm = GetCurrentScriptDirectory~"../img/_EVENT/EEnemy Norm.png";
+	let pathPPlayerNorm = GetCurrentScriptDirectory~"../img/_EVENT/PPlayer Norm.png";
+
+	//Delete any unnecessary graphics
+	Obj_Delete(objs[4]);//ObjVS
+
+	//INITIAL GRAPHICS HERE
+	ObjPrim_SetTexture(images[0], pathPPlayerNorm);
+	ObjPrim_SetTexture(images[1], pathEEnemyNorm);
+
+	ObjText_SetText(objEText, "Text");//Player
+	ObjText_SetFontBorderColor(objEText, 128, 128, 128);
+	ShakeImageVert(images[0], 10, 1);
+	while(GetVirtualKeyState(VK_OK) == KEY_HOLD){yield;}
+	EventWaitA3(15);
+
+	ObjText_SetText(objEText, "Text");//Boss
+	ObjText_SetFontBorderColor(objEText, 128, 128, 128);
+	ShakeImageVert(images[1], 10, 1);
+	EventWaitA1(15);
+
+	Obj_Delete(objETextback);
+	Obj_Delete(objEText);
+	Obj_Delete(images[0]);//Player
+	Obj_Delete(images[1]);//Enemy
+	Obj_Delete(objs[5]);//Playername
+	Obj_Delete(objs[6]);//Enemyname
+        SetCommonData("OnEvent", false);
+
+ 	SetForbidPlayerSpell(false);
+	SetForbidPlayerShot(false);
+    }

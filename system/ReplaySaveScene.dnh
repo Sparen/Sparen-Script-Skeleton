@@ -1,0 +1,425 @@
+#include "./../lib/const_sfx.dnh"
+
+@Initialize{
+    SetAutoDeleteObject(true);
+    LoadReplayList();
+
+    TBackground();
+    TReplayIndexSelection();
+}
+
+@MainLoop{
+    yield;
+}
+
+@Finalize{
+}
+
+let MENU_INDEX_SELECTION = 1;
+let MENU_NAME_ENTRY = 2;
+let menuMode = MENU_INDEX_SELECTION;
+
+function CreateTextObjectA2(let mx, let my, let size, let text){ //Note: Initial Display
+    let obj = ObjText_Create();
+    ObjText_SetText(obj, text);
+    ObjText_SetFontSize(obj, size);
+    ObjText_SetFontBold(obj, true);
+    ObjText_SetFontType(obj, "Helvetica");
+    ObjText_SetFontColorTop(obj, 128, 255, 192);
+    ObjText_SetFontColorBottom(obj, 128, 192, 255);
+    Obj_SetRenderPriorityI(obj, 40);
+    ObjRender_SetX(obj, mx);
+    ObjRender_SetY(obj, my);
+    return obj;
+}
+
+function CreateTextObject(let mx, let my, let size, let text){ //Replay input characters
+    let obj = ObjText_Create();
+    ObjText_SetText(obj, text);
+    ObjText_SetFontSize(obj, size);
+    ObjText_SetFontType(obj, "Russell Square Regular");
+    ObjText_SetFontBold(obj, true);
+    ObjText_SetFontColorTop(obj, 128, 128, 255);
+    ObjText_SetFontColorBottom(obj, 64, 64, 255);
+    ObjText_SetFontBorderType(obj, BORDER_FULL);
+    ObjText_SetFontBorderColor(obj, 255, 255, 255);
+    ObjText_SetFontBorderWidth(obj, 2);
+    Obj_SetRenderPriorityI(obj, 10);
+    ObjRender_SetX(obj, mx);
+    ObjRender_SetY(obj, my);
+    return obj;
+}
+
+function TRSSBackground(){
+    let dir = GetCurrentScriptDirectory();
+
+    let objText = ObjText_Create();
+    ObjText_SetText(objText, "Replay Save");
+    ObjText_SetFontSize(objText, 30);
+    ObjText_SetFontType(objText, "KG Modern Monogram Plain");
+    ObjText_SetFontBold(objText, true);
+    ObjText_SetFontColorTop(objText, 64, 192, 150);
+    ObjText_SetFontColorBottom(objText, 64, 192, 128);
+    ObjText_SetFontBorderType(objText, BORDER_FULL);
+    ObjText_SetFontBorderColor(objText, 255, 255, 255);
+    ObjText_SetFontBorderWidth(objText, 2);
+    Obj_SetRenderPriorityI(objText, 90);
+    ObjRender_SetX(objText, 16);
+    ObjRender_SetY(objText, 16);
+
+    return objText;
+}
+
+task TBackground{
+    let target = GetTransitionRenderTargetName();
+    let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+    ObjPrim_SetTexture(obj, target);
+    Obj_SetRenderPriority(obj, 0.1);
+    ObjSprite2D_SetSourceRect(obj, 0, 0, 640, 480);
+    ObjSprite2D_SetDestCenter(obj);
+    ObjRender_SetPosition(obj, 320, 240, 0);
+    ObjRender_SetAlpha(obj, 64);
+}
+
+task TReplayIndexSelection(){
+    let backgroundobj = TRSSBackground();
+
+    let cursorY = 0;
+    let page = 0;
+    let countMaxItem = REPLAY_INDEX_DIGIT_MAX - REPLAY_INDEX_DIGIT_MIN + 1;
+    let countItemPerPage = 20;
+    let pageMax = trunc((countMaxItem - 1) / countItemPerPage);
+    pageMax = max(pageMax, 1);
+    let lastPageMaxCursorY = trunc(countMaxItem % countItemPerPage);
+
+    let allobj = [];
+
+    task TMenuItem(let itemY){
+        let objcount = 0;
+
+        let objText = CreateTextObjectA2(16, 64 + 16 * itemY, 20, ""); //x,y,size,text
+        ObjText_SetFontBorderWidth(objText, 1);
+        Obj_SetRenderPriorityI(objText, 90);
+        let objText2 = CreateTextObjectA2(136, 64 + 16 * itemY, 20, ""); //x,y,size,text
+        ObjText_SetFontBorderWidth(objText2, 1);
+        Obj_SetRenderPriorityI(objText2, 90);
+        let objText3 = CreateTextObjectA2(320, 64 + 16 * itemY, 20, ""); //x,y,size,text
+        ObjText_SetFontBorderWidth(objText3, 1);
+        Obj_SetRenderPriorityI(objText3, 90);
+        let objText4 = CreateTextObjectA2(448, 64 + 16 * itemY, 20, ""); //x,y,size,text
+        ObjText_SetFontBorderWidth(objText4, 1);
+        Obj_SetRenderPriorityI(objText4, 90);
+        let objText5 = CreateTextObjectA2(528, 64 + 16 * itemY, 20, ""); //x,y,size,text
+        ObjText_SetFontBorderWidth(objText5, 1);
+        Obj_SetRenderPriorityI(objText5, 90);
+
+        let image = GetCurrentScriptDirectory() ~ "./../img/Cybershot.png"; //Define path
+        let objSelect = ObjPrim_Create(OBJ_SPRITE_2D);
+        ObjPrim_SetTexture(objSelect, image);
+        ObjSprite2D_SetSourceRect(objSelect, 0, 0, 15, 15);
+        ObjSprite2D_SetDestCenter(objSelect);
+        Obj_SetRenderPriorityI(objSelect, 90);
+        ObjRender_SetPosition(objSelect, 8, 64 + 16 * itemY + 9, 1);
+        ObjRender_SetBlendType(objSelect, BLEND_ADD_ARGB);
+        allobj = allobj ~ [objText, objText2, objText3, objText4, objSelect];
+
+        let oldPage = -1;
+        while(menuMode == MENU_INDEX_SELECTION){
+            if(page != oldPage){
+                let text = ""; //replay number and name
+                let text2 = ""; //score, player
+                let text3 = ""; //date
+                let text4 = ""; //fps
+                let text5 = ""; //category
+                let index = page * countItemPerPage + itemY + 1;
+                text = rtos("00", index) ~ " ";
+                if(IsValidReplayIndex(index)){
+                    text = text ~ vtos("-8s", GetReplayInfo(index, REPLAY_USER_NAME)) ~ " ";
+                    text2 = rtos("000000000000", GetReplayInfo(index, REPLAY_TOTAL_SCORE)) ~ "  ";
+                    text2 = text2 ~ vtos("-8s", GetReplayInfo(index, REPLAY_PLAYER_NAME)) ~ " ";
+                    text3 = GetReplayInfo(index, REPLAY_DATE_TIME) ~ " ";
+                    text4 = vtos("03.2f", GetReplayInfo(index, REPLAY_FPS_AVERAGE)) ~ "fps ";
+
+                    let comment = SplitString(GetReplayInfo(index, REPLAY_COMMENT), "/");
+                    let tdiff = atoi(comment[0]);
+                    if(atoi(comment[7]) == 0){ //Not spell or stage replay
+                        alternative(tdiff)
+                        case(0){text5 = "Easy ";}
+                        case(1){text5 = "Normal ";}
+                        case(2){text5 = "Hard ";}
+                        case(3){text5 = "Lunatic ";}
+                        case(4){text5 = "Extra ";}
+                    } else { //It's a spell replay, display the replay string (spell # or stage #) instead of game diff.
+                        text5 = comment[8];
+                    }
+                } else {
+                    text = text ~ "No Data";
+                }
+
+                ObjText_SetText(objText, text);
+                ObjText_SetText(objText2, text2);
+                ObjText_SetText(objText3, text3);
+                ObjText_SetText(objText4, text4);
+                ObjText_SetText(objText5, text5);
+                oldPage = page;
+            }
+            
+            if(page == pageMax && itemY >= lastPageMaxCursorY){
+                Obj_SetVisible(objText, false);
+                Obj_SetVisible(objText2, false);
+                Obj_SetVisible(objText3, false);
+                Obj_SetVisible(objText4, false);
+                Obj_SetVisible(objText5, false);
+                Obj_SetVisible(objSelect, false);
+            } else {
+                Obj_SetVisible(objText, true);
+                Obj_SetVisible(objText2, true);
+                Obj_SetVisible(objText3, true);
+                Obj_SetVisible(objText4, true);
+                Obj_SetVisible(objText5, true);
+                Obj_SetVisible(objSelect, itemY == cursorY);
+            }
+
+            ObjSprite2D_SetSourceRect(objSelect, 0 + 15*floor((objcount%16)/4), 0, 15 + 15*floor((objcount%16)/4), 15);
+
+            objcount++;
+            yield;
+        }
+        Obj_Delete(objText);
+        Obj_Delete(objText2);
+        Obj_Delete(objText3);
+        Obj_Delete(objText4);
+        Obj_Delete(objText5);
+        Obj_Delete(objSelect);
+    }
+
+    ascent(let iItem in 0 .. countItemPerPage) {
+        TMenuItem(iItem);
+    }
+
+    while(GetVirtualKeyState(VK_OK) != KEY_FREE){yield;}
+
+    let frameKeyHold = 0;
+    while(menuMode == MENU_INDEX_SELECTION) {
+        if(GetVirtualKeyState(VK_OK) == KEY_PULL) {
+            menuMode = MENU_NAME_ENTRY;
+            let index = page * countItemPerPage + cursorY + 1;
+            TNameEntry(index);
+            GS(SFX_SELECTOK);
+            
+            break;
+        }
+
+        if(GetVirtualKeyState(VK_CANCEL) == KEY_PULL) {
+            SetScriptResult(RESULT_END);
+            CloseScript(GetOwnScriptID());
+            GS(SFX_SELECTCANCEL);
+            return;
+        }
+
+        if(GetVirtualKeyState(VK_UP) == KEY_PUSH || GetVirtualKeyState(VK_UP) == KEY_HOLD) {
+            frameKeyHold++;
+            if(GetVirtualKeyState(VK_UP) == KEY_PUSH || frameKeyHold == 20 ||
+                 (frameKeyHold > 20 && (frameKeyHold % 10 == 0))) {
+                cursorY--;
+                GS(SFX_SELECT);
+            }
+        } else if(GetVirtualKeyState(VK_DOWN) == KEY_PUSH || GetVirtualKeyState(VK_DOWN) == KEY_HOLD) {
+            frameKeyHold++;
+            if(GetVirtualKeyState(VK_DOWN) == KEY_PUSH || frameKeyHold == 20 ||
+                 (frameKeyHold > 20 && (frameKeyHold % 10 == 0))) {
+                cursorY++;
+                GS(SFX_SELECT);
+            }
+        } else if(GetVirtualKeyState(VK_LEFT) == KEY_PUSH || GetVirtualKeyState(VK_LEFT) == KEY_HOLD) {
+            frameKeyHold++;
+            if(GetVirtualKeyState(VK_LEFT) == KEY_PUSH || frameKeyHold == 20 ||
+                 (frameKeyHold > 20 && (frameKeyHold % 10 == 0))) {
+                page--;
+                GS(SFX_SELECT);
+            }
+        } else if(GetVirtualKeyState(VK_RIGHT) == KEY_PUSH || GetVirtualKeyState(VK_RIGHT) == KEY_HOLD) {
+            frameKeyHold++;
+            if(GetVirtualKeyState(VK_RIGHT) == KEY_PUSH || frameKeyHold == 20 ||
+                 (frameKeyHold > 20 && (frameKeyHold % 10 == 0))) {
+                page++;
+                GS(SFX_SELECT);
+            }
+        } else {
+            frameKeyHold = 0;
+        }
+
+        if(page < 0) {
+            page = pageMax;
+        } else if(page > pageMax) {
+            page = 0;
+        }
+
+        if(page != pageMax) {
+            if(cursorY < 0) {
+                cursorY = countItemPerPage - 1;
+            } else if(cursorY >= countItemPerPage) {
+                cursorY = 0;
+            }
+        } else {
+            if(cursorY < 0) {
+                cursorY = lastPageMaxCursorY - 1;
+            } else if(cursorY >= lastPageMaxCursorY) {
+                cursorY = 0;
+            }
+        }
+
+        yield;
+    }
+
+    Obj_Delete(backgroundobj);
+    ascent(i in 0..length(allobj)){Obj_Delete(allobj[i]);}
+}
+
+
+task TNameEntry(let replayIndex){
+    let strTextIn = 
+    [
+        ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"],
+        ["Q","R","S","T","U","V","W","X","Y","Z",".",",",":",";","_","@"],
+        ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"],
+        ["q","r","s","t","u","v","w","x","y","z","+","-","/","*","=","%"],
+        ["0","1","2","3","4","5","6","7","8","9","0","!","?","'","\"","$"],
+        ["(",")","{","}","<",">","&","#","|","~","^"," "," "," "," ","END"]
+    ]; //Text that shows up after you select it
+
+    let strTextView = 
+    [
+        ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"],
+        ["Q","R","S","T","U","V","W","X","Y","Z",".",",",":",";","_","@"],
+        ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"],
+        ["q","r","s","t","u","v","w","x","y","z","+","-","/","*","=","%"],
+        ["0","1","2","3","4","5","6","7","8","9","0","!","?","'","\"","$"],
+        ["(",")","{","}","<",">","&","#","|","~","^"," "," "," "," ","END"]
+    ];
+
+    let cursorX = 0;
+    let cursorY = 0;
+    let maxCursorX = length(strTextIn[0]);
+    let maxCursorY = length(strTextIn);
+
+    task TMenuItem(let itemX, let itemY) {
+        let objText = CreateTextObject(120 + itemX * 24, 200 + itemY * 24, 22, strTextView[itemY][itemX]);
+        let objSelect = CreateTextObject(120 + itemX * 24, 200 + itemY * 24, 22, strTextView[itemY][itemX]);
+        ObjText_SetSyntacticAnalysis(objText, false);
+        ObjText_SetSyntacticAnalysis(objSelect, false);
+        ObjRender_SetBlendType(objSelect, BLEND_ADD_RGB);
+        ObjText_SetFontType(objText, "Helvetica");
+        ObjText_SetFontType(objSelect, "Helvetica");
+
+        while(menuMode == MENU_NAME_ENTRY) {
+            Obj_SetVisible(objSelect, itemX == cursorX && itemY == cursorY);
+            yield;
+        }
+        Obj_Delete(objText);
+        Obj_Delete(objSelect);
+    }
+
+    ascent(let iY in 0..maxCursorY) {
+        ascent(let iX in 0 .. maxCursorX) {
+            TMenuItem(iX, iY);
+        }
+    }
+
+    while(GetVirtualKeyState(VK_OK) != KEY_FREE){yield;}
+
+    let userName = GetAreaCommonData("UserName", "ReplayName", "");
+    let objName = CreateTextObject(160, 96, 28, "");
+    task TNameCursor() {
+        let objCursor = CreateTextObject(0, 96, 28, "_");
+        while(menuMode == MENU_NAME_ENTRY) {
+            let nameLength = length(userName);
+            ObjRender_SetX(objCursor, 160 + nameLength * 17);
+            Obj_SetVisible(objCursor, nameLength < 8);
+            yield;
+        }
+        Obj_Delete(objCursor);
+    }
+    TNameCursor;
+
+    let frameKeyHold = 0;
+    while(menuMode == MENU_NAME_ENTRY) {
+        
+        if(GetVirtualKeyState(VK_OK) == KEY_PULL) {
+            let nameLength = length(userName);
+            if(cursorX == maxCursorX - 1 && cursorY == maxCursorY - 1) {
+                if(nameLength == 0) { //upon trying to save, you must have a valid name
+                    userName = "???";
+                } else {
+                    SetAreaCommonData("UserName", "ReplayName", userName);
+                    SaveCommonDataAreaA2("UserName", GetCurrentScriptDirectory() ~ "./../data/UserName.dat");
+
+                    SaveReplay(replayIndex, userName);
+                    SetScriptResult(RESULT_END);
+                    CloseScript(GetOwnScriptID());
+                    return;
+                }
+            } else if(nameLength < 8) {
+                userName = userName ~ strTextIn[cursorY][cursorX];
+            }
+        }
+        if(GetVirtualKeyState(VK_CANCEL) == KEY_PULL) {
+            let nameLength = length(userName);
+            if(nameLength > 0) {
+                userName = userName[0..nameLength-1];
+            }
+            GS(SFX_SELECTCANCEL);
+        }
+        ObjText_SetText(objName, userName);
+
+        if(GetVirtualKeyState(VK_UP) == KEY_PUSH || GetVirtualKeyState(VK_UP) == KEY_HOLD) {
+            frameKeyHold++;
+            if(GetVirtualKeyState(VK_UP) == KEY_PUSH || frameKeyHold == 20 ||
+                 (frameKeyHold > 20 && (frameKeyHold % 10 == 0))) {
+                cursorY--;
+                GS(SFX_SELECT);
+            }
+        } else if(GetVirtualKeyState(VK_DOWN) == KEY_PUSH || GetVirtualKeyState(VK_DOWN) == KEY_HOLD) {
+            frameKeyHold++;
+            if(GetVirtualKeyState(VK_DOWN) == KEY_PUSH || frameKeyHold == 20 ||
+                 (frameKeyHold > 20 && (frameKeyHold % 10 == 0))) {
+                cursorY++;
+                GS(SFX_SELECT);
+            }
+        } else if(GetVirtualKeyState(VK_LEFT) == KEY_PUSH || GetVirtualKeyState(VK_LEFT) == KEY_HOLD) {
+            frameKeyHold++;
+            if(GetVirtualKeyState(VK_LEFT) == KEY_PUSH || frameKeyHold == 20 ||
+                 (frameKeyHold > 20 && (frameKeyHold % 10 == 0))) {
+                cursorX--;
+                GS(SFX_SELECT);
+            }
+        } else if(GetVirtualKeyState(VK_RIGHT) == KEY_PUSH || GetVirtualKeyState(VK_RIGHT) == KEY_HOLD) {
+            frameKeyHold++;
+            if(GetVirtualKeyState(VK_RIGHT) == KEY_PUSH || frameKeyHold == 20 ||
+                 (frameKeyHold > 20 && (frameKeyHold % 10 == 0))) {
+                cursorX++;
+                GS(SFX_SELECT);
+            }
+        } else {
+            frameKeyHold = 0;
+        }
+
+        if(cursorX < 0) {
+            cursorX = maxCursorX - 1;
+        } else if(cursorX >= maxCursorX) {
+            cursorX = 0;
+        }
+
+        if(cursorY < 0) {
+            cursorY = maxCursorY - 1;
+        } else if(cursorY >= maxCursorY) {
+            cursorY = 0;
+        }
+
+        yield;
+    }
+
+    SetAreaCommonData("UserName", "ReplayName", userName);
+    SaveCommonDataAreaA2("UserName", GetCurrentScriptDirectory() ~ "./../data/UserName.dat");
+}
+

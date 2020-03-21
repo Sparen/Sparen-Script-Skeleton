@@ -1,0 +1,62 @@
+//This is a list of constants used for NotifyEvent with Sound Effects.
+
+//101 - 199: Sound Effects as of SeitenTouji AMB Stage 5, prior to Sound Effect System Overhaul
+
+let SFX_ALERT = 101; //DEPRECATED
+let SFX_BEAT1 = 102; //DEPRECATED
+let SFX_BEAT2 = 103; //DEPRECATED
+let SFX_BIGBULLET = 104;
+let SFX_BIGBURST = 105;
+let SFX_BIGEXPLODE = 106;
+let SFX_BONUS = 107;
+let SFX_BOSSDIE = 108;
+let SFX_BULLET = 109;
+let SFX_BURST = 110;
+let SFX_CAPTURE = 111;
+let SFX_CHARGE = 112;
+let SFX_DEVOLVE = 113;
+let SFX_WAVEBURST = 114;
+let SFX_ELEBURST = 115;
+let SFX_ENEMYDIE = 116;
+let SFX_EXATTACK = 117;
+let SFX_EXPLODE = 118;
+let SFX_EXTEND = 119;
+let SFX_FAIL = 120; //DEPRECATED
+let SFX_GRAZE = 121; //DISABLED - SEE PLAYER SCRIPT
+let SFX_HIWAVE = 122;
+let SFX_ICE = 123; //DEPRECATED
+let SFX_ITEM = 124;
+let SFX_ITEM2 = 125; //DEPRECATED
+let SFX_LASER = 126;
+let SFX_LINEBLAST = 127;
+let SFX_LONGCHARGE = 128;
+let SFX_MECHA = 129;
+let SFX_PLAYERSHOT = 130;
+let SFX_SEIGA = 131;
+let SFX_SELECT = 132;
+let SFX_SELECTCANCEL = 133;
+let SFX_SELECTINVALID = 134;
+let SFX_SELECTOK = 135;
+let SFX_SHIELD = 136; //DEPRECATED
+let SFX_SHIKI = 137;
+let SFX_SLASH = 138;
+let SFX_SPARK = 139;
+let SFX_SPELL = 140;
+let SFX_THUNDER = 141;
+let SFX_WATER = 142;
+let SFX_WAVE = 143;
+
+//301-399: Sound Effects added during or after Sound Effect Overhaul that have not been integrated into the above system
+
+let SFX_LONGPULSE = 302;
+let SFX_FREEZE1 = 303;
+let SFX_FREEZE2 = 304;
+let SFX_CRASH = 305;
+let SFX_LASERBOLT = 306;
+let SFX_SNIPERSHOT = 307;
+let SFX_MECHAWAVE = 308;
+
+//GlobalSound (abbreviated to GS) will call one of the events in GlobalSound.dnh, and is used to play sound effects.
+function GS(event) {
+    NotifyEventAll(EV_USER + event, 0);
+}

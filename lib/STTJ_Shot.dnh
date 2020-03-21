@@ -1,0 +1,2309 @@
+#UserShotData
+
+shot_image = "./../img/STTJ_Shot.png"
+
+//Shot Delay graphic. Made by Ozzy/ExPorygon
+delay_rect = (942, 1, 974, 33)
+//delay_rect = (942, 33, 974, 65)
+//delay_rect = (974, 1, 1006, 33)
+//delay_rect = (974, 33, 1006, 65)
+
+//This is Sparen's SeitenTouji Shotsheet
+
+ShotData{ id=2000 rect=(0,0,0,0) render=ALPHA collision=0 delay_color= (59,248,80) } // SPECIAL - CODE COLOR
+
+//STTJ Lasers
+ShotData{ id=1201 rect=(0,0,15,15) render=ADD delay_color= (255,64,64) } //red 
+ShotData{ id=1202 rect=(15,0,30,15) render=ADD delay_color= (255,96,64) } //salmon 
+ShotData{ id=1203 rect=(30,0,45,15) render=ADD delay_color= (255,128,64) } //orange 
+ShotData{ id=1204 rect=(45,0,60,15) render=ADD delay_color= (255,255,64) } //yellow 
+ShotData{ id=1205 rect=(60,0,75,15) render=ADD delay_color= (192,255,64) } //yellow-green
+ShotData{ id=1206 rect=(75,0,90,15) render=ADD delay_color= (160,255,64) } //lawngreen
+ShotData{ id=1207 rect=(90,0,105,15) render=ADD delay_color= (128,255,64) } //limegreen
+ShotData{ id=1208 rect=(105,0,120,15) render=ADD delay_color= (64,255,64) } //green
+ShotData{ id=1209 rect=(120,0,135,15) render=ADD delay_color= (64,255,128) } //seagreen
+ShotData{ id=1210 rect=(135,0,150,15) render=ADD delay_color= (64,160,160) } //aquamarine
+ShotData{ id=1211 rect=(150,0,165,15) render=ADD delay_color= (64,128,192) } //skyblue
+ShotData{ id=1212 rect=(165,0,180,15) render=ADD delay_color= (64,96,255) } //blue
+ShotData{ id=1213 rect=(180,0,195,15) render=ADD delay_color= (64,64,255) } //indigo
+ShotData{ id=1214 rect=(195,0,210,15) render=ADD delay_color= (64,64,255) } //darkblue
+ShotData{ id=1215 rect=(210,0,225,15) render=ADD delay_color= (128,64,255) } //midnight
+ShotData{ id=1216 rect=(225,0,240,15) render=ADD delay_color= (192,64,192) } //violet
+ShotData{ id=1217 rect=(240,0,255,15) render=ADD delay_color= (255,64,160) } //lavender
+ShotData{ id=1218 rect=(255,0,270,15) render=ADD delay_color= (255,64,128) } //pink
+ShotData{ id=1219 rect=(270,0,285,15) render=ADD delay_color= (255,64,96) } //fuschia
+ShotData{ id=1220 rect=(285,0,300,15) render=ADD delay_color= (255,64,96) } //coral
+ShotData{ id=1221 rect=(300,0,315,15) render=ADD delay_color= (128,128,128) } //black
+
+//STTJ Dark Lasers. You must manually set the blend type to override the default.
+ShotData{ id=1251 rect=(0,15,15,30) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=1252 rect=(15,15,30,30) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=1253 rect=(30,15,45,30) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=1254 rect=(45,15,60,30) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=1255 rect=(60,15,75,30) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=1256 rect=(75,15,90,30) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=1257 rect=(90,15,105,30) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=1258 rect=(105,15,120,30) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=1259 rect=(120,15,135,30) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=1260 rect=(135,15,150,30) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=1261 rect=(150,15,165,30) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=1262 rect=(165,15,180,30) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=1263 rect=(180,15,195,30) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=1264 rect=(195,15,210,30) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=1265 rect=(210,15,225,30) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=1266 rect=(225,15,240,30) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=1267 rect=(240,15,255,30) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=1268 rect=(255,15,270,30) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=1269 rect=(270,15,285,30) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=1270 rect=(285,15,300,30) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=1271 rect=(300,15,315,30) render=ALPHA delay_color= (128,128,128) } //white
+
+//STTJ Lightning Laser
+ShotData{ id=1500 render=ADD delay_color= (64,64,255)
+    AnimationData{ 
+        animation_data=(2,384,0,416,256)
+        animation_data=(2,416,0,448,256)
+        animation_data=(2,448,0,480,256)
+        animation_data=(2,480,0,512,256)
+        animation_data=(2,512,0,544,256)
+        animation_data=(2,544,0,576,256)
+        animation_data=(2,576,0,608,256)
+        animation_data=(2,608,0,640,256)
+    }
+}
+
+//STTJ CyberShot
+//Code
+ShotData{ id=1501 render=ADD_ARGB angular_velocity = 2 delay_color= (59,248,80)
+    AnimationData{ 
+        animation_data=(4,0,150,15,165)
+        animation_data=(4,15,150,30,165)
+        animation_data=(4,30,150,45,165)
+        animation_data=(4,45,150,60,165)
+    }
+    collision = 4;
+}
+//lime
+ShotData{ id=1502 render=ADD_ARGB angular_velocity = -2 delay_color= (59,248,80)
+    AnimationData{ 
+        animation_data=(4,0,165,15,180)
+        animation_data=(4,15,165,30,180)
+        animation_data=(4,30,165,45,180)
+        animation_data=(4,45,165,60,180)
+    }
+    collision = 4;
+}
+//yellow-green
+ShotData{ id=1503 render=ADD_ARGB angular_velocity = 2 delay_color= (59,248,80)
+    AnimationData{ 
+        animation_data=(4,0,180,15,195)
+        animation_data=(4,15,180,30,195)
+        animation_data=(4,30,180,45,195)
+        animation_data=(4,45,180,60,195)
+    }
+    collision = 4;
+}
+//forest
+ShotData{ id=1504 render=ADD_ARGB angular_velocity = -2 delay_color= (59,248,80)
+    AnimationData{ 
+        animation_data=(4,0,195,15,210)
+        animation_data=(4,15,195,30,210)
+        animation_data=(4,30,195,45,210)
+        animation_data=(4,45,195,60,210)
+    }
+
+    collision = 4;
+}
+//ochre
+ShotData{ id=1505 render=ADD_ARGB angular_velocity = 2 delay_color= (59,248,80)
+    AnimationData{ 
+        animation_data=(4,60,150,75,165)
+        animation_data=(4,75,150,90,165)
+        animation_data=(4,90,150,105,165)
+        animation_data=(4,105,150,120,165)
+    }
+    collision = 4;
+}
+//salmon
+ShotData{ id=1506 render=ADD_ARGB angular_velocity = -2 delay_color= (59,248,80)
+    AnimationData{ 
+        animation_data=(4,60,165,75,180)
+        animation_data=(4,75,165,90,180)
+        animation_data=(4,90,165,105,180)
+        animation_data=(4,105,165,120,180)
+    }
+    collision = 4;
+}
+//coral
+ShotData{ id=1507 render=ADD_ARGB angular_velocity = 2 delay_color= (59,248,80)
+    AnimationData{ 
+        animation_data=(4,60,180,75,195)
+        animation_data=(4,75,180,90,195)
+        animation_data=(4,90,180,105,195)
+        animation_data=(4,105,180,120,195)
+    }
+    collision = 4;
+}
+//rust
+ShotData{ id=1508 render=ADD_ARGB angular_velocity = -2 delay_color= (59,248,80)
+    AnimationData{ 
+        animation_data=(4,60,195,75,210)
+        animation_data=(4,75,195,90,210)
+        animation_data=(4,90,195,105,210)
+        animation_data=(4,105,195,120,210)
+    }
+    collision = 4;
+}
+//blue
+ShotData{ id=1509 render=ADD_ARGB angular_velocity = 2 delay_color= (59,248,80)
+    AnimationData{ 
+        animation_data=(4,120,150,135,165)
+        animation_data=(4,135,150,150,165)
+        animation_data=(4,150,150,165,165)
+        animation_data=(4,165,150,180,165)
+    }
+    collision = 4;
+}
+//skyblue
+ShotData{ id=1510 render=ADD_ARGB angular_velocity = -2 delay_color= (59,248,80)
+    AnimationData{ 
+        animation_data=(4,120,165,135,180)
+        animation_data=(4,135,165,150,180)
+        animation_data=(4,150,165,165,180)
+        animation_data=(4,165,165,180,180)
+    }
+    collision = 4;
+}
+//cyan
+ShotData{ id=1511 render=ADD_ARGB angular_velocity = 2 delay_color= (59,248,80)
+    AnimationData{ 
+        animation_data=(4,120,180,135,195)
+        animation_data=(4,135,180,150,195)
+        animation_data=(4,150,180,165,195)
+        animation_data=(4,165,180,180,195)
+    }
+    collision = 4;
+}
+//teal
+ShotData{ id=1512 render=ADD_ARGB angular_velocity = -2 delay_color= (59,248,80)
+    AnimationData{ 
+        animation_data=(4,120,195,135,210)
+        animation_data=(4,135,195,150,210)
+        animation_data=(4,150,195,165,210)
+        animation_data=(4,165,195,180,210)
+    }
+    collision = 4;
+}
+//magenta
+ShotData{ id=1513 render=ADD_ARGB angular_velocity = 2 delay_color= (59,248,80)
+    AnimationData{ 
+        animation_data=(4,180,150,195,165)
+        animation_data=(4,195,150,210,165)
+        animation_data=(4,210,150,225,165)
+        animation_data=(4,225,150,240,165)
+    }
+    collision = 4;
+}
+//lavender
+ShotData{ id=1514 render=ADD_ARGB angular_velocity = -2 delay_color= (59,248,80)
+    AnimationData{ 
+        animation_data=(4,180,165,195,180)
+        animation_data=(4,195,165,210,180)
+        animation_data=(4,210,165,225,180)
+        animation_data=(4,225,165,240,180)
+    }
+    collision = 4;
+}
+//purple
+ShotData{ id=1515 render=ADD_ARGB angular_velocity = 2 delay_color= (59,248,80)
+    AnimationData{ 
+        animation_data=(4,180,180,195,195)
+        animation_data=(4,195,180,210,195)
+        animation_data=(4,210,180,225,195)
+        animation_data=(4,225,180,240,195)
+    }
+    collision = 4;
+}
+//nightbloom
+ShotData{ id=1516 render=ADD_ARGB angular_velocity = -2 delay_color= (59,248,80)
+    AnimationData{ 
+        animation_data=(4,180,195,195,210)
+        animation_data=(4,195,195,210,210)
+        animation_data=(4,210,195,225,210)
+        animation_data=(4,225,195,240,210)
+    }
+    collision = 4;
+}
+
+ShotData{ id=1526 rect=(240,150,271,181) render=ALPHA angular_velocity = 7 delay_color= (64,128,192) collision = 9 } //skyblue
+ShotData{ id=1527 rect=(271,150,302,181) render=ALPHA angular_velocity = 7 delay_color= (192,255,64) collision = 9 } //yellow-green
+ShotData{ id=1528 rect=(302,150,333,181) render=ALPHA angular_velocity = 7 delay_color= (255,96,64) collision = 9 } //salmon
+ShotData{ id=1529 rect=(333,150,364,181) render=ALPHA angular_velocity = 7 delay_color= (255,64,160) collision = 9 } //lavender
+
+//STTJ Fireball
+//red
+ShotData{ id=1551 render=ADD_ARGB delay_color= (255,64,64)
+    AnimationData{ 
+        animation_data=(4,400,500,429,541)
+        animation_data=(4,400,541,429,582)
+        animation_data=(4,400,623,429,664)
+    }
+    collision = 6;
+}
+//salmon
+ShotData{ id=1552 render=ADD_ARGB delay_color= (255,96,64)
+    AnimationData{ 
+        animation_data=(4,429,500,458,541)
+        animation_data=(4,429,541,458,582)
+        animation_data=(4,429,623,458,664)
+    }
+    collision = 6;
+}
+//orange
+ShotData{ id=1553 render=ADD_ARGB delay_color= (255,128,64)
+    AnimationData{ 
+        animation_data=(4,458,500,487,541)
+        animation_data=(4,458,541,487,582)
+        animation_data=(4,458,623,487,664)
+    }
+    collision = 6;
+}
+//yellow
+ShotData{ id=1554 render=ADD_ARGB delay_color= (255,255,64)
+    AnimationData{ 
+        animation_data=(4,487,500,516,541)
+        animation_data=(4,487,541,516,582)
+        animation_data=(4,487,623,516,664)
+    }
+    collision = 6;
+}
+//yellow-green
+ShotData{ id=1555 render=ADD_ARGB delay_color= (192,255,64)
+    AnimationData{ 
+        animation_data=(4,516,500,545,541)
+        animation_data=(4,516,541,545,582)
+        animation_data=(4,516,623,545,664)
+    }
+    collision = 6;
+}
+//lawngreen
+ShotData{ id=1556 render=ADD_ARGB delay_color= (160,255,64)
+    AnimationData{ 
+        animation_data=(4,545,500,574,541)
+        animation_data=(4,545,541,574,582)
+        animation_data=(4,545,623,574,664)
+    }
+    collision = 6;
+}
+//limegreen
+ShotData{ id=1557 render=ADD_ARGB delay_color= (128,255,64)
+    AnimationData{ 
+        animation_data=(4,574,500,603,541)
+        animation_data=(4,574,541,603,582)
+        animation_data=(4,574,623,603,664)
+    }
+    collision = 6;
+}
+//green
+ShotData{ id=1558 render=ADD_ARGB delay_color= (64,255,64)
+    AnimationData{ 
+        animation_data=(4,603,500,632,541)
+        animation_data=(4,603,541,632,582)
+        animation_data=(4,603,623,632,664)
+    }
+    collision = 6;
+}
+//seagreen
+ShotData{ id=1559 render=ADD_ARGB delay_color= (64,255,128)
+    AnimationData{ 
+        animation_data=(4,632,500,661,541)
+        animation_data=(4,632,541,661,582)
+        animation_data=(4,632,623,661,664)
+    }
+    collision = 6;
+}
+//aquamarine
+ShotData{ id=1560 render=ADD_ARGB delay_color= (64,160,160)
+    AnimationData{ 
+        animation_data=(4,661,500,690,541)
+        animation_data=(4,661,541,690,582)
+        animation_data=(4,661,623,690,664)
+    }
+    collision = 6;
+}
+//skyblue
+ShotData{ id=1561 render=ADD_ARGB delay_color= (64,128,192)
+    AnimationData{ 
+        animation_data=(4,690,500,719,541)
+        animation_data=(4,690,541,719,582)
+        animation_data=(4,690,623,719,664)
+    }
+    collision = 6;
+}
+//blue
+ShotData{ id=1562 render=ADD_ARGB delay_color= (64,96,255)
+    AnimationData{ 
+        animation_data=(4,719,500,748,541)
+        animation_data=(4,719,541,748,582)
+        animation_data=(4,719,623,748,664)
+    }
+    collision = 6;
+}
+//indigo
+ShotData{ id=1563 render=ADD_ARGB delay_color= (64,64,255)
+    AnimationData{ 
+        animation_data=(4,748,500,777,541)
+        animation_data=(4,748,541,777,582)
+        animation_data=(4,748,623,777,664)
+    }
+    collision = 6;
+}
+//darkblue
+ShotData{ id=1564 render=ADD_ARGB delay_color= (64,64,255)
+    AnimationData{ 
+        animation_data=(4,777,500,806,541)
+        animation_data=(4,777,541,806,582)
+        animation_data=(4,777,623,806,664)
+    }
+    collision = 6;
+}
+//midnight
+ShotData{ id=1565 render=ADD_ARGB delay_color= (128,64,255)
+    AnimationData{ 
+        animation_data=(4,806,500,835,541)
+        animation_data=(4,806,541,835,582)
+        animation_data=(4,806,623,835,664)
+    }
+    collision = 6;
+}
+//violet
+ShotData{ id=1566 render=ADD_ARGB delay_color= (192,64,192)
+    AnimationData{ 
+        animation_data=(4,835,500,864,541)
+        animation_data=(4,835,541,864,582)
+        animation_data=(4,835,623,864,664)
+    }
+    collision = 6;
+}
+//lavender
+ShotData{ id=1567 render=ADD_ARGB delay_color= (255,64,160)
+    AnimationData{ 
+        animation_data=(4,864,500,893,541)
+        animation_data=(4,864,541,893,582)
+        animation_data=(4,864,623,893,664)
+    }
+    collision = 6;
+}
+//pink
+ShotData{ id=1568 render=ADD_ARGB delay_color= (255,64,128)
+    AnimationData{ 
+        animation_data=(4,893,500,922,541)
+        animation_data=(4,893,541,922,582)
+        animation_data=(4,893,623,922,664)
+    }
+    collision = 6;
+}
+//fuschia
+ShotData{ id=1569 render=ADD_ARGB delay_color= (255,64,96)
+    AnimationData{ 
+        animation_data=(4,922,500,951,541)
+        animation_data=(4,922,541,951,582)
+        animation_data=(4,922,623,951,664)
+    }
+    collision = 6;
+}
+//coral
+ShotData{ id=1570 render=ADD_ARGB delay_color= (255,64,96)
+    AnimationData{ 
+        animation_data=(4,951,500,980,541)
+        animation_data=(4,951,541,980,582)
+        animation_data=(4,951,623,980,664)
+    }
+    collision = 6;
+}
+//gray
+ShotData{ id=1571 render=ADD_ARGB delay_color= (128,128,128)
+    AnimationData{ 
+        animation_data=(4,980,500,1009,541)
+        animation_data=(4,980,541,1009,582)
+        animation_data=(4,980,623,1009,664)
+    }
+    collision = 6;
+}
+
+//STTJ Layer Bullets - Medium
+ShotData{ id=1600 rect=(400,680,427,707) render=ALPHA delay_color= (128,128,128) } //black
+ShotData{ id=1601 rect=(427,680,454,707) render=ALPHA delay_color= (128,128,128) } //white
+ShotData{ id=1602 rect=(454,680,481,707) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=1603 rect=(481,680,508,707) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=1604 rect=(508,680,535,707) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=1605 rect=(535,680,562,707) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=1606 rect=(562,680,589,707) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=1607 rect=(589,680,616,707) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=1608 rect=(616,680,643,707) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=1609 rect=(643,680,670,707) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=1610 rect=(670,680,697,707) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=1611 rect=(400,707,427,734) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=1612 rect=(427,707,454,734) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=1613 rect=(454,707,481,734) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=1614 rect=(481,707,508,734) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=1615 rect=(508,707,535,734) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=1616 rect=(535,707,562,734) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=1617 rect=(562,707,589,734) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=1618 rect=(589,707,616,734) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=1619 rect=(616,707,643,734) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=1620 rect=(643,707,670,734) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=1621 rect=(670,707,697,734) render=ALPHA delay_color= (255,64,96) } //coral
+
+//STTJ Layer Bullets - Large
+ShotData{ id=1622 rect=(400,734,433,767) render=ALPHA delay_color= (128,128,128) } //black
+ShotData{ id=1623 rect=(433,734,466,767) render=ALPHA delay_color= (128,128,128) } //white
+ShotData{ id=1624 rect=(466,734,499,767) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=1625 rect=(499,734,532,767) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=1626 rect=(532,734,565,767) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=1627 rect=(565,734,598,767) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=1628 rect=(598,734,631,767) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=1629 rect=(631,734,664,767) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=1630 rect=(664,734,697,767) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=1631 rect=(400,767,433,800) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=1632 rect=(433,767,466,800) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=1633 rect=(466,767,499,800) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=1634 rect=(499,767,532,800) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=1635 rect=(532,767,565,800) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=1636 rect=(565,767,598,800) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=1637 rect=(598,767,631,800) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=1638 rect=(631,767,664,800) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=1639 rect=(664,767,697,800) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=1640 rect=(400,800,433,833) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=1641 rect=(433,800,466,833) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=1642 rect=(466,800,499,833) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=1643 rect=(499,800,532,833) render=ALPHA delay_color= (255,64,96) } //coral
+
+//STTJ Layer Bullets - Small
+ShotData{ id=1644 rect=(400,833,421,854) render=ALPHA delay_color= (128,128,128) } //black
+ShotData{ id=1645 rect=(421,833,442,854) render=ALPHA delay_color= (128,128,128) } //white
+ShotData{ id=1646 rect=(442,833,463,854) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=1647 rect=(463,833,484,854) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=1648 rect=(484,833,505,854) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=1649 rect=(505,833,526,854) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=1650 rect=(526,833,547,854) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=1651 rect=(547,833,568,854) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=1652 rect=(568,833,589,854) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=1653 rect=(589,833,610,854) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=1654 rect=(610,833,631,854) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=1655 rect=(631,833,652,854) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=1656 rect=(652,833,673,854) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=1657 rect=(673,833,694,854) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=1658 rect=(400,854,421,875) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=1659 rect=(421,854,442,875) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=1660 rect=(442,854,463,875) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=1661 rect=(463,854,484,875) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=1662 rect=(484,854,505,875) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=1663 rect=(505,854,526,875) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=1664 rect=(526,854,547,875) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=1665 rect=(547,854,568,875) render=ALPHA delay_color= (255,64,96) } //coral
+
+//STTJ Layer Bullets - Extra Small
+ShotData{ id=1666 rect=(400,875,415,890) render=ALPHA delay_color= (128,128,128) } //black
+ShotData{ id=1667 rect=(415,875,430,890) render=ALPHA delay_color= (128,128,128) } //white
+ShotData{ id=1668 rect=(430,875,445,890) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=1669 rect=(445,875,460,890) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=1670 rect=(460,875,475,890) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=1671 rect=(475,875,490,890) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=1672 rect=(490,875,505,890) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=1673 rect=(505,875,520,890) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=1674 rect=(520,875,535,890) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=1675 rect=(535,875,550,890) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=1676 rect=(550,875,565,890) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=1677 rect=(565,875,580,890) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=1678 rect=(580,875,595,890) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=1679 rect=(595,875,610,890) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=1680 rect=(610,875,625,890) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=1681 rect=(625,875,640,890) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=1682 rect=(640,875,655,890) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=1683 rect=(655,875,670,890) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=1684 rect=(400,890,415,905) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=1685 rect=(415,890,430,905) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=1686 rect=(430,890,445,905) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=1687 rect=(445,890,460,905) render=ALPHA delay_color= (255,64,96) } //coral
+
+//STTJ Layer Bullets - Extra Extra Small
+ShotData{ id=1688 rect=(400,905,409,914) render=ALPHA delay_color= (128,128,128) } //black
+ShotData{ id=1689 rect=(409,905,418,914) render=ALPHA delay_color= (128,128,128) } //white
+ShotData{ id=1690 rect=(418,905,427,914) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=1691 rect=(427,905,436,914) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=1692 rect=(436,905,445,914) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=1693 rect=(445,905,454,914) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=1694 rect=(454,905,463,914) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=1695 rect=(463,905,472,914) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=1696 rect=(472,905,481,914) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=1697 rect=(481,905,490,914) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=1698 rect=(490,905,499,914) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=1699 rect=(499,905,508,914) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=1700 rect=(508,905,517,914) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=1701 rect=(517,905,526,914) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=1702 rect=(526,905,535,914) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=1703 rect=(535,905,544,914) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=1704 rect=(544,905,553,914) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=1705 rect=(553,905,562,914) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=1706 rect=(562,905,571,914) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=1707 rect=(571,905,580,914) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=1708 rect=(580,905,589,914) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=1709 rect=(589,905,598,914) render=ALPHA delay_color= (255,64,96) } //coral
+
+//STTJ Square Layer Bullets - Large, Left Rot [Large Layer +/- 5 all sides]
+ShotData{ id=1710 rect=(405,739,428,762) render=ALPHA angular_velocity = -4 delay_color= (128,128,128) } //black
+ShotData{ id=1711 rect=(438,739,461,762) render=ALPHA angular_velocity = -4 delay_color= (128,128,128) } //white
+ShotData{ id=1712 rect=(471,739,494,762) render=ALPHA angular_velocity = -4 delay_color= (255,64,64) } //red 
+ShotData{ id=1713 rect=(504,739,527,762) render=ALPHA angular_velocity = -4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=1714 rect=(537,739,560,762) render=ALPHA angular_velocity = -4 delay_color= (255,128,64) } //orange 
+ShotData{ id=1715 rect=(570,739,593,762) render=ALPHA angular_velocity = -4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=1716 rect=(603,739,626,762) render=ALPHA angular_velocity = -4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=1717 rect=(636,739,659,762) render=ALPHA angular_velocity = -4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=1718 rect=(669,739,692,762) render=ALPHA angular_velocity = -4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=1719 rect=(405,772,428,795) render=ALPHA angular_velocity = -4 delay_color= (64,255,64) } //green
+ShotData{ id=1720 rect=(438,772,461,795) render=ALPHA angular_velocity = -4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=1721 rect=(471,772,494,795) render=ALPHA angular_velocity = -4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=1722 rect=(504,772,527,795) render=ALPHA angular_velocity = -4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=1723 rect=(537,772,560,795) render=ALPHA angular_velocity = -4 delay_color= (64,96,255) } //blue
+ShotData{ id=1724 rect=(570,772,593,795) render=ALPHA angular_velocity = -4 delay_color= (64,64,255) } //indigo
+ShotData{ id=1725 rect=(603,772,626,795) render=ALPHA angular_velocity = -4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=1726 rect=(636,772,659,795) render=ALPHA angular_velocity = -4 delay_color= (128,64,255) } //midnight
+ShotData{ id=1727 rect=(669,772,692,795) render=ALPHA angular_velocity = -4 delay_color= (192,64,192) } //violet
+ShotData{ id=1728 rect=(405,805,428,828) render=ALPHA angular_velocity = -4 delay_color= (255,64,160) } //lavender
+ShotData{ id=1729 rect=(438,805,461,828) render=ALPHA angular_velocity = -4 delay_color= (255,64,128) } //pink
+ShotData{ id=1730 rect=(471,805,494,828) render=ALPHA angular_velocity = -4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=1731 rect=(504,805,527,828) render=ALPHA angular_velocity = -4 delay_color= (255,64,96) } //coral
+
+//STTJ Square Layer Bullets - Medium, Left Rot [Medium Layer +/- 4 all sides]
+ShotData{ id=1732 rect=(404,684,423,703) render=ALPHA angular_velocity = -4 delay_color= (128,128,128) } //black
+ShotData{ id=1733 rect=(431,684,450,703) render=ALPHA angular_velocity = -4 delay_color= (128,128,128) } //white
+ShotData{ id=1734 rect=(458,684,477,703) render=ALPHA angular_velocity = -4 delay_color= (255,64,64) } //red
+ShotData{ id=1735 rect=(485,684,504,703) render=ALPHA angular_velocity = -4 delay_color= (255,96,64) } //salmon
+ShotData{ id=1736 rect=(512,684,531,703) render=ALPHA angular_velocity = -4 delay_color= (255,128,64) } //orange
+ShotData{ id=1737 rect=(539,684,558,703) render=ALPHA angular_velocity = -4 delay_color= (255,255,64) } //yellow
+ShotData{ id=1738 rect=(566,684,585,703) render=ALPHA angular_velocity = -4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=1739 rect=(593,684,612,703) render=ALPHA angular_velocity = -4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=1740 rect=(620,684,639,703) render=ALPHA angular_velocity = -4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=1741 rect=(647,684,666,703) render=ALPHA angular_velocity = -4 delay_color= (64,255,64) } //green
+ShotData{ id=1742 rect=(674,684,693,703) render=ALPHA angular_velocity = -4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=1743 rect=(404,711,423,730) render=ALPHA angular_velocity = -4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=1744 rect=(431,711,450,730) render=ALPHA angular_velocity = -4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=1745 rect=(458,711,477,730) render=ALPHA angular_velocity = -4 delay_color= (64,96,255) } //blue
+ShotData{ id=1746 rect=(485,711,504,730) render=ALPHA angular_velocity = -4 delay_color= (64,64,255) } //indigo
+ShotData{ id=1747 rect=(512,711,531,730) render=ALPHA angular_velocity = -4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=1748 rect=(539,711,558,730) render=ALPHA angular_velocity = -4 delay_color= (128,64,255) } //midnight
+ShotData{ id=1749 rect=(566,711,585,730) render=ALPHA angular_velocity = -4 delay_color= (192,64,192) } //violet
+ShotData{ id=1750 rect=(593,711,612,730) render=ALPHA angular_velocity = -4 delay_color= (255,64,160) } //lavender
+ShotData{ id=1751 rect=(620,711,639,730) render=ALPHA angular_velocity = -4 delay_color= (255,64,128) } //pink
+ShotData{ id=1752 rect=(647,711,666,730) render=ALPHA angular_velocity = -4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=1753 rect=(674,711,693,730) render=ALPHA angular_velocity = -4 delay_color= (255,64,96) } //coral
+
+//STTJ Square Layer Bullets - Small, Left Rot [Small Layer +/- 3 all sides]
+ShotData{ id=1754 rect=(403,836,418,851) render=ALPHA angular_velocity = -4 delay_color= (128,128,128) } //black
+ShotData{ id=1755 rect=(424,836,439,851) render=ALPHA angular_velocity = -4 delay_color= (128,128,128) } //white
+ShotData{ id=1756 rect=(445,836,460,851) render=ALPHA angular_velocity = -4 delay_color= (255,64,64) } //red
+ShotData{ id=1757 rect=(466,836,481,851) render=ALPHA angular_velocity = -4 delay_color= (255,96,64) } //salmon
+ShotData{ id=1758 rect=(487,836,502,851) render=ALPHA angular_velocity = -4 delay_color= (255,128,64) } //orange
+ShotData{ id=1759 rect=(508,836,523,851) render=ALPHA angular_velocity = -4 delay_color= (255,255,64) } //yellow
+ShotData{ id=1760 rect=(529,836,544,851) render=ALPHA angular_velocity = -4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=1761 rect=(550,836,565,851) render=ALPHA angular_velocity = -4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=1762 rect=(571,836,586,851) render=ALPHA angular_velocity = -4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=1763 rect=(592,836,607,851) render=ALPHA angular_velocity = -4 delay_color= (64,255,64) } //green
+ShotData{ id=1764 rect=(613,836,628,851) render=ALPHA angular_velocity = -4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=1765 rect=(634,836,649,851) render=ALPHA angular_velocity = -4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=1766 rect=(655,836,670,851) render=ALPHA angular_velocity = -4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=1767 rect=(676,836,691,851) render=ALPHA angular_velocity = -4 delay_color= (64,96,255) } //blue
+ShotData{ id=1768 rect=(403,857,418,872) render=ALPHA angular_velocity = -4 delay_color= (64,64,255) } //indigo
+ShotData{ id=1769 rect=(424,857,439,872) render=ALPHA angular_velocity = -4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=1770 rect=(445,857,460,872) render=ALPHA angular_velocity = -4 delay_color= (128,64,255) } //midnight
+ShotData{ id=1771 rect=(466,857,481,872) render=ALPHA angular_velocity = -4 delay_color= (192,64,192) } //violet
+ShotData{ id=1772 rect=(487,857,502,872) render=ALPHA angular_velocity = -4 delay_color= (255,64,160) } //lavender
+ShotData{ id=1773 rect=(508,857,523,872) render=ALPHA angular_velocity = -4 delay_color= (255,64,128) } //pink
+ShotData{ id=1774 rect=(529,857,544,872) render=ALPHA angular_velocity = -4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=1775 rect=(550,857,565,872) render=ALPHA angular_velocity = -4 delay_color= (255,64,96) } //coral
+
+//STTJ Square Layer Bullets - Large, Right Rot [Large Layer +/- 5 all sides]
+ShotData{ id=1810 rect=(405,739,428,762) render=ALPHA angular_velocity = 4 delay_color= (128,128,128) } //black
+ShotData{ id=1811 rect=(438,739,461,762) render=ALPHA angular_velocity = 4 delay_color= (128,128,128) } //white
+ShotData{ id=1812 rect=(471,739,494,762) render=ALPHA angular_velocity = 4 delay_color= (255,64,64) } //red 
+ShotData{ id=1813 rect=(504,739,527,762) render=ALPHA angular_velocity = 4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=1814 rect=(537,739,560,762) render=ALPHA angular_velocity = 4 delay_color= (255,128,64) } //orange 
+ShotData{ id=1815 rect=(570,739,593,762) render=ALPHA angular_velocity = 4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=1816 rect=(603,739,626,762) render=ALPHA angular_velocity = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=1817 rect=(636,739,659,762) render=ALPHA angular_velocity = 4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=1818 rect=(669,739,692,762) render=ALPHA angular_velocity = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=1819 rect=(405,772,428,795) render=ALPHA angular_velocity = 4 delay_color= (64,255,64) } //green
+ShotData{ id=1820 rect=(438,772,461,795) render=ALPHA angular_velocity = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=1821 rect=(471,772,494,795) render=ALPHA angular_velocity = 4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=1822 rect=(504,772,527,795) render=ALPHA angular_velocity = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=1823 rect=(537,772,560,795) render=ALPHA angular_velocity = 4 delay_color= (64,96,255) } //blue
+ShotData{ id=1824 rect=(570,772,593,795) render=ALPHA angular_velocity = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=1825 rect=(603,772,626,795) render=ALPHA angular_velocity = 4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=1826 rect=(636,772,659,795) render=ALPHA angular_velocity = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=1827 rect=(669,772,692,795) render=ALPHA angular_velocity = 4 delay_color= (192,64,192) } //violet
+ShotData{ id=1828 rect=(405,805,428,828) render=ALPHA angular_velocity = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=1829 rect=(438,805,461,828) render=ALPHA angular_velocity = 4 delay_color= (255,64,128) } //pink
+ShotData{ id=1830 rect=(471,805,494,828) render=ALPHA angular_velocity = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=1831 rect=(504,805,527,828) render=ALPHA angular_velocity = 4 delay_color= (255,64,96) } //coral
+
+//STTJ Square Layer Bullets - Medium, Right Rot [Medium Layer +/- 4 all sides]
+ShotData{ id=1832 rect=(404,684,423,703) render=ALPHA angular_velocity = 4 delay_color= (128,128,128) } //black
+ShotData{ id=1833 rect=(431,684,450,703) render=ALPHA angular_velocity = 4 delay_color= (128,128,128) } //white
+ShotData{ id=1834 rect=(458,684,477,703) render=ALPHA angular_velocity = 4 delay_color= (255,64,64) } //red
+ShotData{ id=1835 rect=(485,684,504,703) render=ALPHA angular_velocity = 4 delay_color= (255,96,64) } //salmon
+ShotData{ id=1836 rect=(512,684,531,703) render=ALPHA angular_velocity = 4 delay_color= (255,128,64) } //orange
+ShotData{ id=1837 rect=(539,684,558,703) render=ALPHA angular_velocity = 4 delay_color= (255,255,64) } //yellow
+ShotData{ id=1838 rect=(566,684,585,703) render=ALPHA angular_velocity = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=1839 rect=(593,684,612,703) render=ALPHA angular_velocity = 4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=1840 rect=(620,684,639,703) render=ALPHA angular_velocity = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=1841 rect=(647,684,666,703) render=ALPHA angular_velocity = 4 delay_color= (64,255,64) } //green
+ShotData{ id=1842 rect=(674,684,693,703) render=ALPHA angular_velocity = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=1843 rect=(404,711,423,730) render=ALPHA angular_velocity = 4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=1844 rect=(431,711,450,730) render=ALPHA angular_velocity = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=1845 rect=(458,711,477,730) render=ALPHA angular_velocity = 4 delay_color= (64,96,255) } //blue
+ShotData{ id=1846 rect=(485,711,504,730) render=ALPHA angular_velocity = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=1847 rect=(512,711,531,730) render=ALPHA angular_velocity = 4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=1848 rect=(539,711,558,730) render=ALPHA angular_velocity = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=1849 rect=(566,711,585,730) render=ALPHA angular_velocity = 4 delay_color= (192,64,192) } //violet
+ShotData{ id=1850 rect=(593,711,612,730) render=ALPHA angular_velocity = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=1851 rect=(620,711,639,730) render=ALPHA angular_velocity = 4 delay_color= (255,64,128) } //pink
+ShotData{ id=1852 rect=(647,711,666,730) render=ALPHA angular_velocity = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=1853 rect=(674,711,693,730) render=ALPHA angular_velocity = 4 delay_color= (255,64,96) } //coral
+
+//STTJ Square Layer Bullets - Small, Right Rot [Small Layer +/- 3 all sides]
+ShotData{ id=1854 rect=(403,836,418,851) render=ALPHA angular_velocity = 4 delay_color= (128,128,128) } //black
+ShotData{ id=1855 rect=(424,836,439,851) render=ALPHA angular_velocity = 4 delay_color= (128,128,128) } //white
+ShotData{ id=1856 rect=(445,836,460,851) render=ALPHA angular_velocity = 4 delay_color= (255,64,64) } //red
+ShotData{ id=1857 rect=(466,836,481,851) render=ALPHA angular_velocity = 4 delay_color= (255,96,64) } //salmon
+ShotData{ id=1858 rect=(487,836,502,851) render=ALPHA angular_velocity = 4 delay_color= (255,128,64) } //orange
+ShotData{ id=1859 rect=(508,836,523,851) render=ALPHA angular_velocity = 4 delay_color= (255,255,64) } //yellow
+ShotData{ id=1860 rect=(529,836,544,851) render=ALPHA angular_velocity = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=1861 rect=(550,836,565,851) render=ALPHA angular_velocity = 4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=1862 rect=(571,836,586,851) render=ALPHA angular_velocity = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=1863 rect=(592,836,607,851) render=ALPHA angular_velocity = 4 delay_color= (64,255,64) } //green
+ShotData{ id=1864 rect=(613,836,628,851) render=ALPHA angular_velocity = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=1865 rect=(634,836,649,851) render=ALPHA angular_velocity = 4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=1866 rect=(655,836,670,851) render=ALPHA angular_velocity = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=1867 rect=(676,836,691,851) render=ALPHA angular_velocity = 4 delay_color= (64,96,255) } //blue
+ShotData{ id=1868 rect=(403,857,418,872) render=ALPHA angular_velocity = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=1869 rect=(424,857,439,872) render=ALPHA angular_velocity = 4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=1870 rect=(445,857,460,872) render=ALPHA angular_velocity = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=1871 rect=(466,857,481,872) render=ALPHA angular_velocity = 4 delay_color= (192,64,192) } //violet
+ShotData{ id=1872 rect=(487,857,502,872) render=ALPHA angular_velocity = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=1873 rect=(508,857,523,872) render=ALPHA angular_velocity = 4 delay_color= (255,64,128) } //pink
+ShotData{ id=1874 rect=(529,857,544,872) render=ALPHA angular_velocity = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=1875 rect=(550,857,565,872) render=ALPHA angular_velocity = 4 delay_color= (255,64,96) } //coral
+
+//STTJ Pellets - ALPHA
+ShotData{ id=2001 rect=(0,30,15,45) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2002 rect=(15,30,30,45) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2003 rect=(30,30,45,45) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2004 rect=(45,30,60,45) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2005 rect=(60,30,75,45) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2006 rect=(75,30,90,45) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2007 rect=(90,30,105,45) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2008 rect=(105,30,120,45) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2009 rect=(120,30,135,45) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2010 rect=(135,30,150,45) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2011 rect=(150,30,165,45) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2012 rect=(165,30,180,45) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2013 rect=(180,30,195,45) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2014 rect=(195,30,210,45) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2015 rect=(210,30,225,45) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2016 rect=(225,30,240,45) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2017 rect=(240,30,255,45) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2018 rect=(255,30,270,45) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2019 rect=(270,30,285,45) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2020 rect=(285,30,300,45) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2021 rect=(300,30,315,45) render=ALPHA delay_color= (128,128,128) } //gray
+
+//STTJ Spinblades - ALPHA
+ShotData{ id=2026 rect=(0,45,15,60) render=ALPHA angular_velocity = 8 delay_color= (255,64,64) } //red 
+ShotData{ id=2027 rect=(15,45,30,60) render=ALPHA angular_velocity = -8 delay_color= (255,96,64) } //salmon 
+ShotData{ id=2028 rect=(30,45,45,60) render=ALPHA angular_velocity = 8 delay_color= (255,128,64) } //orange 
+ShotData{ id=2029 rect=(45,45,60,60) render=ALPHA angular_velocity = -8 delay_color= (255,255,64) } //yellow 
+ShotData{ id=2030 rect=(60,45,75,60) render=ALPHA angular_velocity = 8 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2031 rect=(75,45,90,60) render=ALPHA angular_velocity = -8 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2032 rect=(90,45,105,60) render=ALPHA angular_velocity = 8 delay_color= (128,255,64) } //limegreen
+ShotData{ id=2033 rect=(105,45,120,60) render=ALPHA angular_velocity = -8 delay_color= (64,255,64) } //green
+ShotData{ id=2034 rect=(120,45,135,60) render=ALPHA angular_velocity = 8 delay_color= (64,255,128) } //seagreen
+ShotData{ id=2035 rect=(135,45,150,60) render=ALPHA angular_velocity = -8 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2036 rect=(150,45,165,60) render=ALPHA angular_velocity = 8 delay_color= (64,128,192) } //skyblue
+ShotData{ id=2037 rect=(165,45,180,60) render=ALPHA angular_velocity = -8 delay_color= (64,96,255) } //blue
+ShotData{ id=2038 rect=(180,45,195,60) render=ALPHA angular_velocity = 8 delay_color= (64,64,255) } //indigo
+ShotData{ id=2039 rect=(195,45,210,60) render=ALPHA angular_velocity = -8 delay_color= (64,64,255) } //darkblue
+ShotData{ id=2040 rect=(210,45,225,60) render=ALPHA angular_velocity = 8 delay_color= (128,64,255) } //midnight
+ShotData{ id=2041 rect=(225,45,240,60) render=ALPHA angular_velocity = -8 delay_color= (192,64,192) } //violet
+ShotData{ id=2042 rect=(240,45,255,60) render=ALPHA angular_velocity = 8 delay_color= (255,64,160) } //lavender
+ShotData{ id=2043 rect=(255,45,270,60) render=ALPHA angular_velocity = -8 delay_color= (255,64,128) } //pink
+ShotData{ id=2044 rect=(270,45,285,60) render=ALPHA angular_velocity = 8 delay_color= (255,64,96) } //fuschia
+ShotData{ id=2045 rect=(285,45,300,60) render=ALPHA angular_velocity = -8 delay_color= (255,64,96) } //coral
+ShotData{ id=2046 rect=(300,45,315,60) render=ALPHA angular_velocity = 8 delay_color= (128,128,128) } //gray
+
+//STTJ Gaugestar - ALPHA
+ShotData{ id=2051 rect=(0,60,15,75) render=ALPHA angular_velocity = 8 collision = 2 delay_color= (255,64,64) } //red 
+ShotData{ id=2052 rect=(15,60,30,75) render=ALPHA angular_velocity = -8 collision = 2 delay_color= (255,96,64) } //salmon 
+ShotData{ id=2053 rect=(30,60,45,75) render=ALPHA angular_velocity = 8 collision = 2 delay_color= (255,128,64) } //orange 
+ShotData{ id=2054 rect=(45,60,60,75) render=ALPHA angular_velocity = -8 collision = 2 delay_color= (255,255,64) } //yellow 
+ShotData{ id=2055 rect=(60,60,75,75) render=ALPHA angular_velocity = 8 collision = 2 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2056 rect=(75,60,90,75) render=ALPHA angular_velocity = -8 collision = 2 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2057 rect=(90,60,105,75) render=ALPHA angular_velocity = 8 collision = 2 delay_color= (128,255,64) } //limegreen
+ShotData{ id=2058 rect=(105,60,120,75) render=ALPHA angular_velocity = -8 collision = 2 delay_color= (64,255,64) } //green
+ShotData{ id=2059 rect=(120,60,135,75) render=ALPHA angular_velocity = 8 collision = 2 delay_color= (64,255,128) } //seagreen
+ShotData{ id=2060 rect=(135,60,150,75) render=ALPHA angular_velocity = -8 collision = 2 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2061 rect=(150,60,165,75) render=ALPHA angular_velocity = 8 collision = 2 delay_color= (64,128,192) } //skyblue
+ShotData{ id=2062 rect=(165,60,180,75) render=ALPHA angular_velocity = -8 collision = 2 delay_color= (64,96,255) } //blue
+ShotData{ id=2063 rect=(180,60,195,75) render=ALPHA angular_velocity = 8 collision = 2 delay_color= (64,64,255) } //indigo
+ShotData{ id=2064 rect=(195,60,210,75) render=ALPHA angular_velocity = -8 collision = 2 delay_color= (64,64,255) } //darkblue
+ShotData{ id=2065 rect=(210,60,225,75) render=ALPHA angular_velocity = 8 collision = 2 delay_color= (128,64,255) } //midnight
+ShotData{ id=2066 rect=(225,60,240,75) render=ALPHA angular_velocity = -8 collision = 2 delay_color= (192,64,192) } //violet
+ShotData{ id=2067 rect=(240,60,255,75) render=ALPHA angular_velocity = 8 collision = 2 delay_color= (255,64,160) } //lavender
+ShotData{ id=2068 rect=(255,60,270,75) render=ALPHA angular_velocity = -8 collision = 2 delay_color= (255,64,128) } //pink
+ShotData{ id=2069 rect=(270,60,285,75) render=ALPHA angular_velocity = 8 collision = 2 delay_color= (255,64,96) } //fuschia
+ShotData{ id=2070 rect=(285,60,300,75) render=ALPHA angular_velocity = -8 collision = 2 delay_color= (255,64,96) } //coral
+ShotData{ id=2071 rect=(300,60,315,75) render=ALPHA angular_velocity = 8 collision = 2 delay_color= (128,128,128) } //gray
+
+//STTJ Coin - ALPHA
+ShotData{ id=2076 rect=(0,75,15,90) render=ALPHA angular_velocity = 4 delay_color= (255,64,64) } //red 
+ShotData{ id=2077 rect=(15,75,30,90) render=ALPHA angular_velocity = -4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=2078 rect=(30,75,45,90) render=ALPHA angular_velocity = 4 delay_color= (255,128,64) } //orange 
+ShotData{ id=2079 rect=(45,75,60,90) render=ALPHA angular_velocity = -4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=2080 rect=(60,75,75,90) render=ALPHA angular_velocity = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2081 rect=(75,75,90,90) render=ALPHA angular_velocity = -4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2082 rect=(90,75,105,90) render=ALPHA angular_velocity = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=2083 rect=(105,75,120,90) render=ALPHA angular_velocity = -4 delay_color= (64,255,64) } //green
+ShotData{ id=2084 rect=(120,75,135,90) render=ALPHA angular_velocity = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=2085 rect=(135,75,150,90) render=ALPHA angular_velocity = -4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2086 rect=(150,75,165,90) render=ALPHA angular_velocity = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=2087 rect=(165,75,180,90) render=ALPHA angular_velocity = -4 delay_color= (64,96,255) } //blue
+ShotData{ id=2088 rect=(180,75,195,90) render=ALPHA angular_velocity = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=2089 rect=(195,75,210,90) render=ALPHA angular_velocity = -4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=2090 rect=(210,75,225,90) render=ALPHA angular_velocity = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=2091 rect=(225,75,240,90) render=ALPHA angular_velocity = -4 delay_color= (192,64,192) } //violet
+ShotData{ id=2092 rect=(240,75,255,90) render=ALPHA angular_velocity = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=2093 rect=(255,75,270,90) render=ALPHA angular_velocity = -4 delay_color= (255,64,128) } //pink
+ShotData{ id=2094 rect=(270,75,285,90) render=ALPHA angular_velocity = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=2095 rect=(285,75,300,90) render=ALPHA angular_velocity = -4 delay_color= (255,64,96) } //coral
+ShotData{ id=2096 rect=(300,75,315,90) render=ALPHA angular_velocity = 4 delay_color= (128,128,128) } //gray
+
+//STTJ Dots - ALPHA
+ShotData{ id=2101 rect=(0,210,8,219) render=ALPHA fixed_angle=true delay_color= (255,64,64) } //red 
+ShotData{ id=2102 rect=(9,210,18,219) render=ALPHA fixed_angle=true delay_color= (255,96,64) } //salmon 
+ShotData{ id=2103 rect=(18,210,27,219) render=ALPHA fixed_angle=true delay_color= (255,128,64) } //orange 
+ShotData{ id=2104 rect=(27,210,36,219) render=ALPHA fixed_angle=true delay_color= (255,255,64) } //yellow 
+ShotData{ id=2105 rect=(36,210,45,219) render=ALPHA fixed_angle=true delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2106 rect=(45,210,54,219) render=ALPHA fixed_angle=true delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2107 rect=(54,210,63,219) render=ALPHA fixed_angle=true delay_color= (128,255,64) } //limegreen
+ShotData{ id=2108 rect=(63,210,72,219) render=ALPHA fixed_angle=true delay_color= (64,255,64) } //green
+ShotData{ id=2109 rect=(72,210,81,219) render=ALPHA fixed_angle=true delay_color= (64,255,128) } //seagreen
+ShotData{ id=2110 rect=(81,210,90,219) render=ALPHA fixed_angle=true delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2111 rect=(90,210,99,219) render=ALPHA fixed_angle=true delay_color= (64,128,192) } //skyblue
+ShotData{ id=2112 rect=(99,210,108,219) render=ALPHA fixed_angle=true delay_color= (64,96,255) } //blue
+ShotData{ id=2113 rect=(108,210,117,219) render=ALPHA fixed_angle=true delay_color= (64,64,255) } //indigo
+ShotData{ id=2114 rect=(117,210,126,219) render=ALPHA fixed_angle=true delay_color= (64,64,255) } //darkblue
+ShotData{ id=2115 rect=(126,210,135,219) render=ALPHA fixed_angle=true delay_color= (128,64,255) } //midnight
+ShotData{ id=2116 rect=(135,210,144,219) render=ALPHA fixed_angle=true delay_color= (192,64,192) } //violet
+ShotData{ id=2117 rect=(144,210,153,219) render=ALPHA fixed_angle=true delay_color= (255,64,160) } //lavender
+ShotData{ id=2118 rect=(153,210,162,219) render=ALPHA fixed_angle=true delay_color= (255,64,128) } //pink
+ShotData{ id=2119 rect=(162,210,171,219) render=ALPHA fixed_angle=true delay_color= (255,64,96) } //fuschia
+ShotData{ id=2120 rect=(171,210,180,219) render=ALPHA fixed_angle=true delay_color= (255,64,96) } //coral
+ShotData{ id=2121 rect=(300,210,315,219) render=ALPHA fixed_angle=true delay_color= (128,128,128) } //gray
+
+//STTJ Amulet - ALPHA
+ShotData{ id=2126 rect=(0,90,15,105) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2127 rect=(15,90,30,105) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2128 rect=(30,90,45,105) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2129 rect=(45,90,60,105) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2130 rect=(60,90,75,105) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2131 rect=(75,90,90,105) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2132 rect=(90,90,105,105) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2133 rect=(105,90,120,105) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2134 rect=(120,90,135,105) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2135 rect=(135,90,150,105) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2136 rect=(150,90,165,105) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2137 rect=(165,90,180,105) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2138 rect=(180,90,195,105) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2139 rect=(195,90,210,105) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2140 rect=(210,90,225,105) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2141 rect=(225,90,240,105) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2142 rect=(240,90,255,105) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2143 rect=(255,90,270,105) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2144 rect=(270,90,285,105) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2145 rect=(285,90,300,105) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2146 rect=(300,90,315,105) render=ALPHA delay_color= (128,128,128) } //gray
+
+//STTJ Laser Nexus - ALPHA
+ShotData{ id=2151 rect=(0,219,17,236) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2152 rect=(17,219,34,236) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2153 rect=(34,219,51,236) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2154 rect=(51,219,68,236) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2155 rect=(68,219,85,236) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2156 rect=(85,219,102,236) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2157 rect=(102,219,119,236) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2158 rect=(119,219,136,236) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2159 rect=(136,219,153,236) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2160 rect=(153,219,170,236) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2161 rect=(170,219,187,236) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2162 rect=(187,219,204,236) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2163 rect=(204,219,221,236) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2164 rect=(221,219,238,236) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2165 rect=(238,219,255,236) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2166 rect=(255,219,272,236) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2167 rect=(272,219,289,236) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2168 rect=(289,219,306,236) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2169 rect=(306,219,323,236) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2170 rect=(323,219,340,236) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2171 rect=(340,219,357,236) render=ALPHA delay_color= (128,128,128) } //gray
+
+//STTJ Bullet Nexus - ALPHA
+ShotData{ id=2176 rect=(0,236,17,253) render=ALPHA angular_velocity = 4 delay_color= (255,64,64) } //red 
+ShotData{ id=2177 rect=(17,236,34,253) render=ALPHA angular_velocity = -4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=2178 rect=(34,236,51,253) render=ALPHA angular_velocity = 4 delay_color= (255,128,64) } //orange 
+ShotData{ id=2179 rect=(51,236,68,253) render=ALPHA angular_velocity = -4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=2180 rect=(68,236,85,253) render=ALPHA angular_velocity = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2181 rect=(85,236,102,253) render=ALPHA angular_velocity = -4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2182 rect=(102,236,119,253) render=ALPHA angular_velocity = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=2183 rect=(119,236,136,253) render=ALPHA angular_velocity = -4 delay_color= (64,255,64) } //green
+ShotData{ id=2184 rect=(136,236,153,253) render=ALPHA angular_velocity = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=2185 rect=(153,236,170,253) render=ALPHA angular_velocity = -4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2186 rect=(170,236,187,253) render=ALPHA angular_velocity = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=2187 rect=(187,236,204,253) render=ALPHA angular_velocity = -4 delay_color= (64,96,255) } //blue
+ShotData{ id=2188 rect=(204,236,221,253) render=ALPHA angular_velocity = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=2189 rect=(221,236,238,253) render=ALPHA angular_velocity = -4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=2190 rect=(238,236,255,253) render=ALPHA angular_velocity = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=2191 rect=(255,236,272,253) render=ALPHA angular_velocity = -4 delay_color= (192,64,192) } //violet
+ShotData{ id=2192 rect=(272,236,289,253) render=ALPHA angular_velocity = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=2193 rect=(289,236,306,253) render=ALPHA angular_velocity = -4 delay_color= (255,64,128) } //pink
+ShotData{ id=2194 rect=(306,236,323,253) render=ALPHA angular_velocity = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=2195 rect=(323,236,340,253) render=ALPHA angular_velocity = -4 delay_color= (255,64,96) } //coral
+ShotData{ id=2196 rect=(340,236,357,253) render=ALPHA angular_velocity = 4 delay_color= (128,128,128) } //gray
+
+//STTJ Gearflowers - ALPHA
+ShotData{ id=2201 rect=(0,105,15,120) render=ALPHA angular_velocity = 6 collision = 3 delay_color= (255,64,64) } //red 
+ShotData{ id=2202 rect=(15,105,30,120) render=ALPHA angular_velocity = -6 collision = 3 delay_color= (255,96,64) } //salmon 
+ShotData{ id=2203 rect=(30,105,45,120) render=ALPHA angular_velocity = 6 collision = 3 delay_color= (255,128,64) } //orange 
+ShotData{ id=2204 rect=(45,105,60,120) render=ALPHA angular_velocity = -6 collision = 3 delay_color= (255,255,64) } //yellow 
+ShotData{ id=2205 rect=(60,105,75,120) render=ALPHA angular_velocity = 6 collision = 3 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2206 rect=(75,105,90,120) render=ALPHA angular_velocity = -6 collision = 3 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2207 rect=(90,105,105,120) render=ALPHA angular_velocity = 6 collision = 3 delay_color= (128,255,64) } //limegreen
+ShotData{ id=2208 rect=(105,105,120,120) render=ALPHA angular_velocity = -6 collision = 3 delay_color= (64,255,64) } //green
+ShotData{ id=2209 rect=(120,105,135,120) render=ALPHA angular_velocity = 6 collision = 3 delay_color= (64,255,128) } //seagreen
+ShotData{ id=2210 rect=(135,105,150,120) render=ALPHA angular_velocity = -6 collision = 3 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2211 rect=(150,105,165,120) render=ALPHA angular_velocity = 6 collision = 3 delay_color= (64,128,192) } //skyblue
+ShotData{ id=2212 rect=(165,105,180,120) render=ALPHA angular_velocity = -6 collision = 3 delay_color= (64,96,255) } //blue
+ShotData{ id=2213 rect=(180,105,195,120) render=ALPHA angular_velocity = 6 collision = 3 delay_color= (64,64,255) } //indigo
+ShotData{ id=2214 rect=(195,105,210,120) render=ALPHA angular_velocity = -6 collision = 3 delay_color= (64,64,255) } //darkblue
+ShotData{ id=2215 rect=(210,105,225,120) render=ALPHA angular_velocity = 6 collision = 3 delay_color= (128,64,255) } //midnight
+ShotData{ id=2216 rect=(225,105,240,120) render=ALPHA angular_velocity = -6 collision = 3 delay_color= (192,64,192) } //violet
+ShotData{ id=2217 rect=(240,105,255,120) render=ALPHA angular_velocity = 6 collision = 3 delay_color= (255,64,160) } //lavender
+ShotData{ id=2218 rect=(255,105,270,120) render=ALPHA angular_velocity = -6 collision = 3 delay_color= (255,64,128) } //pink
+ShotData{ id=2219 rect=(270,105,285,120) render=ALPHA angular_velocity = 6 collision = 3 delay_color= (255,64,96) } //fuschia
+ShotData{ id=2220 rect=(285,105,300,120) render=ALPHA angular_velocity = -6 collision = 3 delay_color= (255,64,96) } //coral
+ShotData{ id=2221 rect=(300,105,315,120) render=ALPHA angular_velocity = 6 collision = 3 delay_color= (128,128,128) } //gray
+
+//STTJ Ringbullets - ALPHA
+ShotData{ id=2226 rect=(0,120,15,135) render=ALPHA fixed_angle=true delay_color= (255,64,64) } //red 
+ShotData{ id=2227 rect=(15,120,30,135) render=ALPHA fixed_angle=true delay_color= (255,96,64) } //salmon 
+ShotData{ id=2228 rect=(30,120,45,135) render=ALPHA fixed_angle=true delay_color= (255,128,64) } //orange 
+ShotData{ id=2229 rect=(45,120,60,135) render=ALPHA fixed_angle=true delay_color= (255,255,64) } //yellow 
+ShotData{ id=2230 rect=(60,120,75,135) render=ALPHA fixed_angle=true delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2231 rect=(75,120,90,135) render=ALPHA fixed_angle=true delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2232 rect=(90,120,105,135) render=ALPHA fixed_angle=true delay_color= (128,255,64) } //limegreen
+ShotData{ id=2233 rect=(105,120,120,135) render=ALPHA fixed_angle=true delay_color= (64,255,64) } //green
+ShotData{ id=2234 rect=(120,120,135,135) render=ALPHA fixed_angle=true delay_color= (64,255,128) } //seagreen
+ShotData{ id=2235 rect=(135,120,150,135) render=ALPHA fixed_angle=true delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2236 rect=(150,120,165,135) render=ALPHA fixed_angle=true delay_color= (64,128,192) } //skyblue
+ShotData{ id=2237 rect=(165,120,180,135) render=ALPHA fixed_angle=true delay_color= (64,96,255) } //blue
+ShotData{ id=2238 rect=(180,120,195,135) render=ALPHA fixed_angle=true delay_color= (64,64,255) } //indigo
+ShotData{ id=2239 rect=(195,120,210,135) render=ALPHA fixed_angle=true delay_color= (64,64,255) } //darkblue
+ShotData{ id=2240 rect=(210,120,225,135) render=ALPHA fixed_angle=true delay_color= (128,64,255) } //midnight
+ShotData{ id=2241 rect=(225,120,240,135) render=ALPHA fixed_angle=true delay_color= (192,64,192) } //violet
+ShotData{ id=2242 rect=(240,120,255,135) render=ALPHA fixed_angle=true delay_color= (255,64,160) } //lavender
+ShotData{ id=2243 rect=(255,120,270,135) render=ALPHA fixed_angle=true delay_color= (255,64,128) } //pink
+ShotData{ id=2244 rect=(270,120,285,135) render=ALPHA fixed_angle=true delay_color= (255,64,96) } //fuschia
+ShotData{ id=2245 rect=(285,120,300,135) render=ALPHA fixed_angle=true delay_color= (255,64,96) } //coral
+ShotData{ id=2246 rect=(300,120,315,135) render=ALPHA fixed_angle=true delay_color= (128,128,128) } //gray
+
+//STTJ Ringpellets - ALPHA
+ShotData{ id=2251 rect=(0,253,13,272) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2252 rect=(13,253,26,272) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2253 rect=(26,253,39,272) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2254 rect=(39,253,52,272) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2255 rect=(52,253,65,272) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2256 rect=(65,253,78,272) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2257 rect=(78,253,91,272) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2258 rect=(91,253,104,272) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2259 rect=(104,253,117,272) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2260 rect=(117,253,130,272) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2261 rect=(130,253,143,272) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2262 rect=(143,253,156,272) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2263 rect=(156,253,169,272) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2264 rect=(169,253,182,272) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2265 rect=(182,253,195,272) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2266 rect=(195,253,208,272) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2267 rect=(208,253,221,272) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2268 rect=(221,253,234,272) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2269 rect=(234,253,247,272) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2270 rect=(247,253,260,272) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2271 rect=(260,253,273,272) render=ALPHA delay_color= (128,128,128) } //gray
+
+//STTJ Auraorb - ALPHA
+ShotData{ id=2276 rect=(0,274,29,303) render=ALPHA fixed_angle=true delay_color= (255,64,64) } //red 
+ShotData{ id=2277 rect=(29,274,58,303) render=ALPHA fixed_angle=true delay_color= (255,96,64) } //salmon 
+ShotData{ id=2278 rect=(58,274,87,303) render=ALPHA fixed_angle=true delay_color= (255,128,64) } //orange 
+ShotData{ id=2279 rect=(87,274,116,303) render=ALPHA fixed_angle=true delay_color= (255,255,64) } //yellow 
+ShotData{ id=2280 rect=(116,274,145,303) render=ALPHA fixed_angle=true delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2281 rect=(145,274,174,303) render=ALPHA fixed_angle=true delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2282 rect=(174,274,203,303) render=ALPHA fixed_angle=true delay_color= (128,255,64) } //limegreen
+ShotData{ id=2283 rect=(203,274,232,303) render=ALPHA fixed_angle=true delay_color= (64,255,64) } //green
+ShotData{ id=2284 rect=(232,274,261,303) render=ALPHA fixed_angle=true delay_color= (64,255,128) } //seagreen
+ShotData{ id=2285 rect=(261,274,290,303) render=ALPHA fixed_angle=true delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2286 rect=(290,274,319,303) render=ALPHA fixed_angle=true delay_color= (64,128,192) } //skyblue
+ShotData{ id=2287 rect=(0,303,29,332) render=ALPHA fixed_angle=true delay_color= (64,96,255) } //blue
+ShotData{ id=2288 rect=(29,303,58,332) render=ALPHA fixed_angle=true delay_color= (64,64,255) } //indigo
+ShotData{ id=2289 rect=(58,303,87,332) render=ALPHA fixed_angle=true delay_color= (64,64,255) } //darkblue
+ShotData{ id=2290 rect=(87,303,116,332) render=ALPHA fixed_angle=true delay_color= (128,64,255) } //midnight
+ShotData{ id=2291 rect=(116,303,145,332) render=ALPHA fixed_angle=true delay_color= (192,64,192) } //violet
+ShotData{ id=2292 rect=(145,303,174,332) render=ALPHA fixed_angle=true delay_color= (255,64,160) } //lavender
+ShotData{ id=2293 rect=(174,303,203,332) render=ALPHA fixed_angle=true delay_color= (255,64,128) } //pink
+ShotData{ id=2294 rect=(203,303,232,332) render=ALPHA fixed_angle=true delay_color= (255,64,96) } //fuschia
+ShotData{ id=2295 rect=(232,303,261,332) render=ALPHA fixed_angle=true delay_color= (255,64,96) } //coral
+ShotData{ id=2296 rect=(261,303,290,332) render=ALPHA fixed_angle=true delay_color= (128,128,128) } //gray
+
+//STTJ Clearpage - ALPHA
+ShotData{ id=2301 rect=(0,342,15,357) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2302 rect=(15,342,30,357) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2303 rect=(30,342,45,357) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2304 rect=(45,342,60,357) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2305 rect=(60,342,75,357) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2306 rect=(75,342,90,357) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2307 rect=(90,342,105,357) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2308 rect=(105,342,120,357) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2309 rect=(120,342,135,357) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2310 rect=(135,342,150,357) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2311 rect=(150,342,165,357) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2312 rect=(165,342,180,357) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2313 rect=(180,342,195,357) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2314 rect=(195,342,210,357) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2315 rect=(210,342,225,357) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2316 rect=(225,342,240,357) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2317 rect=(240,342,255,357) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2318 rect=(255,342,270,357) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2319 rect=(270,342,285,357) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2320 rect=(285,342,300,357) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2321 rect=(300,342,315,357) render=ALPHA delay_color= (128,128,128) } //gray
+ShotData{ id=2322 rect=(315,342,330,357) render=ALPHA delay_color= (32,32,32) } //black
+
+//STTJ Hichew - ALPHA
+ShotData{ id=2326 rect=(0,359,15,374) render=ALPHA collision = 4 delay_color= (255,64,64) } //red 
+ShotData{ id=2327 rect=(15,359,30,374) render=ALPHA collision = 4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=2328 rect=(30,359,45,374) render=ALPHA collision = 4 delay_color= (255,128,64) } //orange 
+ShotData{ id=2329 rect=(45,359,60,374) render=ALPHA collision = 4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=2330 rect=(60,359,75,374) render=ALPHA collision = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2331 rect=(75,359,90,374) render=ALPHA collision = 4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2332 rect=(90,359,105,374) render=ALPHA collision = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=2333 rect=(105,359,120,374) render=ALPHA collision = 4 delay_color= (64,255,64) } //green
+ShotData{ id=2334 rect=(120,359,135,374) render=ALPHA collision = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=2335 rect=(135,359,150,374) render=ALPHA collision = 4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2336 rect=(150,359,165,374) render=ALPHA collision = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=2337 rect=(165,359,180,374) render=ALPHA collision = 4 delay_color= (64,96,255) } //blue
+ShotData{ id=2338 rect=(180,359,195,374) render=ALPHA collision = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=2339 rect=(195,359,210,374) render=ALPHA collision = 4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=2340 rect=(210,359,225,374) render=ALPHA collision = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=2341 rect=(225,359,240,374) render=ALPHA collision = 4 delay_color= (192,64,192) } //violet
+ShotData{ id=2342 rect=(240,359,255,374) render=ALPHA collision = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=2343 rect=(255,359,270,374) render=ALPHA collision = 4 delay_color= (255,64,128) } //pink
+ShotData{ id=2344 rect=(270,359,285,374) render=ALPHA collision = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=2345 rect=(285,359,300,374) render=ALPHA collision = 4 delay_color= (255,64,96) } //coral
+ShotData{ id=2346 rect=(300,359,315,374) render=ALPHA collision = 4 delay_color= (128,128,128) } //gray
+
+//STTJ Smallbullet - ALPHA
+ShotData{ id=2351 rect=(0,376,15,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (255,64,64) } //red 
+ShotData{ id=2352 rect=(15,376,30,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=2353 rect=(30,376,45,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (255,128,64) } //orange 
+ShotData{ id=2354 rect=(45,376,60,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=2355 rect=(60,376,75,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2356 rect=(75,376,90,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2357 rect=(90,376,105,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=2358 rect=(105,376,120,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (64,255,64) } //green
+ShotData{ id=2359 rect=(120,376,135,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=2360 rect=(135,376,150,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2361 rect=(150,376,165,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=2362 rect=(165,376,180,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (64,96,255) } //blue
+ShotData{ id=2363 rect=(180,376,195,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=2364 rect=(195,376,210,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=2365 rect=(210,376,225,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=2366 rect=(225,376,240,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (192,64,192) } //violet
+ShotData{ id=2367 rect=(240,376,255,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=2368 rect=(255,376,270,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (255,64,128) } //pink
+ShotData{ id=2369 rect=(270,376,285,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=2370 rect=(285,376,300,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (255,64,96) } //coral
+ShotData{ id=2371 rect=(300,376,315,391) render=ALPHA fixed_angle=true collision = 4 delay_color= (128,128,128) } //gray
+
+//STTJ Hollow Smallbullet - ALPHA
+ShotData{ id=2376 rect=(0,393,15,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (255,64,64) } //red 
+ShotData{ id=2377 rect=(15,393,30,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=2378 rect=(30,393,45,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (255,128,64) } //orange 
+ShotData{ id=2379 rect=(45,393,60,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=2380 rect=(60,393,75,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2381 rect=(75,393,90,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2382 rect=(90,393,105,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=2383 rect=(105,393,120,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (64,255,64) } //green
+ShotData{ id=2384 rect=(120,393,135,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=2385 rect=(135,393,150,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2386 rect=(150,393,165,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=2387 rect=(165,393,180,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (64,96,255) } //blue
+ShotData{ id=2388 rect=(180,393,195,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=2389 rect=(195,393,210,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=2390 rect=(210,393,225,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=2391 rect=(225,393,240,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (192,64,192) } //violet
+ShotData{ id=2392 rect=(240,393,255,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=2393 rect=(255,393,270,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (255,64,128) } //pink
+ShotData{ id=2394 rect=(270,393,285,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=2395 rect=(285,393,300,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (255,64,96) } //coral
+ShotData{ id=2396 rect=(300,393,315,408) render=ALPHA fixed_angle=true collision = 4 delay_color= (128,128,128) } //gray
+
+//STTJ Square Embed Smallbullet - ALPHA
+ShotData{ id=2401 rect=(0,410,15,425) render=ALPHA angular_velocity = 4 collision = 4 delay_color= (255,64,64) } //red 
+ShotData{ id=2402 rect=(15,410,30,425) render=ALPHA angular_velocity = -4 collision = 4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=2403 rect=(30,410,45,425) render=ALPHA angular_velocity = 4 collision = 4 delay_color= (255,128,64) } //orange 
+ShotData{ id=2404 rect=(45,410,60,425) render=ALPHA angular_velocity = -4 collision = 4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=2405 rect=(60,410,75,425) render=ALPHA angular_velocity = 4 collision = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2406 rect=(75,410,90,425) render=ALPHA angular_velocity = -4 collision = 4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2407 rect=(90,410,105,425) render=ALPHA angular_velocity = 4 collision = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=2408 rect=(105,410,120,425) render=ALPHA angular_velocity = -4 collision = 4 delay_color= (64,255,64) } //green
+ShotData{ id=2409 rect=(120,410,135,425) render=ALPHA angular_velocity = 4 collision = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=2410 rect=(135,410,150,425) render=ALPHA angular_velocity = -4 collision = 4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2411 rect=(150,410,165,425) render=ALPHA angular_velocity = 4 collision = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=2412 rect=(165,410,180,425) render=ALPHA angular_velocity = -4 collision = 4 delay_color= (64,96,255) } //blue
+ShotData{ id=2413 rect=(180,410,195,425) render=ALPHA angular_velocity = 4 collision = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=2414 rect=(195,410,210,425) render=ALPHA angular_velocity = -4 collision = 4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=2415 rect=(210,410,225,425) render=ALPHA angular_velocity = 4 collision = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=2416 rect=(225,410,240,425) render=ALPHA angular_velocity = -4 collision = 4 delay_color= (192,64,192) } //violet
+ShotData{ id=2417 rect=(240,410,255,425) render=ALPHA angular_velocity = 4 collision = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=2418 rect=(255,410,270,425) render=ALPHA angular_velocity = -4 collision = 4 delay_color= (255,64,128) } //pink
+ShotData{ id=2419 rect=(270,410,285,425) render=ALPHA angular_velocity = 4 collision = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=2420 rect=(285,410,300,425) render=ALPHA angular_velocity = -4 collision = 4 delay_color= (255,64,96) } //coral
+ShotData{ id=2421 rect=(300,410,315,425) render=ALPHA angular_velocity = 4 collision = 4 delay_color= (128,128,128) } //gray
+
+//STTJ Medium Bullets - ALPHA
+ShotData{ id=2426 rect=(0,443,15,458) render=ALPHA fixed_angle=true delay_color= (255,64,64) } //red 
+ShotData{ id=2427 rect=(15,443,30,458) render=ALPHA fixed_angle=true delay_color= (255,96,64) } //salmon 
+ShotData{ id=2428 rect=(30,443,45,458) render=ALPHA fixed_angle=true delay_color= (255,128,64) } //orange 
+ShotData{ id=2429 rect=(45,443,60,458) render=ALPHA fixed_angle=true delay_color= (255,255,64) } //yellow 
+ShotData{ id=2430 rect=(60,443,75,458) render=ALPHA fixed_angle=true delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2431 rect=(75,443,90,458) render=ALPHA fixed_angle=true delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2432 rect=(90,443,105,458) render=ALPHA fixed_angle=true delay_color= (128,255,64) } //limegreen
+ShotData{ id=2433 rect=(105,443,120,458) render=ALPHA fixed_angle=true delay_color= (64,255,64) } //green
+ShotData{ id=2434 rect=(120,443,135,458) render=ALPHA fixed_angle=true delay_color= (64,255,128) } //seagreen
+ShotData{ id=2435 rect=(135,443,150,458) render=ALPHA fixed_angle=true delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2436 rect=(150,443,165,458) render=ALPHA fixed_angle=true delay_color= (64,128,192) } //skyblue
+ShotData{ id=2437 rect=(165,443,180,458) render=ALPHA fixed_angle=true delay_color= (64,96,255) } //blue
+ShotData{ id=2438 rect=(180,443,195,458) render=ALPHA fixed_angle=true delay_color= (64,64,255) } //indigo
+ShotData{ id=2439 rect=(195,443,210,458) render=ALPHA fixed_angle=true delay_color= (64,64,255) } //darkblue
+ShotData{ id=2440 rect=(210,443,225,458) render=ALPHA fixed_angle=true delay_color= (128,64,255) } //midnight
+ShotData{ id=2441 rect=(225,443,240,458) render=ALPHA fixed_angle=true delay_color= (192,64,192) } //violet
+ShotData{ id=2442 rect=(240,443,255,458) render=ALPHA fixed_angle=true delay_color= (255,64,160) } //lavender
+ShotData{ id=2443 rect=(255,443,270,458) render=ALPHA fixed_angle=true delay_color= (255,64,128) } //pink
+ShotData{ id=2444 rect=(270,443,285,458) render=ALPHA fixed_angle=true delay_color= (255,64,96) } //fuschia
+ShotData{ id=2445 rect=(285,443,300,458) render=ALPHA fixed_angle=true delay_color= (255,64,96) } //coral
+ShotData{ id=2446 rect=(300,443,315,458) render=ALPHA fixed_angle=true delay_color= (128,128,128) } //gray
+
+//STTJ Dark Suppository - ALPHA
+ShotData{ id=2451 rect=(0,426,15,443) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2452 rect=(15,426,30,443) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2453 rect=(30,426,45,443) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2454 rect=(45,426,60,443) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2455 rect=(60,426,75,443) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2456 rect=(75,426,90,443) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2457 rect=(90,426,105,443) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2458 rect=(105,426,120,443) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2459 rect=(120,426,135,443) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2460 rect=(135,426,150,443) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2461 rect=(150,426,165,443) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2462 rect=(165,426,180,443) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2463 rect=(180,426,195,443) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2464 rect=(195,426,210,443) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2465 rect=(210,426,225,443) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2466 rect=(225,426,240,443) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2467 rect=(240,426,255,443) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2468 rect=(255,426,270,443) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2469 rect=(270,426,285,443) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2470 rect=(285,426,300,443) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2471 rect=(300,426,315,443) render=ALPHA delay_color= (128,128,128) } //gray
+
+//STTJ Bright Suppository - ALPHA
+ShotData{ id=2476 rect=(0,458,15,475) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2477 rect=(15,458,30,475) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2478 rect=(30,458,45,475) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2479 rect=(45,458,60,475) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2480 rect=(60,458,75,475) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2481 rect=(75,458,90,475) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2482 rect=(90,458,105,475) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2483 rect=(105,458,120,475) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2484 rect=(120,458,135,475) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2485 rect=(135,458,150,475) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2486 rect=(150,458,165,475) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2487 rect=(165,458,180,475) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2488 rect=(180,458,195,475) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2489 rect=(195,458,210,475) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2490 rect=(210,458,225,475) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2491 rect=(225,458,240,475) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2492 rect=(240,458,255,475) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2493 rect=(255,458,270,475) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2494 rect=(270,458,285,475) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2495 rect=(285,458,300,475) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2496 rect=(300,458,315,475) render=ALPHA delay_color= (128,128,128) } //gray
+
+//STTJ Arrowhead - ALPHA
+ShotData{ id=2501 rect=(0,475,15,490) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2502 rect=(15,475,30,490) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2503 rect=(30,475,45,490) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2504 rect=(45,475,60,490) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2505 rect=(60,475,75,490) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2506 rect=(75,475,90,490) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2507 rect=(90,475,105,490) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2508 rect=(105,475,120,490) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2509 rect=(120,475,135,490) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2510 rect=(135,475,150,490) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2511 rect=(150,475,165,490) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2512 rect=(165,475,180,490) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2513 rect=(180,475,195,490) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2514 rect=(195,475,210,490) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2515 rect=(210,475,225,490) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2516 rect=(225,475,240,490) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2517 rect=(240,475,255,490) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2518 rect=(255,475,270,490) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2519 rect=(270,475,285,490) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2520 rect=(285,475,300,490) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2521 rect=(300,475,315,490) render=ALPHA delay_color= (128,128,128) } //gray
+
+//STTJ Dark Arrowhead - ALPHA
+ShotData{ id=2526 rect=(0,490,15,505) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2527 rect=(15,490,30,505) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2528 rect=(30,490,45,505) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2529 rect=(45,490,60,505) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2530 rect=(60,490,75,505) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2531 rect=(75,490,90,505) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2532 rect=(90,490,105,505) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2533 rect=(105,490,120,505) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2534 rect=(120,490,135,505) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2535 rect=(135,490,150,505) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2536 rect=(150,490,165,505) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2537 rect=(165,490,180,505) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2538 rect=(180,490,195,505) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2539 rect=(195,490,210,505) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2540 rect=(210,490,225,505) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2541 rect=(225,490,240,505) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2542 rect=(240,490,255,505) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2543 rect=(255,490,270,505) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2544 rect=(270,490,285,505) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2545 rect=(285,490,300,505) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2546 rect=(300,490,315,505) render=ALPHA delay_color= (128,128,128) } //gray
+
+//STTJ Invert Pellets - ALPHA
+ShotData{ id=2551 rect=(0,505,15,520) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2552 rect=(15,505,30,520) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2553 rect=(30,505,45,520) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2554 rect=(45,505,60,520) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2555 rect=(60,505,75,520) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2556 rect=(75,505,90,520) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2557 rect=(90,505,105,520) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2558 rect=(105,505,120,520) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2559 rect=(120,505,135,520) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2560 rect=(135,505,150,520) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2561 rect=(150,505,165,520) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2562 rect=(165,505,180,520) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2563 rect=(180,505,195,520) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2564 rect=(195,505,210,520) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2565 rect=(210,505,225,520) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2566 rect=(225,505,240,520) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2567 rect=(240,505,255,520) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2568 rect=(255,505,270,520) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2569 rect=(270,505,285,520) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2570 rect=(285,505,300,520) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2571 rect=(300,505,315,520) render=ALPHA delay_color= (128,128,128) } //gray
+
+//STTJ Droplet - ALPHA
+ShotData{ id=2576 rect=(0,520,15,535) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2577 rect=(15,520,30,535) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2578 rect=(30,520,45,535) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2579 rect=(45,520,60,535) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2580 rect=(60,520,75,535) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2581 rect=(75,520,90,535) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2582 rect=(90,520,105,535) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2583 rect=(105,520,120,535) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2584 rect=(120,520,135,535) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2585 rect=(135,520,150,535) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2586 rect=(150,520,165,535) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2587 rect=(165,520,180,535) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2588 rect=(180,520,195,535) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2589 rect=(195,520,210,535) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2590 rect=(210,520,225,535) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2591 rect=(225,520,240,535) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2592 rect=(240,520,255,535) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2593 rect=(255,520,270,535) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2594 rect=(270,520,285,535) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2595 rect=(285,520,300,535) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2596 rect=(300,520,315,535) render=ALPHA delay_color= (128,128,128) } //gray
+
+//SeitenTouji Large Auraorbs - ALPHA
+ShotData{ id=2601 rect=(0,536,53,589) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2602 rect=(53,536,106,589) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2603 rect=(106,536,159,589) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2604 rect=(159,536,212,589) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2605 rect=(212,536,265,589) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2606 rect=(265,536,318,589) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2607 rect=(318,536,371,589) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2608 rect=(0,589,53,642) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2609 rect=(53,589,106,642) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2610 rect=(106,589,159,642) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2611 rect=(159,589,212,642) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2612 rect=(212,589,265,642) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2613 rect=(265,589,318,642) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2614 rect=(318,589,371,642) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2615 rect=(0,642,53,695) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2616 rect=(53,642,106,695) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2617 rect=(106,642,159,695) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2618 rect=(159,642,212,695) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2619 rect=(212,642,265,695) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2620 rect=(265,642,318,695) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2621 rect=(318,642,371,695) render=ALPHA delay_color= (128,128,128) } //gray
+
+//STTJ PCB Style Large Bullets - ALPHA
+ShotData{ id=2626 rect=(0,700,31,731) render=ALPHA collision = 11 delay_color= (255,64,64) } //red 
+ShotData{ id=2627 rect=(31,700,62,731) render=ALPHA collision = 11 delay_color= (255,96,64) } //salmon 
+ShotData{ id=2628 rect=(62,700,93,731) render=ALPHA collision = 11 delay_color= (255,128,64) } //orange 
+ShotData{ id=2629 rect=(93,700,124,731) render=ALPHA collision = 11 delay_color= (255,255,64) } //yellow 
+ShotData{ id=2630 rect=(124,700,155,731) render=ALPHA collision = 11 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2631 rect=(155,700,186,731) render=ALPHA collision = 11 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2632 rect=(186,700,217,731) render=ALPHA collision = 11 delay_color= (128,255,64) } //limegreen
+ShotData{ id=2633 rect=(217,700,248,731) render=ALPHA collision = 11 delay_color= (64,255,64) } //green
+ShotData{ id=2634 rect=(248,700,279,731) render=ALPHA collision = 11 delay_color= (64,255,128) } //seagreen
+ShotData{ id=2635 rect=(279,700,310,731) render=ALPHA collision = 11 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2636 rect=(310,700,341,731) render=ALPHA collision = 11 delay_color= (64,128,192) } //skyblue
+ShotData{ id=2637 rect=(0,731,31,762) render=ALPHA collision = 11 delay_color= (64,96,255) } //blue
+ShotData{ id=2638 rect=(31,731,62,762) render=ALPHA collision = 11 delay_color= (64,64,255) } //indigo
+ShotData{ id=2639 rect=(62,731,93,762) render=ALPHA collision = 11 delay_color= (64,64,255) } //darkblue
+ShotData{ id=2640 rect=(93,731,124,762) render=ALPHA collision = 11 delay_color= (128,64,255) } //midnight
+ShotData{ id=2641 rect=(124,731,155,762) render=ALPHA collision = 11 delay_color= (192,64,192) } //violet
+ShotData{ id=2642 rect=(155,731,186,762) render=ALPHA collision = 11 delay_color= (255,64,160) } //lavender
+ShotData{ id=2643 rect=(186,731,217,762) render=ALPHA collision = 11 delay_color= (255,64,128) } //pink
+ShotData{ id=2644 rect=(217,731,248,762) render=ALPHA collision = 11 delay_color= (255,64,96) } //fuschia
+ShotData{ id=2645 rect=(248,731,279,762) render=ALPHA collision = 11 delay_color= (255,64,96) } //coral
+ShotData{ id=2646 rect=(279,731,310,762) render=ALPHA collision = 11 delay_color= (128,128,128) } //gray
+
+//STTJ Modern Style Large Bullets - ALPHA
+ShotData{ id=2651 rect=(0,762,31,793) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2652 rect=(31,762,62,793) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2653 rect=(62,762,93,793) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2654 rect=(93,762,124,793) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2655 rect=(124,762,155,793) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2656 rect=(155,762,186,793) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2657 rect=(186,762,217,793) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2658 rect=(217,762,248,793) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2659 rect=(248,762,279,793) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2660 rect=(279,762,310,793) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2661 rect=(310,762,341,793) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2662 rect=(0,793,31,824) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2663 rect=(31,793,62,824) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2664 rect=(62,793,93,824) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2665 rect=(93,793,124,824) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2666 rect=(124,793,155,824) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2667 rect=(155,793,186,824) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2668 rect=(186,793,217,824) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2669 rect=(217,793,248,824) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2670 rect=(248,793,279,824) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2671 rect=(279,793,310,824) render=ALPHA delay_color= (128,128,128) } //gray
+
+//STTJ Crossbullet - ALPHA
+ShotData{ id=2676 rect=(0,832,15,847) render=ALPHA angular_velocity = 4 delay_color= (255,64,64) } //red 
+ShotData{ id=2677 rect=(15,832,30,847) render=ALPHA angular_velocity = -4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=2678 rect=(30,832,45,847) render=ALPHA angular_velocity = 4 delay_color= (255,128,64) } //orange 
+ShotData{ id=2679 rect=(45,832,60,847) render=ALPHA angular_velocity = -4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=2680 rect=(60,832,75,847) render=ALPHA angular_velocity = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2681 rect=(75,832,90,847) render=ALPHA angular_velocity = -4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2682 rect=(90,832,105,847) render=ALPHA angular_velocity = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=2683 rect=(105,832,120,847) render=ALPHA angular_velocity = -4 delay_color= (64,255,64) } //green
+ShotData{ id=2684 rect=(120,832,135,847) render=ALPHA angular_velocity = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=2685 rect=(135,832,150,847) render=ALPHA angular_velocity = -4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2686 rect=(150,832,165,847) render=ALPHA angular_velocity = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=2687 rect=(165,832,180,847) render=ALPHA angular_velocity = -4 delay_color= (64,96,255) } //blue
+ShotData{ id=2688 rect=(180,832,195,847) render=ALPHA angular_velocity = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=2689 rect=(195,832,210,847) render=ALPHA angular_velocity = -4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=2690 rect=(210,832,225,847) render=ALPHA angular_velocity = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=2691 rect=(225,832,240,847) render=ALPHA angular_velocity = -4 delay_color= (192,64,192) } //violet
+ShotData{ id=2692 rect=(240,832,255,847) render=ALPHA angular_velocity = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=2693 rect=(255,832,270,847) render=ALPHA angular_velocity = -4 delay_color= (255,64,128) } //pink
+ShotData{ id=2694 rect=(270,832,285,847) render=ALPHA angular_velocity = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=2695 rect=(285,832,300,847) render=ALPHA angular_velocity = -4 delay_color= (255,64,96) } //coral
+ShotData{ id=2696 rect=(300,832,315,847) render=ALPHA angular_velocity = 4 delay_color= (128,128,128) } //gray
+
+//STTJ Dualring Bullet - ALPHA
+ShotData{ id=2701 rect=(0,847,15,862) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2702 rect=(15,847,30,862) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2703 rect=(30,847,45,862) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2704 rect=(45,847,60,862) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2705 rect=(60,847,75,862) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2706 rect=(75,847,90,862) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2707 rect=(90,847,105,862) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2708 rect=(105,847,120,862) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2709 rect=(120,847,135,862) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2710 rect=(135,847,150,862) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2711 rect=(150,847,165,862) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2712 rect=(165,847,180,862) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2713 rect=(180,847,195,862) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2714 rect=(195,847,210,862) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2715 rect=(210,847,225,862) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2716 rect=(225,847,240,862) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2717 rect=(240,847,255,862) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2718 rect=(255,847,270,862) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2719 rect=(270,847,285,862) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2720 rect=(285,847,300,862) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2721 rect=(300,847,315,862) render=ALPHA delay_color= (128,128,128) } //gray
+
+//STTJ Small Star - ALPHA
+ShotData{ id=2726 rect=(0,862,15,877) render=ALPHA angular_velocity = 2 delay_color= (255,64,64) } //red 
+ShotData{ id=2727 rect=(15,862,30,877) render=ALPHA angular_velocity = -2 delay_color= (255,96,64) } //salmon 
+ShotData{ id=2728 rect=(30,862,45,877) render=ALPHA angular_velocity = 2 delay_color= (255,128,64) } //orange 
+ShotData{ id=2729 rect=(45,862,60,877) render=ALPHA angular_velocity = -2 delay_color= (255,255,64) } //yellow 
+ShotData{ id=2730 rect=(60,862,75,877) render=ALPHA angular_velocity = 2 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2731 rect=(75,862,90,877) render=ALPHA angular_velocity = -2 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2732 rect=(90,862,105,877) render=ALPHA angular_velocity = 2 delay_color= (128,255,64) } //limegreen
+ShotData{ id=2733 rect=(105,862,120,877) render=ALPHA angular_velocity = -2 delay_color= (64,255,64) } //green
+ShotData{ id=2734 rect=(120,862,135,877) render=ALPHA angular_velocity = 2 delay_color= (64,255,128) } //seagreen
+ShotData{ id=2735 rect=(135,862,150,877) render=ALPHA angular_velocity = -2 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2736 rect=(150,862,165,877) render=ALPHA angular_velocity = 2 delay_color= (64,128,192) } //skyblue
+ShotData{ id=2737 rect=(165,862,180,877) render=ALPHA angular_velocity = -2 delay_color= (64,96,255) } //blue
+ShotData{ id=2738 rect=(180,862,195,877) render=ALPHA angular_velocity = 2 delay_color= (64,64,255) } //indigo
+ShotData{ id=2739 rect=(195,862,210,877) render=ALPHA angular_velocity = -2 delay_color= (64,64,255) } //darkblue
+ShotData{ id=2740 rect=(210,862,225,877) render=ALPHA angular_velocity = 2 delay_color= (128,64,255) } //midnight
+ShotData{ id=2741 rect=(225,862,240,877) render=ALPHA angular_velocity = -2 delay_color= (192,64,192) } //violet
+ShotData{ id=2742 rect=(240,862,255,877) render=ALPHA angular_velocity = 2 delay_color= (255,64,160) } //lavender
+ShotData{ id=2743 rect=(255,862,270,877) render=ALPHA angular_velocity = -2 delay_color= (255,64,128) } //pink
+ShotData{ id=2744 rect=(270,862,285,877) render=ALPHA angular_velocity = 2 delay_color= (255,64,96) } //fuschia
+ShotData{ id=2745 rect=(285,862,300,877) render=ALPHA angular_velocity = -2 delay_color= (255,64,96) } //coral
+ShotData{ id=2746 rect=(300,862,315,877) render=ALPHA angular_velocity = 2 delay_color= (128,128,128) } //gray
+
+//STTJ PC-98 Twinshot - ALPHA
+ShotData{ id=2751 rect=(0,877,15,892) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2752 rect=(15,877,30,892) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2753 rect=(30,877,45,892) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2754 rect=(45,877,60,892) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2755 rect=(60,877,75,892) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2756 rect=(75,877,90,892) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2757 rect=(90,877,105,892) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2758 rect=(105,877,120,892) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2759 rect=(120,877,135,892) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2760 rect=(135,877,150,892) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2761 rect=(150,877,165,892) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2762 rect=(165,877,180,892) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2763 rect=(180,877,195,892) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2764 rect=(195,877,210,892) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2765 rect=(210,877,225,892) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2766 rect=(225,877,240,892) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2767 rect=(240,877,255,892) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2768 rect=(255,877,270,892) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2769 rect=(270,877,285,892) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2770 rect=(285,877,300,892) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2771 rect=(300,877,315,892) render=ALPHA delay_color= (128,128,128) } //gray
+
+//STTJ Bubble - ALPHA
+ShotData{ id=2776 rect=(400,300,463,363) render=ALPHA angular_velocity = 4 delay_color= (255,64,64) } //red 
+ShotData{ id=2777 rect=(463,300,526,363) render=ALPHA angular_velocity = -4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=2778 rect=(526,300,589,363) render=ALPHA angular_velocity = 4 delay_color= (255,128,64) } //orange 
+ShotData{ id=2779 rect=(589,300,652,363) render=ALPHA angular_velocity = -4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=2780 rect=(652,300,715,363) render=ALPHA angular_velocity = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2781 rect=(715,300,778,363) render=ALPHA angular_velocity = -4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2782 rect=(778,300,841,363) render=ALPHA angular_velocity = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=2783 rect=(841,300,904,363) render=ALPHA angular_velocity = -4 delay_color= (64,255,64) } //green
+ShotData{ id=2784 rect=(400,363,463,426) render=ALPHA angular_velocity = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=2785 rect=(463,363,526,426) render=ALPHA angular_velocity = -4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2786 rect=(526,363,589,426) render=ALPHA angular_velocity = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=2787 rect=(589,363,652,426) render=ALPHA angular_velocity = -4 delay_color= (64,96,255) } //blue
+ShotData{ id=2788 rect=(652,363,715,426) render=ALPHA angular_velocity = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=2789 rect=(715,363,778,426) render=ALPHA angular_velocity = -4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=2790 rect=(778,363,841,426) render=ALPHA angular_velocity = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=2791 rect=(841,363,904,426) render=ALPHA angular_velocity = -4 delay_color= (192,64,192) } //violet
+ShotData{ id=2792 rect=(400,426,463,489) render=ALPHA angular_velocity = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=2793 rect=(463,426,526,489) render=ALPHA angular_velocity = -4 delay_color= (255,64,128) } //pink
+ShotData{ id=2794 rect=(526,426,589,489) render=ALPHA angular_velocity = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=2795 rect=(589,426,652,489) render=ALPHA angular_velocity = -4 delay_color= (255,64,96) } //coral
+ShotData{ id=2796 rect=(652,426,715,489) render=ALPHA angular_velocity = 4 delay_color= (128,128,128) } //gray
+
+//STTJ Triangles - ALPHA
+ShotData{ id=2801 rect=(0,892,15,907) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2802 rect=(15,892,30,907) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2803 rect=(30,892,45,907) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2804 rect=(45,892,60,907) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2805 rect=(60,892,75,907) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2806 rect=(75,892,90,907) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2807 rect=(90,892,105,907) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2808 rect=(105,892,120,907) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2809 rect=(120,892,135,907) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2810 rect=(135,892,150,907) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2811 rect=(150,892,165,907) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2812 rect=(165,892,180,907) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2813 rect=(180,892,195,907) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2814 rect=(195,892,210,907) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2815 rect=(210,892,225,907) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2816 rect=(225,892,240,907) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2817 rect=(240,892,255,907) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2818 rect=(255,892,270,907) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2819 rect=(270,892,285,907) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2820 rect=(285,892,300,907) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2821 rect=(300,892,315,907) render=ALPHA delay_color= (128,128,128) } //gray
+
+//STTJ Kunai - ALPHA
+ShotData{ id=2826 rect=(0,907,15,922) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2827 rect=(15,907,30,922) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2828 rect=(30,907,45,922) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2829 rect=(45,907,60,922) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2830 rect=(60,907,75,922) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2831 rect=(75,907,90,922) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2832 rect=(90,907,105,922) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2833 rect=(105,907,120,922) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2834 rect=(120,907,135,922) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2835 rect=(135,907,150,922) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2836 rect=(150,907,165,922) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2837 rect=(165,907,180,922) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2838 rect=(180,907,195,922) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2839 rect=(195,907,210,922) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2840 rect=(210,907,225,922) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2841 rect=(225,907,240,922) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2842 rect=(240,907,255,922) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2843 rect=(255,907,270,922) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2844 rect=(270,907,285,922) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2845 rect=(285,907,300,922) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2846 rect=(300,907,315,922) render=ALPHA delay_color= (128,128,128) } //gray
+
+//STTJ Dark Kunai - ALPHA
+ShotData{ id=2851 rect=(0,922,15,937) render=ALPHA delay_color= (255,64,64) } //red 
+ShotData{ id=2852 rect=(15,922,30,937) render=ALPHA delay_color= (255,96,64) } //salmon 
+ShotData{ id=2853 rect=(30,922,45,937) render=ALPHA delay_color= (255,128,64) } //orange 
+ShotData{ id=2854 rect=(45,922,60,937) render=ALPHA delay_color= (255,255,64) } //yellow 
+ShotData{ id=2855 rect=(60,922,75,937) render=ALPHA delay_color= (192,255,64) } //yellow-green
+ShotData{ id=2856 rect=(75,922,90,937) render=ALPHA delay_color= (160,255,64) } //lawngreen
+ShotData{ id=2857 rect=(90,922,105,937) render=ALPHA delay_color= (128,255,64) } //limegreen
+ShotData{ id=2858 rect=(105,922,120,937) render=ALPHA delay_color= (64,255,64) } //green
+ShotData{ id=2859 rect=(120,922,135,937) render=ALPHA delay_color= (64,255,128) } //seagreen
+ShotData{ id=2860 rect=(135,922,150,937) render=ALPHA delay_color= (64,160,160) } //aquamarine
+ShotData{ id=2861 rect=(150,922,165,937) render=ALPHA delay_color= (64,128,192) } //skyblue
+ShotData{ id=2862 rect=(165,922,180,937) render=ALPHA delay_color= (64,96,255) } //blue
+ShotData{ id=2863 rect=(180,922,195,937) render=ALPHA delay_color= (64,64,255) } //indigo
+ShotData{ id=2864 rect=(195,922,210,937) render=ALPHA delay_color= (64,64,255) } //darkblue
+ShotData{ id=2865 rect=(210,922,225,937) render=ALPHA delay_color= (128,64,255) } //midnight
+ShotData{ id=2866 rect=(225,922,240,937) render=ALPHA delay_color= (192,64,192) } //violet
+ShotData{ id=2867 rect=(240,922,255,937) render=ALPHA delay_color= (255,64,160) } //lavender
+ShotData{ id=2868 rect=(255,922,270,937) render=ALPHA delay_color= (255,64,128) } //pink
+ShotData{ id=2869 rect=(270,922,285,937) render=ALPHA delay_color= (255,64,96) } //fuschia
+ShotData{ id=2870 rect=(285,922,300,937) render=ALPHA delay_color= (255,64,96) } //coral
+ShotData{ id=2871 rect=(300,922,315,937) render=ALPHA delay_color= (128,128,128) } //gray
+
+
+//STTJ Pellets - ADD ARGB
+ShotData{ id=12001 rect=(0,30,15,45) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12002 rect=(15,30,30,45) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12003 rect=(30,30,45,45) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12004 rect=(45,30,60,45) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12005 rect=(60,30,75,45) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12006 rect=(75,30,90,45) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12007 rect=(90,30,105,45) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12008 rect=(105,30,120,45) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12009 rect=(120,30,135,45) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12010 rect=(135,30,150,45) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12011 rect=(150,30,165,45) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12012 rect=(165,30,180,45) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12013 rect=(180,30,195,45) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12014 rect=(195,30,210,45) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12015 rect=(210,30,225,45) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12016 rect=(225,30,240,45) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12017 rect=(240,30,255,45) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12018 rect=(255,30,270,45) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12019 rect=(270,30,285,45) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12020 rect=(285,30,300,45) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12021 rect=(300,30,315,45) render=ADD_ARGB delay_color= (128,128,128) } //gray
+
+//STTJ Spinblades - ADD ARGB
+ShotData{ id=12026 rect=(0,45,15,60) render=ADD_ARGB angular_velocity = 8 delay_color= (255,64,64) } //red 
+ShotData{ id=12027 rect=(15,45,30,60) render=ADD_ARGB angular_velocity = -8 delay_color= (255,96,64) } //salmon 
+ShotData{ id=12028 rect=(30,45,45,60) render=ADD_ARGB angular_velocity = 8 delay_color= (255,128,64) } //orange 
+ShotData{ id=12029 rect=(45,45,60,60) render=ADD_ARGB angular_velocity = -8 delay_color= (255,255,64) } //yellow 
+ShotData{ id=12030 rect=(60,45,75,60) render=ADD_ARGB angular_velocity = 8 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12031 rect=(75,45,90,60) render=ADD_ARGB angular_velocity = -8 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12032 rect=(90,45,105,60) render=ADD_ARGB angular_velocity = 8 delay_color= (128,255,64) } //limegreen
+ShotData{ id=12033 rect=(105,45,120,60) render=ADD_ARGB angular_velocity = -8 delay_color= (64,255,64) } //green
+ShotData{ id=12034 rect=(120,45,135,60) render=ADD_ARGB angular_velocity = 8 delay_color= (64,255,128) } //seagreen
+ShotData{ id=12035 rect=(135,45,150,60) render=ADD_ARGB angular_velocity = -8 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12036 rect=(150,45,165,60) render=ADD_ARGB angular_velocity = 8 delay_color= (64,128,192) } //skyblue
+ShotData{ id=12037 rect=(165,45,180,60) render=ADD_ARGB angular_velocity = -8 delay_color= (64,96,255) } //blue
+ShotData{ id=12038 rect=(180,45,195,60) render=ADD_ARGB angular_velocity = 8 delay_color= (64,64,255) } //indigo
+ShotData{ id=12039 rect=(195,45,210,60) render=ADD_ARGB angular_velocity = -8 delay_color= (64,64,255) } //darkblue
+ShotData{ id=12040 rect=(210,45,225,60) render=ADD_ARGB angular_velocity = 8 delay_color= (128,64,255) } //midnight
+ShotData{ id=12041 rect=(225,45,240,60) render=ADD_ARGB angular_velocity = -8 delay_color= (192,64,192) } //violet
+ShotData{ id=12042 rect=(240,45,255,60) render=ADD_ARGB angular_velocity = 8 delay_color= (255,64,160) } //lavender
+ShotData{ id=12043 rect=(255,45,270,60) render=ADD_ARGB angular_velocity = -8 delay_color= (255,64,128) } //pink
+ShotData{ id=12044 rect=(270,45,285,60) render=ADD_ARGB angular_velocity = 8 delay_color= (255,64,96) } //fuschia
+ShotData{ id=12045 rect=(285,45,300,60) render=ADD_ARGB angular_velocity = -8 delay_color= (255,64,96) } //coral
+ShotData{ id=12046 rect=(300,45,315,60) render=ADD_ARGB angular_velocity = 8 delay_color= (128,128,128) } //gray
+
+//STTJ Gaugestar - ADD ARGB
+ShotData{ id=12051 rect=(0,60,15,75) render=ADD_ARGB angular_velocity = 8 collision = 2 delay_color= (255,64,64) } //red 
+ShotData{ id=12052 rect=(15,60,30,75) render=ADD_ARGB angular_velocity = -8 collision = 2 delay_color= (255,96,64) } //salmon 
+ShotData{ id=12053 rect=(30,60,45,75) render=ADD_ARGB angular_velocity = 8 collision = 2 delay_color= (255,128,64) } //orange 
+ShotData{ id=12054 rect=(45,60,60,75) render=ADD_ARGB angular_velocity = -8 collision = 2 delay_color= (255,255,64) } //yellow 
+ShotData{ id=12055 rect=(60,60,75,75) render=ADD_ARGB angular_velocity = 8 collision = 2 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12056 rect=(75,60,90,75) render=ADD_ARGB angular_velocity = -8 collision = 2 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12057 rect=(90,60,105,75) render=ADD_ARGB angular_velocity = 8 collision = 2 delay_color= (128,255,64) } //limegreen
+ShotData{ id=12058 rect=(105,60,120,75) render=ADD_ARGB angular_velocity = -8 collision = 2 delay_color= (64,255,64) } //green
+ShotData{ id=12059 rect=(120,60,135,75) render=ADD_ARGB angular_velocity = 8 collision = 2 delay_color= (64,255,128) } //seagreen
+ShotData{ id=12060 rect=(135,60,150,75) render=ADD_ARGB angular_velocity = -8 collision = 2 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12061 rect=(150,60,165,75) render=ADD_ARGB angular_velocity = 8 collision = 2 delay_color= (64,128,192) } //skyblue
+ShotData{ id=12062 rect=(165,60,180,75) render=ADD_ARGB angular_velocity = -8 collision = 2 delay_color= (64,96,255) } //blue
+ShotData{ id=12063 rect=(180,60,195,75) render=ADD_ARGB angular_velocity = 8 collision = 2 delay_color= (64,64,255) } //indigo
+ShotData{ id=12064 rect=(195,60,210,75) render=ADD_ARGB angular_velocity = -8 collision = 2 delay_color= (64,64,255) } //darkblue
+ShotData{ id=12065 rect=(210,60,225,75) render=ADD_ARGB angular_velocity = 8 collision = 2 delay_color= (128,64,255) } //midnight
+ShotData{ id=12066 rect=(225,60,240,75) render=ADD_ARGB angular_velocity = -8 collision = 2 delay_color= (192,64,192) } //violet
+ShotData{ id=12067 rect=(240,60,255,75) render=ADD_ARGB angular_velocity = 8 collision = 2 delay_color= (255,64,160) } //lavender
+ShotData{ id=12068 rect=(255,60,270,75) render=ADD_ARGB angular_velocity = -8 collision = 2 delay_color= (255,64,128) } //pink
+ShotData{ id=12069 rect=(270,60,285,75) render=ADD_ARGB angular_velocity = 8 collision = 2 delay_color= (255,64,96) } //fuschia
+ShotData{ id=12070 rect=(285,60,300,75) render=ADD_ARGB angular_velocity = -8 collision = 2 delay_color= (255,64,96) } //coral
+ShotData{ id=12071 rect=(300,60,315,75) render=ADD_ARGB angular_velocity = 8 collision = 2 delay_color= (128,128,128) } //gray
+
+//STTJ Coin - ADD ARGB
+ShotData{ id=12076 rect=(0,75,15,90) render=ADD_ARGB angular_velocity = 4 delay_color= (255,64,64) } //red 
+ShotData{ id=12077 rect=(15,75,30,90) render=ADD_ARGB angular_velocity = -4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=12078 rect=(30,75,45,90) render=ADD_ARGB angular_velocity = 4 delay_color= (255,128,64) } //orange 
+ShotData{ id=12079 rect=(45,75,60,90) render=ADD_ARGB angular_velocity = -4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=12080 rect=(60,75,75,90) render=ADD_ARGB angular_velocity = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12081 rect=(75,75,90,90) render=ADD_ARGB angular_velocity = -4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12082 rect=(90,75,105,90) render=ADD_ARGB angular_velocity = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=12083 rect=(105,75,120,90) render=ADD_ARGB angular_velocity = -4 delay_color= (64,255,64) } //green
+ShotData{ id=12084 rect=(120,75,135,90) render=ADD_ARGB angular_velocity = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=12085 rect=(135,75,150,90) render=ADD_ARGB angular_velocity = -4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12086 rect=(150,75,165,90) render=ADD_ARGB angular_velocity = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=12087 rect=(165,75,180,90) render=ADD_ARGB angular_velocity = -4 delay_color= (64,96,255) } //blue
+ShotData{ id=12088 rect=(180,75,195,90) render=ADD_ARGB angular_velocity = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=12089 rect=(195,75,210,90) render=ADD_ARGB angular_velocity = -4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=12090 rect=(210,75,225,90) render=ADD_ARGB angular_velocity = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=12091 rect=(225,75,240,90) render=ADD_ARGB angular_velocity = -4 delay_color= (192,64,192) } //violet
+ShotData{ id=12092 rect=(240,75,255,90) render=ADD_ARGB angular_velocity = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=12093 rect=(255,75,270,90) render=ADD_ARGB angular_velocity = -4 delay_color= (255,64,128) } //pink
+ShotData{ id=12094 rect=(270,75,285,90) render=ADD_ARGB angular_velocity = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=12095 rect=(285,75,300,90) render=ADD_ARGB angular_velocity = -4 delay_color= (255,64,96) } //coral
+ShotData{ id=12096 rect=(300,75,315,90) render=ADD_ARGB angular_velocity = 4 delay_color= (128,128,128) } //gray
+
+//STTJ Dots - ADD ARGB
+ShotData{ id=12101 rect=(0,210,8,219) render=ADD_ARGB fixed_angle=true delay_color= (255,64,64) } //red 
+ShotData{ id=12102 rect=(9,210,18,219) render=ADD_ARGB fixed_angle=true delay_color= (255,96,64) } //salmon 
+ShotData{ id=12103 rect=(18,210,27,219) render=ADD_ARGB fixed_angle=true delay_color= (255,128,64) } //orange 
+ShotData{ id=12104 rect=(27,210,36,219) render=ADD_ARGB fixed_angle=true delay_color= (255,255,64) } //yellow 
+ShotData{ id=12105 rect=(36,210,45,219) render=ADD_ARGB fixed_angle=true delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12106 rect=(45,210,54,219) render=ADD_ARGB fixed_angle=true delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12107 rect=(54,210,63,219) render=ADD_ARGB fixed_angle=true delay_color= (128,255,64) } //limegreen
+ShotData{ id=12108 rect=(63,210,72,219) render=ADD_ARGB fixed_angle=true delay_color= (64,255,64) } //green
+ShotData{ id=12109 rect=(72,210,81,219) render=ADD_ARGB fixed_angle=true delay_color= (64,255,128) } //seagreen
+ShotData{ id=12110 rect=(81,210,90,219) render=ADD_ARGB fixed_angle=true delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12111 rect=(90,210,99,219) render=ADD_ARGB fixed_angle=true delay_color= (64,128,192) } //skyblue
+ShotData{ id=12112 rect=(99,210,108,219) render=ADD_ARGB fixed_angle=true delay_color= (64,96,255) } //blue
+ShotData{ id=12113 rect=(108,210,117,219) render=ADD_ARGB fixed_angle=true delay_color= (64,64,255) } //indigo
+ShotData{ id=12114 rect=(117,210,126,219) render=ADD_ARGB fixed_angle=true delay_color= (64,64,255) } //darkblue
+ShotData{ id=12115 rect=(126,210,135,219) render=ADD_ARGB fixed_angle=true delay_color= (128,64,255) } //midnight
+ShotData{ id=12116 rect=(135,210,144,219) render=ADD_ARGB fixed_angle=true delay_color= (192,64,192) } //violet
+ShotData{ id=12117 rect=(144,210,153,219) render=ADD_ARGB fixed_angle=true delay_color= (255,64,160) } //lavender
+ShotData{ id=12118 rect=(153,210,162,219) render=ADD_ARGB fixed_angle=true delay_color= (255,64,128) } //pink
+ShotData{ id=12119 rect=(162,210,171,219) render=ADD_ARGB fixed_angle=true delay_color= (255,64,96) } //fuschia
+ShotData{ id=12120 rect=(171,210,180,219) render=ADD_ARGB fixed_angle=true delay_color= (255,64,96) } //coral
+ShotData{ id=12121 rect=(300,210,315,219) render=ADD_ARGB fixed_angle=true delay_color= (128,128,128) } //gray
+
+//STTJ Amulet - ADD ARGB
+ShotData{ id=12126 rect=(0,90,15,105) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12127 rect=(15,90,30,105) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12128 rect=(30,90,45,105) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12129 rect=(45,90,60,105) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12130 rect=(60,90,75,105) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12131 rect=(75,90,90,105) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12132 rect=(90,90,105,105) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12133 rect=(105,90,120,105) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12134 rect=(120,90,135,105) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12135 rect=(135,90,150,105) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12136 rect=(150,90,165,105) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12137 rect=(165,90,180,105) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12138 rect=(180,90,195,105) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12139 rect=(195,90,210,105) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12140 rect=(210,90,225,105) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12141 rect=(225,90,240,105) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12142 rect=(240,90,255,105) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12143 rect=(255,90,270,105) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12144 rect=(270,90,285,105) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12145 rect=(285,90,300,105) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12146 rect=(300,90,315,105) render=ADD_ARGB delay_color= (128,128,128) } //gray
+
+//STTJ Laser Nexus - ADD ARGB
+ShotData{ id=12151 rect=(0,219,17,236) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12152 rect=(17,219,34,236) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12153 rect=(34,219,51,236) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12154 rect=(51,219,68,236) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12155 rect=(68,219,85,236) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12156 rect=(85,219,102,236) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12157 rect=(102,219,119,236) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12158 rect=(119,219,136,236) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12159 rect=(136,219,153,236) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12160 rect=(153,219,170,236) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12161 rect=(170,219,187,236) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12162 rect=(187,219,204,236) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12163 rect=(204,219,221,236) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12164 rect=(221,219,238,236) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12165 rect=(238,219,255,236) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12166 rect=(255,219,272,236) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12167 rect=(272,219,289,236) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12168 rect=(289,219,306,236) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12169 rect=(306,219,323,236) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12170 rect=(323,219,340,236) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12171 rect=(340,219,357,236) render=ADD_ARGB delay_color= (128,128,128) } //gray
+
+//STTJ Bullet Nexus - ADD ARGB
+ShotData{ id=12176 rect=(0,236,17,253) render=ADD_ARGB angular_velocity = 4 delay_color= (255,64,64) } //red 
+ShotData{ id=12177 rect=(17,236,34,253) render=ADD_ARGB angular_velocity = -4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=12178 rect=(34,236,51,253) render=ADD_ARGB angular_velocity = 4 delay_color= (255,128,64) } //orange 
+ShotData{ id=12179 rect=(51,236,68,253) render=ADD_ARGB angular_velocity = -4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=12180 rect=(68,236,85,253) render=ADD_ARGB angular_velocity = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12181 rect=(85,236,102,253) render=ADD_ARGB angular_velocity = -4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12182 rect=(102,236,119,253) render=ADD_ARGB angular_velocity = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=12183 rect=(119,236,136,253) render=ADD_ARGB angular_velocity = -4 delay_color= (64,255,64) } //green
+ShotData{ id=12184 rect=(136,236,153,253) render=ADD_ARGB angular_velocity = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=12185 rect=(153,236,170,253) render=ADD_ARGB angular_velocity = -4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12186 rect=(170,236,187,253) render=ADD_ARGB angular_velocity = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=12187 rect=(187,236,204,253) render=ADD_ARGB angular_velocity = -4 delay_color= (64,96,255) } //blue
+ShotData{ id=12188 rect=(204,236,221,253) render=ADD_ARGB angular_velocity = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=12189 rect=(221,236,238,253) render=ADD_ARGB angular_velocity = -4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=12190 rect=(238,236,255,253) render=ADD_ARGB angular_velocity = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=12191 rect=(255,236,272,253) render=ADD_ARGB angular_velocity = -4 delay_color= (192,64,192) } //violet
+ShotData{ id=12192 rect=(272,236,289,253) render=ADD_ARGB angular_velocity = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=12193 rect=(289,236,306,253) render=ADD_ARGB angular_velocity = -4 delay_color= (255,64,128) } //pink
+ShotData{ id=12194 rect=(306,236,323,253) render=ADD_ARGB angular_velocity = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=12195 rect=(323,236,340,253) render=ADD_ARGB angular_velocity = -4 delay_color= (255,64,96) } //coral
+ShotData{ id=12196 rect=(340,236,357,253) render=ADD_ARGB angular_velocity = 4 delay_color= (128,128,128) } //gray
+
+//STTJ Gearflowers - ADD ARGB
+ShotData{ id=12201 rect=(0,105,15,120) render=ADD_ARGB angular_velocity = 6 collision = 3 delay_color= (255,64,64) } //red 
+ShotData{ id=12202 rect=(15,105,30,120) render=ADD_ARGB angular_velocity = -6 collision = 3 delay_color= (255,96,64) } //salmon 
+ShotData{ id=12203 rect=(30,105,45,120) render=ADD_ARGB angular_velocity = 6 collision = 3 delay_color= (255,128,64) } //orange 
+ShotData{ id=12204 rect=(45,105,60,120) render=ADD_ARGB angular_velocity = -6 collision = 3 delay_color= (255,255,64) } //yellow 
+ShotData{ id=12205 rect=(60,105,75,120) render=ADD_ARGB angular_velocity = 6 collision = 3 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12206 rect=(75,105,90,120) render=ADD_ARGB angular_velocity = -6 collision = 3 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12207 rect=(90,105,105,120) render=ADD_ARGB angular_velocity = 6 collision = 3 delay_color= (128,255,64) } //limegreen
+ShotData{ id=12208 rect=(105,105,120,120) render=ADD_ARGB angular_velocity = -6 collision = 3 delay_color= (64,255,64) } //green
+ShotData{ id=12209 rect=(120,105,135,120) render=ADD_ARGB angular_velocity = 6 collision = 3 delay_color= (64,255,128) } //seagreen
+ShotData{ id=12210 rect=(135,105,150,120) render=ADD_ARGB angular_velocity = -6 collision = 3 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12211 rect=(150,105,165,120) render=ADD_ARGB angular_velocity = 6 collision = 3 delay_color= (64,128,192) } //skyblue
+ShotData{ id=12212 rect=(165,105,180,120) render=ADD_ARGB angular_velocity = -6 collision = 3 delay_color= (64,96,255) } //blue
+ShotData{ id=12213 rect=(180,105,195,120) render=ADD_ARGB angular_velocity = 6 collision = 3 delay_color= (64,64,255) } //indigo
+ShotData{ id=12214 rect=(195,105,210,120) render=ADD_ARGB angular_velocity = -6 collision = 3 delay_color= (64,64,255) } //darkblue
+ShotData{ id=12215 rect=(210,105,225,120) render=ADD_ARGB angular_velocity = 6 collision = 3 delay_color= (128,64,255) } //midnight
+ShotData{ id=12216 rect=(225,105,240,120) render=ADD_ARGB angular_velocity = -6 collision = 3 delay_color= (192,64,192) } //violet
+ShotData{ id=12217 rect=(240,105,255,120) render=ADD_ARGB angular_velocity = 6 collision = 3 delay_color= (255,64,160) } //lavender
+ShotData{ id=12218 rect=(255,105,270,120) render=ADD_ARGB angular_velocity = -6 collision = 3 delay_color= (255,64,128) } //pink
+ShotData{ id=12219 rect=(270,105,285,120) render=ADD_ARGB angular_velocity = 6 collision = 3 delay_color= (255,64,96) } //fuschia
+ShotData{ id=12220 rect=(285,105,300,120) render=ADD_ARGB angular_velocity = -6 collision = 3 delay_color= (255,64,96) } //coral
+ShotData{ id=12221 rect=(300,105,315,120) render=ADD_ARGB angular_velocity = 6 collision = 3 delay_color= (128,128,128) } //gray
+
+//STTJ Ringbullets - ADD ARGB
+ShotData{ id=12226 rect=(0,120,15,135) render=ADD_ARGB fixed_angle=true delay_color= (255,64,64) } //red 
+ShotData{ id=12227 rect=(15,120,30,135) render=ADD_ARGB fixed_angle=true delay_color= (255,96,64) } //salmon 
+ShotData{ id=12228 rect=(30,120,45,135) render=ADD_ARGB fixed_angle=true delay_color= (255,128,64) } //orange 
+ShotData{ id=12229 rect=(45,120,60,135) render=ADD_ARGB fixed_angle=true delay_color= (255,255,64) } //yellow 
+ShotData{ id=12230 rect=(60,120,75,135) render=ADD_ARGB fixed_angle=true delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12231 rect=(75,120,90,135) render=ADD_ARGB fixed_angle=true delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12232 rect=(90,120,105,135) render=ADD_ARGB fixed_angle=true delay_color= (128,255,64) } //limegreen
+ShotData{ id=12233 rect=(105,120,120,135) render=ADD_ARGB fixed_angle=true delay_color= (64,255,64) } //green
+ShotData{ id=12234 rect=(120,120,135,135) render=ADD_ARGB fixed_angle=true delay_color= (64,255,128) } //seagreen
+ShotData{ id=12235 rect=(135,120,150,135) render=ADD_ARGB fixed_angle=true delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12236 rect=(150,120,165,135) render=ADD_ARGB fixed_angle=true delay_color= (64,128,192) } //skyblue
+ShotData{ id=12237 rect=(165,120,180,135) render=ADD_ARGB fixed_angle=true delay_color= (64,96,255) } //blue
+ShotData{ id=12238 rect=(180,120,195,135) render=ADD_ARGB fixed_angle=true delay_color= (64,64,255) } //indigo
+ShotData{ id=12239 rect=(195,120,210,135) render=ADD_ARGB fixed_angle=true delay_color= (64,64,255) } //darkblue
+ShotData{ id=12240 rect=(210,120,225,135) render=ADD_ARGB fixed_angle=true delay_color= (128,64,255) } //midnight
+ShotData{ id=12241 rect=(225,120,240,135) render=ADD_ARGB fixed_angle=true delay_color= (192,64,192) } //violet
+ShotData{ id=12242 rect=(240,120,255,135) render=ADD_ARGB fixed_angle=true delay_color= (255,64,160) } //lavender
+ShotData{ id=12243 rect=(255,120,270,135) render=ADD_ARGB fixed_angle=true delay_color= (255,64,128) } //pink
+ShotData{ id=12244 rect=(270,120,285,135) render=ADD_ARGB fixed_angle=true delay_color= (255,64,96) } //fuschia
+ShotData{ id=12245 rect=(285,120,300,135) render=ADD_ARGB fixed_angle=true delay_color= (255,64,96) } //coral
+ShotData{ id=12246 rect=(300,120,315,135) render=ADD_ARGB fixed_angle=true delay_color= (128,128,128) } //gray
+
+//STTJ Ringpellets - ADD ARGB
+ShotData{ id=12251 rect=(0,253,13,272) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12252 rect=(13,253,26,272) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12253 rect=(26,253,39,272) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12254 rect=(39,253,52,272) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12255 rect=(52,253,65,272) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12256 rect=(65,253,78,272) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12257 rect=(78,253,91,272) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12258 rect=(91,253,104,272) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12259 rect=(104,253,117,272) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12260 rect=(117,253,130,272) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12261 rect=(130,253,143,272) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12262 rect=(143,253,156,272) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12263 rect=(156,253,169,272) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12264 rect=(169,253,182,272) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12265 rect=(182,253,195,272) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12266 rect=(195,253,208,272) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12267 rect=(208,253,221,272) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12268 rect=(221,253,234,272) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12269 rect=(234,253,247,272) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12270 rect=(247,253,260,272) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12271 rect=(260,253,273,272) render=ADD_ARGB delay_color= (128,128,128) } //gray
+
+//STTJ Auraorb - ADD ARGB
+ShotData{ id=12276 rect=(0,274,29,303) render=ADD_ARGB fixed_angle=true delay_color= (255,64,64) } //red 
+ShotData{ id=12277 rect=(29,274,58,303) render=ADD_ARGB fixed_angle=true delay_color= (255,96,64) } //salmon 
+ShotData{ id=12278 rect=(58,274,87,303) render=ADD_ARGB fixed_angle=true delay_color= (255,128,64) } //orange 
+ShotData{ id=12279 rect=(87,274,116,303) render=ADD_ARGB fixed_angle=true delay_color= (255,255,64) } //yellow 
+ShotData{ id=12280 rect=(116,274,145,303) render=ADD_ARGB fixed_angle=true delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12281 rect=(145,274,174,303) render=ADD_ARGB fixed_angle=true delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12282 rect=(174,274,203,303) render=ADD_ARGB fixed_angle=true delay_color= (128,255,64) } //limegreen
+ShotData{ id=12283 rect=(203,274,232,303) render=ADD_ARGB fixed_angle=true delay_color= (64,255,64) } //green
+ShotData{ id=12284 rect=(232,274,261,303) render=ADD_ARGB fixed_angle=true delay_color= (64,255,128) } //seagreen
+ShotData{ id=12285 rect=(261,274,290,303) render=ADD_ARGB fixed_angle=true delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12286 rect=(290,274,319,303) render=ADD_ARGB fixed_angle=true delay_color= (64,128,192) } //skyblue
+ShotData{ id=12287 rect=(0,303,29,332) render=ADD_ARGB fixed_angle=true delay_color= (64,96,255) } //blue
+ShotData{ id=12288 rect=(29,303,58,332) render=ADD_ARGB fixed_angle=true delay_color= (64,64,255) } //indigo
+ShotData{ id=12289 rect=(58,303,87,332) render=ADD_ARGB fixed_angle=true delay_color= (64,64,255) } //darkblue
+ShotData{ id=12290 rect=(87,303,116,332) render=ADD_ARGB fixed_angle=true delay_color= (128,64,255) } //midnight
+ShotData{ id=12291 rect=(116,303,145,332) render=ADD_ARGB fixed_angle=true delay_color= (192,64,192) } //violet
+ShotData{ id=12292 rect=(145,303,174,332) render=ADD_ARGB fixed_angle=true delay_color= (255,64,160) } //lavender
+ShotData{ id=12293 rect=(174,303,203,332) render=ADD_ARGB fixed_angle=true delay_color= (255,64,128) } //pink
+ShotData{ id=12294 rect=(203,303,232,332) render=ADD_ARGB fixed_angle=true delay_color= (255,64,96) } //fuschia
+ShotData{ id=12295 rect=(232,303,261,332) render=ADD_ARGB fixed_angle=true delay_color= (255,64,96) } //coral
+ShotData{ id=12296 rect=(261,303,290,332) render=ADD_ARGB fixed_angle=true delay_color= (128,128,128) } //gray
+
+//STTJ Clearpage - ADD ARGB
+ShotData{ id=12301 rect=(0,342,15,357) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12302 rect=(15,342,30,357) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12303 rect=(30,342,45,357) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12304 rect=(45,342,60,357) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12305 rect=(60,342,75,357) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12306 rect=(75,342,90,357) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12307 rect=(90,342,105,357) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12308 rect=(105,342,120,357) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12309 rect=(120,342,135,357) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12310 rect=(135,342,150,357) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12311 rect=(150,342,165,357) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12312 rect=(165,342,180,357) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12313 rect=(180,342,195,357) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12314 rect=(195,342,210,357) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12315 rect=(210,342,225,357) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12316 rect=(225,342,240,357) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12317 rect=(240,342,255,357) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12318 rect=(255,342,270,357) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12319 rect=(270,342,285,357) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12320 rect=(285,342,300,357) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12321 rect=(300,342,315,357) render=ADD_ARGB delay_color= (128,128,128) } //gray
+ShotData{ id=12322 rect=(315,342,330,357) render=ADD_ARGB delay_color= (32,32,32) } //black
+
+//STTJ Hichew - ADD ARGB
+ShotData{ id=12326 rect=(0,359,15,374) render=ADD_ARGB collision = 4 delay_color= (255,64,64) } //red 
+ShotData{ id=12327 rect=(15,359,30,374) render=ADD_ARGB collision = 4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=12328 rect=(30,359,45,374) render=ADD_ARGB collision = 4 delay_color= (255,128,64) } //orange 
+ShotData{ id=12329 rect=(45,359,60,374) render=ADD_ARGB collision = 4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=12330 rect=(60,359,75,374) render=ADD_ARGB collision = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12331 rect=(75,359,90,374) render=ADD_ARGB collision = 4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12332 rect=(90,359,105,374) render=ADD_ARGB collision = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=12333 rect=(105,359,120,374) render=ADD_ARGB collision = 4 delay_color= (64,255,64) } //green
+ShotData{ id=12334 rect=(120,359,135,374) render=ADD_ARGB collision = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=12335 rect=(135,359,150,374) render=ADD_ARGB collision = 4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12336 rect=(150,359,165,374) render=ADD_ARGB collision = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=12337 rect=(165,359,180,374) render=ADD_ARGB collision = 4 delay_color= (64,96,255) } //blue
+ShotData{ id=12338 rect=(180,359,195,374) render=ADD_ARGB collision = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=12339 rect=(195,359,210,374) render=ADD_ARGB collision = 4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=12340 rect=(210,359,225,374) render=ADD_ARGB collision = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=12341 rect=(225,359,240,374) render=ADD_ARGB collision = 4 delay_color= (192,64,192) } //violet
+ShotData{ id=12342 rect=(240,359,255,374) render=ADD_ARGB collision = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=12343 rect=(255,359,270,374) render=ADD_ARGB collision = 4 delay_color= (255,64,128) } //pink
+ShotData{ id=12344 rect=(270,359,285,374) render=ADD_ARGB collision = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=12345 rect=(285,359,300,374) render=ADD_ARGB collision = 4 delay_color= (255,64,96) } //coral
+ShotData{ id=12346 rect=(300,359,315,374) render=ADD_ARGB collision = 4 delay_color= (128,128,128) } //gray
+
+//STTJ Smallbullet - ADD ARGB
+ShotData{ id=12351 rect=(0,376,15,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (255,64,64) } //red 
+ShotData{ id=12352 rect=(15,376,30,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=12353 rect=(30,376,45,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (255,128,64) } //orange 
+ShotData{ id=12354 rect=(45,376,60,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=12355 rect=(60,376,75,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12356 rect=(75,376,90,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12357 rect=(90,376,105,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=12358 rect=(105,376,120,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (64,255,64) } //green
+ShotData{ id=12359 rect=(120,376,135,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=12360 rect=(135,376,150,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12361 rect=(150,376,165,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=12362 rect=(165,376,180,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (64,96,255) } //blue
+ShotData{ id=12363 rect=(180,376,195,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=12364 rect=(195,376,210,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=12365 rect=(210,376,225,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=12366 rect=(225,376,240,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (192,64,192) } //violet
+ShotData{ id=12367 rect=(240,376,255,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=12368 rect=(255,376,270,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (255,64,128) } //pink
+ShotData{ id=12369 rect=(270,376,285,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=12370 rect=(285,376,300,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (255,64,96) } //coral
+ShotData{ id=12371 rect=(300,376,315,391) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (128,128,128) } //gray
+
+//STTJ Hollow Smallbullet - ADD ARGB
+ShotData{ id=12376 rect=(0,393,15,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (255,64,64) } //red 
+ShotData{ id=12377 rect=(15,393,30,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=12378 rect=(30,393,45,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (255,128,64) } //orange 
+ShotData{ id=12379 rect=(45,393,60,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=12380 rect=(60,393,75,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12381 rect=(75,393,90,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12382 rect=(90,393,105,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=12383 rect=(105,393,120,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (64,255,64) } //green
+ShotData{ id=12384 rect=(120,393,135,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=12385 rect=(135,393,150,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12386 rect=(150,393,165,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=12387 rect=(165,393,180,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (64,96,255) } //blue
+ShotData{ id=12388 rect=(180,393,195,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=12389 rect=(195,393,210,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=12390 rect=(210,393,225,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=12391 rect=(225,393,240,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (192,64,192) } //violet
+ShotData{ id=12392 rect=(240,393,255,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=12393 rect=(255,393,270,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (255,64,128) } //pink
+ShotData{ id=12394 rect=(270,393,285,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=12395 rect=(285,393,300,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (255,64,96) } //coral
+ShotData{ id=12396 rect=(300,393,315,408) render=ADD_ARGB fixed_angle=true collision = 4 delay_color= (128,128,128) } //gray
+
+//STTJ Square Embed Smallbullet - ADD ARGB
+ShotData{ id=12401 rect=(0,410,15,425) render=ADD_ARGB angular_velocity = 4 collision = 4 delay_color= (255,64,64) } //red 
+ShotData{ id=12402 rect=(15,410,30,425) render=ADD_ARGB angular_velocity = -4 collision = 4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=12403 rect=(30,410,45,425) render=ADD_ARGB angular_velocity = 4 collision = 4 delay_color= (255,128,64) } //orange 
+ShotData{ id=12404 rect=(45,410,60,425) render=ADD_ARGB angular_velocity = -4 collision = 4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=12405 rect=(60,410,75,425) render=ADD_ARGB angular_velocity = 4 collision = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12406 rect=(75,410,90,425) render=ADD_ARGB angular_velocity = -4 collision = 4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12407 rect=(90,410,105,425) render=ADD_ARGB angular_velocity = 4 collision = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=12408 rect=(105,410,120,425) render=ADD_ARGB angular_velocity = -4 collision = 4 delay_color= (64,255,64) } //green
+ShotData{ id=12409 rect=(120,410,135,425) render=ADD_ARGB angular_velocity = 4 collision = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=12410 rect=(135,410,150,425) render=ADD_ARGB angular_velocity = -4 collision = 4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12411 rect=(150,410,165,425) render=ADD_ARGB angular_velocity = 4 collision = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=12412 rect=(165,410,180,425) render=ADD_ARGB angular_velocity = -4 collision = 4 delay_color= (64,96,255) } //blue
+ShotData{ id=12413 rect=(180,410,195,425) render=ADD_ARGB angular_velocity = 4 collision = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=12414 rect=(195,410,210,425) render=ADD_ARGB angular_velocity = -4 collision = 4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=12415 rect=(210,410,225,425) render=ADD_ARGB angular_velocity = 4 collision = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=12416 rect=(225,410,240,425) render=ADD_ARGB angular_velocity = -4 collision = 4 delay_color= (192,64,192) } //violet
+ShotData{ id=12417 rect=(240,410,255,425) render=ADD_ARGB angular_velocity = 4 collision = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=12418 rect=(255,410,270,425) render=ADD_ARGB angular_velocity = -4 collision = 4 delay_color= (255,64,128) } //pink
+ShotData{ id=12419 rect=(270,410,285,425) render=ADD_ARGB angular_velocity = 4 collision = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=12420 rect=(285,410,300,425) render=ADD_ARGB angular_velocity = -4 collision = 4 delay_color= (255,64,96) } //coral
+ShotData{ id=12421 rect=(300,410,315,425) render=ADD_ARGB angular_velocity = 4 collision = 4 delay_color= (128,128,128) } //gray
+
+//STTJ Medium Bullets - ADD ARGB
+ShotData{ id=12426 rect=(0,443,15,458) render=ADD_ARGB fixed_angle=true delay_color= (255,64,64) } //red 
+ShotData{ id=12427 rect=(15,443,30,458) render=ADD_ARGB fixed_angle=true delay_color= (255,96,64) } //salmon 
+ShotData{ id=12428 rect=(30,443,45,458) render=ADD_ARGB fixed_angle=true delay_color= (255,128,64) } //orange 
+ShotData{ id=12429 rect=(45,443,60,458) render=ADD_ARGB fixed_angle=true delay_color= (255,255,64) } //yellow 
+ShotData{ id=12430 rect=(60,443,75,458) render=ADD_ARGB fixed_angle=true delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12431 rect=(75,443,90,458) render=ADD_ARGB fixed_angle=true delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12432 rect=(90,443,105,458) render=ADD_ARGB fixed_angle=true delay_color= (128,255,64) } //limegreen
+ShotData{ id=12433 rect=(105,443,120,458) render=ADD_ARGB fixed_angle=true delay_color= (64,255,64) } //green
+ShotData{ id=12434 rect=(120,443,135,458) render=ADD_ARGB fixed_angle=true delay_color= (64,255,128) } //seagreen
+ShotData{ id=12435 rect=(135,443,150,458) render=ADD_ARGB fixed_angle=true delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12436 rect=(150,443,165,458) render=ADD_ARGB fixed_angle=true delay_color= (64,128,192) } //skyblue
+ShotData{ id=12437 rect=(165,443,180,458) render=ADD_ARGB fixed_angle=true delay_color= (64,96,255) } //blue
+ShotData{ id=12438 rect=(180,443,195,458) render=ADD_ARGB fixed_angle=true delay_color= (64,64,255) } //indigo
+ShotData{ id=12439 rect=(195,443,210,458) render=ADD_ARGB fixed_angle=true delay_color= (64,64,255) } //darkblue
+ShotData{ id=12440 rect=(210,443,225,458) render=ADD_ARGB fixed_angle=true delay_color= (128,64,255) } //midnight
+ShotData{ id=12441 rect=(225,443,240,458) render=ADD_ARGB fixed_angle=true delay_color= (192,64,192) } //violet
+ShotData{ id=12442 rect=(240,443,255,458) render=ADD_ARGB fixed_angle=true delay_color= (255,64,160) } //lavender
+ShotData{ id=12443 rect=(255,443,270,458) render=ADD_ARGB fixed_angle=true delay_color= (255,64,128) } //pink
+ShotData{ id=12444 rect=(270,443,285,458) render=ADD_ARGB fixed_angle=true delay_color= (255,64,96) } //fuschia
+ShotData{ id=12445 rect=(285,443,300,458) render=ADD_ARGB fixed_angle=true delay_color= (255,64,96) } //coral
+ShotData{ id=12446 rect=(300,443,315,458) render=ADD_ARGB fixed_angle=true delay_color= (128,128,128) } //gray
+
+//STTJ Dark Suppository - ADD ARGB
+ShotData{ id=12451 rect=(0,426,15,443) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12452 rect=(15,426,30,443) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12453 rect=(30,426,45,443) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12454 rect=(45,426,60,443) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12455 rect=(60,426,75,443) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12456 rect=(75,426,90,443) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12457 rect=(90,426,105,443) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12458 rect=(105,426,120,443) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12459 rect=(120,426,135,443) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12460 rect=(135,426,150,443) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12461 rect=(150,426,165,443) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12462 rect=(165,426,180,443) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12463 rect=(180,426,195,443) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12464 rect=(195,426,210,443) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12465 rect=(210,426,225,443) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12466 rect=(225,426,240,443) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12467 rect=(240,426,255,443) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12468 rect=(255,426,270,443) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12469 rect=(270,426,285,443) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12470 rect=(285,426,300,443) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12471 rect=(300,426,315,443) render=ADD_ARGB delay_color= (128,128,128) } //gray
+
+//STTJ Bright Suppository - ADD ARGB
+ShotData{ id=12476 rect=(0,458,15,475) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12477 rect=(15,458,30,475) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12478 rect=(30,458,45,475) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12479 rect=(45,458,60,475) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12480 rect=(60,458,75,475) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12481 rect=(75,458,90,475) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12482 rect=(90,458,105,475) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12483 rect=(105,458,120,475) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12484 rect=(120,458,135,475) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12485 rect=(135,458,150,475) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12486 rect=(150,458,165,475) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12487 rect=(165,458,180,475) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12488 rect=(180,458,195,475) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12489 rect=(195,458,210,475) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12490 rect=(210,458,225,475) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12491 rect=(225,458,240,475) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12492 rect=(240,458,255,475) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12493 rect=(255,458,270,475) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12494 rect=(270,458,285,475) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12495 rect=(285,458,300,475) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12496 rect=(300,458,315,475) render=ADD_ARGB delay_color= (128,128,128) } //gray
+
+//STTJ Arrowhead - ADD ARGB
+ShotData{ id=12501 rect=(0,475,15,490) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12502 rect=(15,475,30,490) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12503 rect=(30,475,45,490) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12504 rect=(45,475,60,490) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12505 rect=(60,475,75,490) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12506 rect=(75,475,90,490) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12507 rect=(90,475,105,490) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12508 rect=(105,475,120,490) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12509 rect=(120,475,135,490) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12510 rect=(135,475,150,490) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12511 rect=(150,475,165,490) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12512 rect=(165,475,180,490) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12513 rect=(180,475,195,490) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12514 rect=(195,475,210,490) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12515 rect=(210,475,225,490) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12516 rect=(225,475,240,490) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12517 rect=(240,475,255,490) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12518 rect=(255,475,270,490) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12519 rect=(270,475,285,490) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12520 rect=(285,475,300,490) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12521 rect=(300,475,315,490) render=ADD_ARGB delay_color= (128,128,128) } //gray
+
+//STTJ Dark Arrowhead - ADD ARGB
+ShotData{ id=12526 rect=(0,490,15,505) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12527 rect=(15,490,30,505) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12528 rect=(30,490,45,505) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12529 rect=(45,490,60,505) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12530 rect=(60,490,75,505) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12531 rect=(75,490,90,505) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12532 rect=(90,490,105,505) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12533 rect=(105,490,120,505) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12534 rect=(120,490,135,505) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12535 rect=(135,490,150,505) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12536 rect=(150,490,165,505) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12537 rect=(165,490,180,505) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12538 rect=(180,490,195,505) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12539 rect=(195,490,210,505) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12540 rect=(210,490,225,505) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12541 rect=(225,490,240,505) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12542 rect=(240,490,255,505) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12543 rect=(255,490,270,505) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12544 rect=(270,490,285,505) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12545 rect=(285,490,300,505) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12546 rect=(300,490,315,505) render=ADD_ARGB delay_color= (128,128,128) } //gray
+
+//STTJ Invert Pellets - ADD ARGB
+ShotData{ id=12551 rect=(0,505,15,520) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12552 rect=(15,505,30,520) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12553 rect=(30,505,45,520) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12554 rect=(45,505,60,520) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12555 rect=(60,505,75,520) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12556 rect=(75,505,90,520) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12557 rect=(90,505,105,520) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12558 rect=(105,505,120,520) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12559 rect=(120,505,135,520) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12560 rect=(135,505,150,520) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12561 rect=(150,505,165,520) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12562 rect=(165,505,180,520) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12563 rect=(180,505,195,520) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12564 rect=(195,505,210,520) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12565 rect=(210,505,225,520) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12566 rect=(225,505,240,520) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12567 rect=(240,505,255,520) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12568 rect=(255,505,270,520) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12569 rect=(270,505,285,520) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12570 rect=(285,505,300,520) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12571 rect=(300,505,315,520) render=ADD_ARGB delay_color= (128,128,128) } //gray
+
+//STTJ Droplet - ADD ARGB
+ShotData{ id=12576 rect=(0,520,15,535) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12577 rect=(15,520,30,535) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12578 rect=(30,520,45,535) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12579 rect=(45,520,60,535) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12580 rect=(60,520,75,535) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12581 rect=(75,520,90,535) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12582 rect=(90,520,105,535) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12583 rect=(105,520,120,535) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12584 rect=(120,520,135,535) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12585 rect=(135,520,150,535) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12586 rect=(150,520,165,535) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12587 rect=(165,520,180,535) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12588 rect=(180,520,195,535) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12589 rect=(195,520,210,535) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12590 rect=(210,520,225,535) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12591 rect=(225,520,240,535) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12592 rect=(240,520,255,535) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12593 rect=(255,520,270,535) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12594 rect=(270,520,285,535) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12595 rect=(285,520,300,535) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12596 rect=(300,520,315,535) render=ADD_ARGB delay_color= (128,128,128) } //gray
+
+//SeitenTouji Large Auraorbs - ADD_ARGB
+ShotData{ id=12601 rect=(0,536,53,589) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12602 rect=(53,536,106,589) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12603 rect=(106,536,159,589) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12604 rect=(159,536,212,589) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12605 rect=(212,536,265,589) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12606 rect=(265,536,318,589) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12607 rect=(318,536,371,589) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12608 rect=(0,589,53,642) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12609 rect=(53,589,106,642) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12610 rect=(106,589,159,642) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12611 rect=(159,589,212,642) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12612 rect=(212,589,265,642) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12613 rect=(265,589,318,642) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12614 rect=(318,589,371,642) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12615 rect=(0,642,53,695) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12616 rect=(53,642,106,695) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12617 rect=(106,642,159,695) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12618 rect=(159,642,212,695) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12619 rect=(212,642,265,695) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12620 rect=(265,642,318,695) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12621 rect=(318,642,371,695) render=ADD_ARGB delay_color= (128,128,128) } //gray
+
+//STTJ PCB Style Large Bullets - ADD ARGB
+ShotData{ id=12626 rect=(0,700,31,731) render=ADD_ARGB collision = 11 delay_color= (255,64,64) } //red 
+ShotData{ id=12627 rect=(31,700,62,731) render=ADD_ARGB collision = 11 delay_color= (255,96,64) } //salmon 
+ShotData{ id=12628 rect=(62,700,93,731) render=ADD_ARGB collision = 11 delay_color= (255,128,64) } //orange 
+ShotData{ id=12629 rect=(93,700,124,731) render=ADD_ARGB collision = 11 delay_color= (255,255,64) } //yellow 
+ShotData{ id=12630 rect=(124,700,155,731) render=ADD_ARGB collision = 11 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12631 rect=(155,700,186,731) render=ADD_ARGB collision = 11 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12632 rect=(186,700,217,731) render=ADD_ARGB collision = 11 delay_color= (128,255,64) } //limegreen
+ShotData{ id=12633 rect=(217,700,248,731) render=ADD_ARGB collision = 11 delay_color= (64,255,64) } //green
+ShotData{ id=12634 rect=(248,700,279,731) render=ADD_ARGB collision = 11 delay_color= (64,255,128) } //seagreen
+ShotData{ id=12635 rect=(279,700,310,731) render=ADD_ARGB collision = 11 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12636 rect=(310,700,341,731) render=ADD_ARGB collision = 11 delay_color= (64,128,192) } //skyblue
+ShotData{ id=12637 rect=(0,731,31,762) render=ADD_ARGB collision = 11 delay_color= (64,96,255) } //blue
+ShotData{ id=12638 rect=(31,731,62,762) render=ADD_ARGB collision = 11 delay_color= (64,64,255) } //indigo
+ShotData{ id=12639 rect=(62,731,93,762) render=ADD_ARGB collision = 11 delay_color= (64,64,255) } //darkblue
+ShotData{ id=12640 rect=(93,731,124,762) render=ADD_ARGB collision = 11 delay_color= (128,64,255) } //midnight
+ShotData{ id=12641 rect=(124,731,155,762) render=ADD_ARGB collision = 11 delay_color= (192,64,192) } //violet
+ShotData{ id=12642 rect=(155,731,186,762) render=ADD_ARGB collision = 11 delay_color= (255,64,160) } //lavender
+ShotData{ id=12643 rect=(186,731,217,762) render=ADD_ARGB collision = 11 delay_color= (255,64,128) } //pink
+ShotData{ id=12644 rect=(217,731,248,762) render=ADD_ARGB collision = 11 delay_color= (255,64,96) } //fuschia
+ShotData{ id=12645 rect=(248,731,279,762) render=ADD_ARGB collision = 11 delay_color= (255,64,96) } //coral
+ShotData{ id=12646 rect=(279,731,310,762) render=ADD_ARGB collision = 11 delay_color= (128,128,128) } //gray
+
+//STTJ Modern Style Large Bullets - ADD ARGB
+ShotData{ id=12651 rect=(0,762,31,793) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12652 rect=(31,762,62,793) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12653 rect=(62,762,93,793) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12654 rect=(93,762,124,793) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12655 rect=(124,762,155,793) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12656 rect=(155,762,186,793) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12657 rect=(186,762,217,793) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12658 rect=(217,762,248,793) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12659 rect=(248,762,279,793) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12660 rect=(279,762,310,793) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12661 rect=(310,762,341,793) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12662 rect=(0,793,31,824) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12663 rect=(31,793,62,824) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12664 rect=(62,793,93,824) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12665 rect=(93,793,124,824) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12666 rect=(124,793,155,824) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12667 rect=(155,793,186,824) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12668 rect=(186,793,217,824) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12669 rect=(217,793,248,824) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12670 rect=(248,793,279,824) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12671 rect=(279,793,310,824) render=ADD_ARGB delay_color= (128,128,128) } //gray
+
+//STTJ Crossbullet - ADD ARGB
+ShotData{ id=12676 rect=(0,832,15,847) render=ADD_ARGB angular_velocity = 4 delay_color= (255,64,64) } //red 
+ShotData{ id=12677 rect=(15,832,30,847) render=ADD_ARGB angular_velocity = -4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=12678 rect=(30,832,45,847) render=ADD_ARGB angular_velocity = 4 delay_color= (255,128,64) } //orange 
+ShotData{ id=12679 rect=(45,832,60,847) render=ADD_ARGB angular_velocity = -4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=12680 rect=(60,832,75,847) render=ADD_ARGB angular_velocity = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12681 rect=(75,832,90,847) render=ADD_ARGB angular_velocity = -4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12682 rect=(90,832,105,847) render=ADD_ARGB angular_velocity = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=12683 rect=(105,832,120,847) render=ADD_ARGB angular_velocity = -4 delay_color= (64,255,64) } //green
+ShotData{ id=12684 rect=(120,832,135,847) render=ADD_ARGB angular_velocity = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=12685 rect=(135,832,150,847) render=ADD_ARGB angular_velocity = -4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12686 rect=(150,832,165,847) render=ADD_ARGB angular_velocity = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=12687 rect=(165,832,180,847) render=ADD_ARGB angular_velocity = -4 delay_color= (64,96,255) } //blue
+ShotData{ id=12688 rect=(180,832,195,847) render=ADD_ARGB angular_velocity = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=12689 rect=(195,832,210,847) render=ADD_ARGB angular_velocity = -4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=12690 rect=(210,832,225,847) render=ADD_ARGB angular_velocity = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=12691 rect=(225,832,240,847) render=ADD_ARGB angular_velocity = -4 delay_color= (192,64,192) } //violet
+ShotData{ id=12692 rect=(240,832,255,847) render=ADD_ARGB angular_velocity = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=12693 rect=(255,832,270,847) render=ADD_ARGB angular_velocity = -4 delay_color= (255,64,128) } //pink
+ShotData{ id=12694 rect=(270,832,285,847) render=ADD_ARGB angular_velocity = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=12695 rect=(285,832,300,847) render=ADD_ARGB angular_velocity = -4 delay_color= (255,64,96) } //coral
+ShotData{ id=12696 rect=(300,832,315,847) render=ADD_ARGB angular_velocity = 4 delay_color= (128,128,128) } //gray
+
+//STTJ Dualring Bullet - ADD ARGB
+ShotData{ id=12701 rect=(0,847,15,862) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12702 rect=(15,847,30,862) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12703 rect=(30,847,45,862) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12704 rect=(45,847,60,862) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12705 rect=(60,847,75,862) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12706 rect=(75,847,90,862) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12707 rect=(90,847,105,862) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12708 rect=(105,847,120,862) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12709 rect=(120,847,135,862) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12710 rect=(135,847,150,862) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12711 rect=(150,847,165,862) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12712 rect=(165,847,180,862) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12713 rect=(180,847,195,862) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12714 rect=(195,847,210,862) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12715 rect=(210,847,225,862) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12716 rect=(225,847,240,862) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12717 rect=(240,847,255,862) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12718 rect=(255,847,270,862) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12719 rect=(270,847,285,862) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12720 rect=(285,847,300,862) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12721 rect=(300,847,315,862) render=ADD_ARGB delay_color= (128,128,128) } //gray
+
+//STTJ Small Star - ADD ARGB
+ShotData{ id=12726 rect=(0,862,15,877) render=ADD_ARGB angular_velocity = 2 delay_color= (255,64,64) } //red 
+ShotData{ id=12727 rect=(15,862,30,877) render=ADD_ARGB angular_velocity = -2 delay_color= (255,96,64) } //salmon 
+ShotData{ id=12728 rect=(30,862,45,877) render=ADD_ARGB angular_velocity = 2 delay_color= (255,128,64) } //orange 
+ShotData{ id=12729 rect=(45,862,60,877) render=ADD_ARGB angular_velocity = -2 delay_color= (255,255,64) } //yellow 
+ShotData{ id=12730 rect=(60,862,75,877) render=ADD_ARGB angular_velocity = 2 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12731 rect=(75,862,90,877) render=ADD_ARGB angular_velocity = -2 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12732 rect=(90,862,105,877) render=ADD_ARGB angular_velocity = 2 delay_color= (128,255,64) } //limegreen
+ShotData{ id=12733 rect=(105,862,120,877) render=ADD_ARGB angular_velocity = -2 delay_color= (64,255,64) } //green
+ShotData{ id=12734 rect=(120,862,135,877) render=ADD_ARGB angular_velocity = 2 delay_color= (64,255,128) } //seagreen
+ShotData{ id=12735 rect=(135,862,150,877) render=ADD_ARGB angular_velocity = -2 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12736 rect=(150,862,165,877) render=ADD_ARGB angular_velocity = 2 delay_color= (64,128,192) } //skyblue
+ShotData{ id=12737 rect=(165,862,180,877) render=ADD_ARGB angular_velocity = -2 delay_color= (64,96,255) } //blue
+ShotData{ id=12738 rect=(180,862,195,877) render=ADD_ARGB angular_velocity = 2 delay_color= (64,64,255) } //indigo
+ShotData{ id=12739 rect=(195,862,210,877) render=ADD_ARGB angular_velocity = -2 delay_color= (64,64,255) } //darkblue
+ShotData{ id=12740 rect=(210,862,225,877) render=ADD_ARGB angular_velocity = 2 delay_color= (128,64,255) } //midnight
+ShotData{ id=12741 rect=(225,862,240,877) render=ADD_ARGB angular_velocity = -2 delay_color= (192,64,192) } //violet
+ShotData{ id=12742 rect=(240,862,255,877) render=ADD_ARGB angular_velocity = 2 delay_color= (255,64,160) } //lavender
+ShotData{ id=12743 rect=(255,862,270,877) render=ADD_ARGB angular_velocity = -2 delay_color= (255,64,128) } //pink
+ShotData{ id=12744 rect=(270,862,285,877) render=ADD_ARGB angular_velocity = 2 delay_color= (255,64,96) } //fuschia
+ShotData{ id=12745 rect=(285,862,300,877) render=ADD_ARGB angular_velocity = -2 delay_color= (255,64,96) } //coral
+ShotData{ id=12746 rect=(300,862,315,877) render=ADD_ARGB angular_velocity = 2 delay_color= (128,128,128) } //gray
+
+//STTJ PC-98 Twinshot - ADD ARGB
+ShotData{ id=12751 rect=(0,877,15,892) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12752 rect=(15,877,30,892) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12753 rect=(30,877,45,892) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12754 rect=(45,877,60,892) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12755 rect=(60,877,75,892) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12756 rect=(75,877,90,892) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12757 rect=(90,877,105,892) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12758 rect=(105,877,120,892) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12759 rect=(120,877,135,892) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12760 rect=(135,877,150,892) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12761 rect=(150,877,165,892) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12762 rect=(165,877,180,892) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12763 rect=(180,877,195,892) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12764 rect=(195,877,210,892) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12765 rect=(210,877,225,892) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12766 rect=(225,877,240,892) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12767 rect=(240,877,255,892) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12768 rect=(255,877,270,892) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12769 rect=(270,877,285,892) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12770 rect=(285,877,300,892) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12771 rect=(300,877,315,892) render=ADD_ARGB delay_color= (128,128,128) } //gray
+
+//STTJ Bubble - ADD ARGB
+ShotData{ id=12776 rect=(400,300,463,363) render=ADD_ARGB angular_velocity = 4 delay_color= (255,64,64) } //red 
+ShotData{ id=12777 rect=(463,300,526,363) render=ADD_ARGB angular_velocity = -4 delay_color= (255,96,64) } //salmon 
+ShotData{ id=12778 rect=(526,300,589,363) render=ADD_ARGB angular_velocity = 4 delay_color= (255,128,64) } //orange 
+ShotData{ id=12779 rect=(589,300,652,363) render=ADD_ARGB angular_velocity = -4 delay_color= (255,255,64) } //yellow 
+ShotData{ id=12780 rect=(652,300,715,363) render=ADD_ARGB angular_velocity = 4 delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12781 rect=(715,300,778,363) render=ADD_ARGB angular_velocity = -4 delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12782 rect=(778,300,841,363) render=ADD_ARGB angular_velocity = 4 delay_color= (128,255,64) } //limegreen
+ShotData{ id=12783 rect=(841,300,904,363) render=ADD_ARGB angular_velocity = -4 delay_color= (64,255,64) } //green
+ShotData{ id=12784 rect=(400,363,463,426) render=ADD_ARGB angular_velocity = 4 delay_color= (64,255,128) } //seagreen
+ShotData{ id=12785 rect=(463,363,526,426) render=ADD_ARGB angular_velocity = -4 delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12786 rect=(526,363,589,426) render=ADD_ARGB angular_velocity = 4 delay_color= (64,128,192) } //skyblue
+ShotData{ id=12787 rect=(589,363,652,426) render=ADD_ARGB angular_velocity = -4 delay_color= (64,96,255) } //blue
+ShotData{ id=12788 rect=(652,363,715,426) render=ADD_ARGB angular_velocity = 4 delay_color= (64,64,255) } //indigo
+ShotData{ id=12789 rect=(715,363,778,426) render=ADD_ARGB angular_velocity = -4 delay_color= (64,64,255) } //darkblue
+ShotData{ id=12790 rect=(778,363,841,426) render=ADD_ARGB angular_velocity = 4 delay_color= (128,64,255) } //midnight
+ShotData{ id=12791 rect=(841,363,904,426) render=ADD_ARGB angular_velocity = -4 delay_color= (192,64,192) } //violet
+ShotData{ id=12792 rect=(400,426,463,489) render=ADD_ARGB angular_velocity = 4 delay_color= (255,64,160) } //lavender
+ShotData{ id=12793 rect=(463,426,526,489) render=ADD_ARGB angular_velocity = -4 delay_color= (255,64,128) } //pink
+ShotData{ id=12794 rect=(526,426,589,489) render=ADD_ARGB angular_velocity = 4 delay_color= (255,64,96) } //fuschia
+ShotData{ id=12795 rect=(589,426,652,489) render=ADD_ARGB angular_velocity = -4 delay_color= (255,64,96) } //coral
+ShotData{ id=12796 rect=(652,426,715,489) render=ADD_ARGB angular_velocity = 4 delay_color= (128,128,128) } //gray
+
+//STTJ Triangles - ADD ARGB
+ShotData{ id=12801 rect=(0,892,15,907) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12802 rect=(15,892,30,907) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12803 rect=(30,892,45,907) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12804 rect=(45,892,60,907) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12805 rect=(60,892,75,907) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12806 rect=(75,892,90,907) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12807 rect=(90,892,105,907) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12808 rect=(105,892,120,907) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12809 rect=(120,892,135,907) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12810 rect=(135,892,150,907) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12811 rect=(150,892,165,907) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12812 rect=(165,892,180,907) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12813 rect=(180,892,195,907) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12814 rect=(195,892,210,907) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12815 rect=(210,892,225,907) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12816 rect=(225,892,240,907) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12817 rect=(240,892,255,907) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12818 rect=(255,892,270,907) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12819 rect=(270,892,285,907) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12820 rect=(285,892,300,907) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12821 rect=(300,892,315,907) render=ADD_ARGB delay_color= (128,128,128) } //gray
+
+//STTJ Kunai - ADD ARGB
+ShotData{ id=12826 rect=(0,907,15,922) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12827 rect=(15,907,30,922) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12828 rect=(30,907,45,922) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12829 rect=(45,907,60,922) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12830 rect=(60,907,75,922) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12831 rect=(75,907,90,922) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12832 rect=(90,907,105,922) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12833 rect=(105,907,120,922) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12834 rect=(120,907,135,922) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12835 rect=(135,907,150,922) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12836 rect=(150,907,165,922) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12837 rect=(165,907,180,922) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12838 rect=(180,907,195,922) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12839 rect=(195,907,210,922) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12840 rect=(210,907,225,922) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12841 rect=(225,907,240,922) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12842 rect=(240,907,255,922) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12843 rect=(255,907,270,922) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12844 rect=(270,907,285,922) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12845 rect=(285,907,300,922) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12846 rect=(300,907,315,922) render=ADD_ARGB delay_color= (128,128,128) } //gray
+
+//STTJ Dark Kunai - ADD ARGB
+ShotData{ id=12851 rect=(0,922,15,937) render=ADD_ARGB delay_color= (255,64,64) } //red 
+ShotData{ id=12852 rect=(15,922,30,937) render=ADD_ARGB delay_color= (255,96,64) } //salmon 
+ShotData{ id=12853 rect=(30,922,45,937) render=ADD_ARGB delay_color= (255,128,64) } //orange 
+ShotData{ id=12854 rect=(45,922,60,937) render=ADD_ARGB delay_color= (255,255,64) } //yellow 
+ShotData{ id=12855 rect=(60,922,75,937) render=ADD_ARGB delay_color= (192,255,64) } //yellow-green
+ShotData{ id=12856 rect=(75,922,90,937) render=ADD_ARGB delay_color= (160,255,64) } //lawngreen
+ShotData{ id=12857 rect=(90,922,105,937) render=ADD_ARGB delay_color= (128,255,64) } //limegreen
+ShotData{ id=12858 rect=(105,922,120,937) render=ADD_ARGB delay_color= (64,255,64) } //green
+ShotData{ id=12859 rect=(120,922,135,937) render=ADD_ARGB delay_color= (64,255,128) } //seagreen
+ShotData{ id=12860 rect=(135,922,150,937) render=ADD_ARGB delay_color= (64,160,160) } //aquamarine
+ShotData{ id=12861 rect=(150,922,165,937) render=ADD_ARGB delay_color= (64,128,192) } //skyblue
+ShotData{ id=12862 rect=(165,922,180,937) render=ADD_ARGB delay_color= (64,96,255) } //blue
+ShotData{ id=12863 rect=(180,922,195,937) render=ADD_ARGB delay_color= (64,64,255) } //indigo
+ShotData{ id=12864 rect=(195,922,210,937) render=ADD_ARGB delay_color= (64,64,255) } //darkblue
+ShotData{ id=12865 rect=(210,922,225,937) render=ADD_ARGB delay_color= (128,64,255) } //midnight
+ShotData{ id=12866 rect=(225,922,240,937) render=ADD_ARGB delay_color= (192,64,192) } //violet
+ShotData{ id=12867 rect=(240,922,255,937) render=ADD_ARGB delay_color= (255,64,160) } //lavender
+ShotData{ id=12868 rect=(255,922,270,937) render=ADD_ARGB delay_color= (255,64,128) } //pink
+ShotData{ id=12869 rect=(270,922,285,937) render=ADD_ARGB delay_color= (255,64,96) } //fuschia
+ShotData{ id=12870 rect=(285,922,300,937) render=ADD_ARGB delay_color= (255,64,96) } //coral
+ShotData{ id=12871 rect=(300,922,315,937) render=ADD_ARGB delay_color= (128,128,128) } //gray

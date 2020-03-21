@@ -1,0 +1,36 @@
+//#TouhouDanmakufu[Plural]
+#Title["Boss"]
+#Text[""]
+#Background["./../Background.dnh"]
+#ScriptVersion[3]
+#BGM["./../music/Boss1.ogg"]
+#System["./../system/System.dnh"]
+
+#include"./../system/Default_Effect.Txt"
+#include"./../lib/FxnList.dnh"
+
+@Event{
+
+}
+
+@Initialize{
+    TPlural;
+}
+
+@MainLoop{
+    yield;
+}
+
+task TPlural{
+    let dir=GetCurrentScriptDirectory();
+    let obj=ObjEnemyBossScene_Create();
+    ObjEnemyBossScene_Add(obj,0,dir~"./S1BEvent.dnh");
+    ObjEnemyBossScene_Add(obj,0,dir~"./S1BNS1.dnh");
+    ObjEnemyBossScene_Add(obj,0,dir~"./001.dnh");
+    ObjEnemyBossScene_LoadInThread(obj);
+    ObjEnemyBossScene_Regist(obj);
+    while(!Obj_IsDeleted(obj)){
+        yield;
+    }
+    CloseScript(GetOwnScriptID());
+}

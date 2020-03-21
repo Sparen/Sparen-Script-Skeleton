@@ -1,0 +1,311 @@
+/* ******************************************************************
+* Sparen's SeitenTouji Cutin Library
+* For use with Touhou Danmakufu ph3
+* (C) Sparen of Iria 2015-2020
+*
+* Code in this library is under the MIT License and may be 
+* redistributed/modified without express permission
+****************************************************************** */
+
+/* ******************************************************************
+* This library is used for cutins and spellcard history.
+* It is derived from the library used by GTbot.
+****************************************************************** */
+
+let libcutin_img = GetCurrentScriptDirectory() ~ "../img/lib_cutin_base.png"; //contains necessary text and images
+let libcutin_bg = GetCurrentScriptDirectory() ~ "../img/lib_cutin_bg_alt.png"; //contains necessary text and images
+let GetCenterXCutin = GetStgFrameWidth/2;
+let GetCenterYCutin = GetStgFrameHeight/2;
+
+task CutIn(EnemyObject, CutType, CutSpellName, SpellID, CutSpellImage, CutX1, CutY1, CutX2, CutY2) {
+    yield;
+    let SpellDataAttempt = IntToString(SpellID) ~ GetPlayerID ~ "Attempt"; //name of commondata
+    let SpellDataGet = IntToString(SpellID) ~ GetPlayerID ~ "Get"; //name of commondata
+    let SpellValueAttempt = GetAreaCommonData("SpellFunctions", SpellDataAttempt, 0);
+    let SpellValueGet = GetAreaCommonData("SpellFunctions", SpellDataGet, 0);
+
+    let SpellBGAlpha = 0;
+
+    let objText = ObjText_Create;
+    let objSpellBG = ObjPrim_Create(OBJ_SPRITE_2D);
+
+    if(IsReplay == false) {
+        SpellValueAttempt++;
+        SetAreaCommonData("SpellFunctions", SpellDataAttempt, SpellValueAttempt);
+        SetAreaCommonData("SpellFunctions", SpellDataGet, SpellValueGet);
+        SaveCommonDataAreaA1("SpellFunctions");
+    }
+
+    Cutin_Text(CutSpellName); //renders spell name
+    Cutin_TextBG; //renders bg behind spell name
+    Cutin_Bonus; //bonus and history 
+    Cutin_BGAnim(CutSpellImage, CutType, CutX1, CutY1, CutX2, CutY2); //background animation handling (handled outside of the CutIn task)
+
+    while(!Obj_IsDeleted(EnemyObject)) {
+        if(GetPlayerY < 96) { //dim out the bg if player is near
+            SpellBGAlpha = max(SpellBGAlpha - 10, 85); //minimum alpha of 85
+        }else{
+            SpellBGAlpha = min(SpellBGAlpha + 10, 255); //maximum alpha of 255
+        }
+        ObjRender_SetAlpha(objText, SpellBGAlpha);
+        ObjRender_SetAlpha(objSpellBG, SpellBGAlpha);
+
+        yield;
+    }
+    Obj_Delete(objText);
+
+    task Cutin_Text(name) { //based on GTbot's
+        ObjText_SetText(objText, name);
+        ObjText_SetFontSize(objText, 14);
+        ObjText_SetFontType(objText, "Helvetica");
+        ObjText_SetFontColorTop(objText, 254, 254, 254);
+        ObjText_SetFontColorBottom(objText, 150, 255, 119);
+        ObjText_SetFontBorderType(objText, BORDER_FULL);
+        ObjText_SetFontBorderColor(objText, 32, 32, 0);
+        ObjText_SetFontBorderWidth(objText, 1);
+        ObjText_SetHorizontalAlignment(objText, ALIGNMENT_RIGHT); //render x will be right bound - max width
+        ObjText_SetMaxWidth(objText, 400);
+        ObjRender_SetPosition(objText, GetStgFrameWidth - 7 - 400, 27, 0);
+        Obj_SetRenderPriority(objText, 0.79);
+    }
+    task Cutin_TextBG{
+        ObjRender_SetBlendType(objSpellBG, BLEND_ALPHA);
+        Obj_SetRenderPriority(objSpellBG, 0.78);
+        ObjPrim_SetTexture(objSpellBG, libcutin_bg);
+        ObjSprite2D_SetSourceRect(objSpellBG, 0, 0, 256, 32);
+        ObjSprite2D_SetDestCenter(objSpellBG);
+        ObjRender_SetPosition(objSpellBG, GetStgFrameWidth - 132, 32, 0);
+    }
+    task Cutin_Bonus{ //based on GTbot's
+        let obj = ObjPrim_Create(OBJ_SPRITE_LIST_2D); //the spell bonus number
+        let count = 0;
+        let bonus = 10;
+        ObjPrim_SetTexture(obj, libcutin_img);
+        ObjRender_SetBlendType(obj, BLEND_ALPHA);
+        Obj_SetRenderPriority(obj, 0.8);
+        while(ObjEnemy_GetInfo(EnemyObject, INFO_LIFE) > 0) {
+            ObjRender_SetAlpha(obj, SpellBGAlpha);
+            //base graphics
+            ObjSpriteList2D_ClearVertexCount(obj);
+            ObjSpriteList2D_SetSourceRect(obj, 0, 47, 128, 59); //'bonus' and 'history' text
+            ObjSpriteList2D_SetDestCenter(obj);
+            ObjRender_SetPosition(obj, GetStgFrameWidth-130, 53, 0);
+            ObjSpriteList2D_AddVertex(obj);
+
+            //retrieving bonus information
+            let objScene = GetEnemyBossSceneObjectID;
+            bonus = min(99999999, ObjEnemyBossScene_GetInfo(objScene, INFO_SPELL_SCORE));
+            count = Cutin_GetNumSize(bonus);
+            let listNum = Cutin_DigitToArray(bonus, count);
+
+            //display bonus score
+            if(ObjEnemyBossScene_GetInfo(objScene, INFO_PLAYER_SHOOTDOWN_COUNT) + ObjEnemyBossScene_GetInfo(objScene, INFO_PLAYER_SPELL_COUNT) == 0) {
+                ascent(iObj in 0..count) {
+                    let num = listNum[iObj];
+                    ObjRender_SetX(obj, GetStgFrameWidth - 94 - (8*count) + iObj*7);
+                    ObjSpriteList2D_SetSourceRect(obj, num*8, 64, (num+1)*8, 76);
+                    ObjSpriteList2D_SetDestCenter(obj);
+                    ObjSpriteList2D_AddVertex(obj);
+                }
+            }else{
+                ObjRender_SetX(obj, GetStgFrameWidth - 131);
+                ObjSpriteList2D_SetSourceRect(obj, 144, 47, 176, 59);
+                ObjSpriteList2D_SetDestCenter(obj);
+                ObjSpriteList2D_AddVertex(obj);
+            }
+
+            //retrieving history information
+            let attempt = min(SpellValueAttempt, 999);
+            let get = min(SpellValueGet, 999);
+            if(attempt < 100) {
+                count = 2;
+            }else{
+                count = 3;
+            }
+            listNum = Cutin_DigitToArray(get, count) ~ [10] ~ Cutin_DigitToArray(attempt, count);
+
+            //display spell history
+            ascent(iObj in 0..count*2 + 1) {
+                let num = listNum[iObj];//get first number to render
+                ObjRender_SetX(obj, GetStgFrameWidth-58 + iObj * 8);
+                ObjSpriteList2D_SetSourceRect(obj, num*8, 64, (num+1)*8, 76);
+                ObjSpriteList2D_SetDestCenter(obj);
+                ObjSpriteList2D_AddVertex(obj);
+            }
+            yield;
+        }
+        if(!IsReplay) {
+            //if(bonus > 1) {//if spell was captured. PRE STTJ AMB v0.43
+            if(ObjEnemyBossScene_GetInfo(objScene, INFO_PLAYER_SHOOTDOWN_COUNT) + ObjEnemyBossScene_GetInfo(objScene, INFO_PLAYER_SPELL_COUNT) == 0) {
+                SpellValueGet++;
+                SetAreaCommonData("SpellFunctions", SpellDataGet, SpellValueGet);
+            }
+            SaveCommonDataAreaA1("SpellFunctions");
+        }
+        Obj_Delete(obj);
+    }
+}
+
+//the below task handles all graphics that are temporary and are deleted after x frames
+//all render priorities should be below 0.78. Cutin image is 0.77, effects are right behind it.
+task Cutin_BGAnim(imgpath, CutType, L, T, R, B) {
+    let gearpath = GetCurrentScriptDirectory() ~ "../img/lib_cutin_gear.png";
+    let spellpath_alt = GetCurrentScriptDirectory() ~ "../img/lib_cutin_exattack.png";
+    let spellpath = GetCurrentScriptDirectory() ~ "../img/EMagicCircle.png";
+    let maxtime = 150; //number of frames before everything deletes. GTbot uses 165 frames
+    let alpha = 0;
+    CutinBG_Gear(384/2, 448/2, 1, 1, 1);//main gear
+    CutinBG_Gear(384/2 + (128+64)/(2^0.5), 448/2 + (128+64)/(2^0.5), 0.5, -1, 2); //sub gear
+    CutinBG_Gear(384/2 + (128+64)/(2^0.5), 448/2 - (128+64)/(2^0.5), 0.5, -1, 2); //sub gear
+    CutinBG_Gear(384/2 - (128+64)/(2^0.5), 448/2 + (128+64)/(2^0.5), 0.5, -1, 2); //sub gear
+    CutinBG_Gear(384/2 - (128+64)/(2^0.5), 448/2 - (128+64)/(2^0.5), 0.5, -1, 2); //sub gear
+    CutinBG_Octagon(384/2, 448/2, -1, 180, 1, spellpath_alt, 128, 32); //main gear
+    CutinBG_Octagon(384/2, 448/2, 1, 212, 1, spellpath, 256, 64); //main gear
+    CutinBG_Octagon(384/2 + (128+64)/(2^0.5), 448/2 + (128+64)/(2^0.5), 1, 90, 1, spellpath_alt, 128, 32); //sub gear
+    CutinBG_Octagon(384/2 + (128+64)/(2^0.5), 448/2 - (128+64)/(2^0.5), 1, 90, 1, spellpath_alt, 128, 32); //sub gear
+    CutinBG_Octagon(384/2 - (128+64)/(2^0.5), 448/2 + (128+64)/(2^0.5), 1, 90, 1, spellpath_alt, 128, 32); //sub gear
+    CutinBG_Octagon(384/2 - (128+64)/(2^0.5), 448/2 - (128+64)/(2^0.5), 1, 90, 1, spellpath_alt, 128, 32); //sub gear
+    Cutin_Image(imgpath, L, T, R, B);
+
+    ascent(i in 0..30) {
+        alpha = 255/30*i;
+        yield;
+    }
+    ascent(i in 0..(maxtime-60)) {
+        yield;
+    }
+    ascent(i in 0..30) {
+        alpha = 255 - 255/30*i;
+        yield;
+    }
+
+    task CutinBG_Gear(x, y, scl, dir, mult) {
+        let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+        ObjPrim_SetTexture(obj, gearpath);
+        ObjRender_SetBlendType(obj, BLEND_ALPHA);
+        ObjRender_SetColor(obj, 48, 48, 48);
+        ObjRender_SetPosition(obj, x, y, 1);
+        ObjSprite2D_SetSourceRect(obj, 0, 0, 256, 256);
+        ObjSprite2D_SetDestCenter(obj);
+        Obj_SetRenderPriority(obj, 0.75);
+        ObjRender_SetScaleXYZ(obj, scl, scl, 1);
+        ascent(i in 0..maxtime) {
+            ObjRender_SetAngleZ(obj, i*dir*mult);
+            ObjRender_SetAlpha(obj, alpha);
+            yield;
+        }
+        Obj_Delete(obj);
+    }
+
+    task CutinBG_Octagon(mx, my, spininc, dist, size, path, width, height) { //based on GTbot's
+        let countVertex = 16;
+        let listRadius = [];
+        loop(countVertex) {
+            listRadius = listRadius ~ [0];
+        }
+        let objOutline = ObjPrim_Create(OBJ_PRIMITIVE_2D);
+        ObjPrim_SetPrimitiveType(objOutline, PRIMITIVE_TRIANGLESTRIP);
+        ObjPrim_SetVertexCount(objOutline, countVertex);
+        ObjRender_SetBlendType(objOutline, BLEND_ADD_ARGB);
+        Obj_SetRenderPriority(objOutline, 0.76);
+        ObjPrim_SetTexture(objOutline, path);
+
+        ascent (iVert in 0..countVertex/2) {
+            let left = iVert * width; //128 for ExAttack img, multiple of 128 for EMagCirc
+            let indexVert = iVert * 2;
+            ObjPrim_SetVertexUVT(objOutline, indexVert + 0, left, 0);
+            ObjPrim_SetVertexUVT(objOutline, indexVert + 1, left, height); //64 for EMagCirc, 32 for ExAttack img
+        }
+
+        let frame = 0;
+        let rRate = 1;
+        let spin = 0;
+
+        loop(maxtime) {
+            spin += spininc;
+            VertexSize;
+            ObjRender_SetPosition(objOutline, mx, my, 0);
+            ObjRender_SetAngleZ(objOutline, spin);
+            ObjRender_SetAlpha(objOutline, alpha*1/2);
+            frame++;
+            yield;
+        }
+        Obj_Delete(objOutline);
+
+        task VertexSize{//gtbot
+            if(frame >= 35) {return;}
+            ascent (iVert in 0..countVertex/2) {
+                let indexVert = iVert * 2;
+                let angle = (360 / (countVertex / 2 - 1) * iVert);
+
+                let vx1 = listRadius[indexVert] * cos(angle);
+                let vy1 = listRadius[indexVert] * sin(angle);
+                ObjPrim_SetVertexPosition(objOutline, indexVert + 0, vx1, vy1, 0);
+
+                let vx2 = listRadius[indexVert+1] * cos(angle);
+                let vy2 = listRadius[indexVert+1] * sin(angle);
+                ObjPrim_SetVertexPosition(objOutline, indexVert + 1, vx2, vy2, 0);
+
+                let dr = (dist * rRate - listRadius[indexVert]) / 16;
+                listRadius[indexVert] = listRadius[indexVert] + dr;
+                if(frame > size) { //I have no idea what this does
+                    listRadius[indexVert + 1] = listRadius[indexVert + 1] + dr;
+                }
+            }
+        }
+    }
+
+    task Cutin_Image(path, L, T, R, B) {
+        let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+        ObjPrim_SetTexture(obj, path);
+        ObjSprite2D_SetSourceRect(obj, L, T, R, B);
+        ObjSprite2D_SetDestCenter(obj);
+        Obj_SetRenderPriority(obj, 0.77);
+        ascent(i in 0..maxtime) {
+            if (CutType == "KORO") {
+                //let displacement = 600 * (1 - sin(i*180/maxtime)); //OK, I'll admit this is hilarious.
+                let displacement = 300 * (1 - sin(i*180/maxtime));
+                if(i > round(maxtime/2)) {
+                    displacement = 300 * -1 * (1 - sin(i*180/maxtime));
+                }
+                ObjRender_SetPosition(obj, 384/2 + displacement, 448/2 - displacement, 1);
+            } else if (CutType == "GEN") {
+                let displacementx = 384 * -1 * (1 - sin(i*180/maxtime));
+                let displacementy = 224 * 1 * (1 - cos(i*180/maxtime));
+                if(i > round(maxtime/2)) {
+                    displacementx = 384 * 1 * (1 - sin(i*180/maxtime));
+                    //displacementy = 300 * 1 * (1 - cos(i*180/maxtime));
+                }
+                ObjRender_SetPosition(obj, 384/2 + displacementx, 448/3 + displacementy/4, 1);
+            }
+            yield;
+        }
+        Obj_Delete(obj);
+    }
+}
+
+function Cutin_GetNumSize(value) { //gtbot
+    if(value <= 1) {
+        return 1;
+    }else{
+        return truncate(log10(value)) + 1;
+    }
+}
+
+function Cutin_DigitToArray(digit, count) { //gtbot
+    let res = [];
+    digit = truncate(digit);
+
+    loop{
+        let tnum = truncate(digit % 10);
+        digit /= 10;
+        res = [tnum] ~ res;
+        if(truncate(digit) == 0) {break;}
+    }
+
+    loop(max(0, count - length(res))) {
+        res = [0] ~ res;
+    }
+
+    return res;
+}
