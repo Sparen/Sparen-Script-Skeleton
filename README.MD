@@ -1,5 +1,11 @@
 # Sparen's Script Skeleton
 
+### For Visitors
+
+This repository contains a template that suits my needs. It will almost certainly not suit yours. This code can be used as reference, but is not meant for others to use as a whole - doing so will tie you to a decade worth of undocumented assumptions and things I alone understand because I built them and used them as I iterated upon them. If you want a Danmakufu template, I highly suggest that you read [my tutorials](https://sparen.github.io/ph3tutorials/ph3tutorials.html) and build your own from the Danmakufu examples.
+
+### Overview
+
 After what seems to have been ages of copying over prior work and then spending hours and hours tearing through it in order to swap graphics and the like, my BHA entry proved that if I really want to iterate fast, I need two things.
 
 One, a standard library and setup that has some form of organization but which is not tied to any strict implementation.
