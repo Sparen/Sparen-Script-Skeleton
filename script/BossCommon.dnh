@@ -237,6 +237,11 @@ task TFinalize(islast) {
     if(islast) {
         NotifyEventAll(EV_USER_STAGE+777, [ObjMove_GetX(objBoss), ObjMove_GetY(objBoss)]); 
     }
+    if(ObjEnemyBossScene_GetInfo(objScene, INFO_PLAYER_SHOOTDOWN_COUNT) == 0){
+        NotifyEventAll(EV_USER_STAGE+100, [ObjMove_GetX(objBoss), ObjMove_GetY(objBoss)]);  // Life fragment
+    } else {
+        NotifyEventAll(EV_USER_STAGE+101, [ObjMove_GetX(objBoss), ObjMove_GetY(objBoss)]); // Spell fragment
+    }
     Obj_Delete(objBoss);
     DeleteShotAll(TYPE_ALL, TYPE_IMMEDIATE);
     SetAutoDeleteObject(true);
@@ -257,6 +262,11 @@ task TFinalizeSpell(islast) {
     }
     if(ObjEnemyBossScene_GetInfo(objScene, INFO_PLAYER_SHOOTDOWN_COUNT) + ObjEnemyBossScene_GetInfo(objScene, INFO_PLAYER_SPELL_COUNT) == 0) {
         NotifyEventAll(EV_USER_STAGE+666, 0); 
+    }
+    if(ObjEnemyBossScene_GetInfo(objScene, INFO_PLAYER_SHOOTDOWN_COUNT) == 0){
+        NotifyEventAll(EV_USER_STAGE+100, [ObjMove_GetX(objBoss), ObjMove_GetY(objBoss)]);  // Life fragment
+    } else {
+        NotifyEventAll(EV_USER_STAGE+101, [ObjMove_GetX(objBoss), ObjMove_GetY(objBoss)]); // Spell fragment
     }
     Obj_Delete(objBoss);
     DeleteShotAll(TYPE_ALL, TYPE_IMMEDIATE);
