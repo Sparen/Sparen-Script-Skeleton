@@ -139,19 +139,7 @@ task TReplayIndexSelection(){
                     text2 = text2 ~ vtos("-8s", GetReplayInfo(index, REPLAY_PLAYER_NAME)) ~ " ";
                     text3 = GetReplayInfo(index, REPLAY_DATE_TIME) ~ " ";
                     text4 = vtos("03.2f", GetReplayInfo(index, REPLAY_FPS_AVERAGE)) ~ "fps ";
-
-                    let comment = SplitString(GetReplayInfo(index, REPLAY_COMMENT), "/");
-                    let tdiff = atoi(comment[0]);
-                    if(atoi(comment[7]) == 0){ //Not spell or stage replay
-                        alternative(tdiff)
-                        case(0){text5 = "Easy ";}
-                        case(1){text5 = "Normal ";}
-                        case(2){text5 = "Hard ";}
-                        case(3){text5 = "Lunatic ";}
-                        case(4){text5 = "Extra ";}
-                    } else { //It's a spell replay, display the replay string (spell # or stage #) instead of game diff.
-                        text5 = comment[8];
-                    }
+                    // text5 is reserved for data such as difficulty, which can be extracted from replay comments
                 } else {
                     text = text ~ "No Data";
                 }

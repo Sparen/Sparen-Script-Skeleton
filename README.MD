@@ -2,7 +2,9 @@
 
 ### For Visitors
 
-This repository contains a template that suits my needs. It will almost certainly not suit yours. This code can be used as reference, but is not meant for others to use as a whole - doing so will tie you to a decade worth of undocumented assumptions and things I alone understand because I built them and used them as I iterated upon them. If you want a Danmakufu template, I highly suggest that you read [my tutorials](https://sparen.github.io/ph3tutorials/ph3tutorials.html) and build your own from the Danmakufu examples.
+This repository contains a template that suits my needs. It will almost certainly not suit yours. This code can be used as reference, but is not meant for others to use as a whole - doing so will tie you to a decade worth of undocumented assumptions and things I alone understand because I built them and used them as I iterated upon them. 
+
+If you want a Danmakufu template, I highly suggest that you read [my tutorials](https://sparen.github.io/ph3tutorials/ph3tutorials.html) and build your own from the Danmakufu examples. 
 
 ### Overview
 
