@@ -154,17 +154,17 @@ task Cutin_BGAnim(imgpath, CutType, L, T, R, B) {
     let spellpath = GetCurrentScriptDirectory() ~ "../img/EMagicCircle.png";
     let maxtime = 150; //number of frames before everything deletes. GTbot uses 165 frames
     let alpha = 0;
-    CutinBG_Gear(384/2, 448/2, 1, 1, 1);//main gear
-    CutinBG_Gear(384/2 + (128+64)/(2^0.5), 448/2 + (128+64)/(2^0.5), 0.5, -1, 2); //sub gear
-    CutinBG_Gear(384/2 + (128+64)/(2^0.5), 448/2 - (128+64)/(2^0.5), 0.5, -1, 2); //sub gear
-    CutinBG_Gear(384/2 - (128+64)/(2^0.5), 448/2 + (128+64)/(2^0.5), 0.5, -1, 2); //sub gear
-    CutinBG_Gear(384/2 - (128+64)/(2^0.5), 448/2 - (128+64)/(2^0.5), 0.5, -1, 2); //sub gear
-    CutinBG_Octagon(384/2, 448/2, -1, 180, 1, spellpath_alt, 128, 32); //main gear
-    CutinBG_Octagon(384/2, 448/2, 1, 212, 1, spellpath, 256, 64); //main gear
-    CutinBG_Octagon(384/2 + (128+64)/(2^0.5), 448/2 + (128+64)/(2^0.5), 1, 90, 1, spellpath_alt, 128, 32); //sub gear
-    CutinBG_Octagon(384/2 + (128+64)/(2^0.5), 448/2 - (128+64)/(2^0.5), 1, 90, 1, spellpath_alt, 128, 32); //sub gear
-    CutinBG_Octagon(384/2 - (128+64)/(2^0.5), 448/2 + (128+64)/(2^0.5), 1, 90, 1, spellpath_alt, 128, 32); //sub gear
-    CutinBG_Octagon(384/2 - (128+64)/(2^0.5), 448/2 - (128+64)/(2^0.5), 1, 90, 1, spellpath_alt, 128, 32); //sub gear
+    CutinBG_Gear(GetStgFrameWidth()/2, GetStgFrameHeight()/2, 1, 1, 1);//main gear
+    CutinBG_Gear(GetStgFrameWidth()/2 + (128+64)/(2^0.5), GetStgFrameHeight()/2 + (128+64)/(2^0.5), 0.5, -1, 2); //sub gear
+    CutinBG_Gear(GetStgFrameWidth()/2 + (128+64)/(2^0.5), GetStgFrameHeight()/2 - (128+64)/(2^0.5), 0.5, -1, 2); //sub gear
+    CutinBG_Gear(GetStgFrameWidth()/2 - (128+64)/(2^0.5), GetStgFrameHeight()/2 + (128+64)/(2^0.5), 0.5, -1, 2); //sub gear
+    CutinBG_Gear(GetStgFrameWidth()/2 - (128+64)/(2^0.5), GetStgFrameHeight()/2 - (128+64)/(2^0.5), 0.5, -1, 2); //sub gear
+    CutinBG_Octagon(GetStgFrameWidth()/2, GetStgFrameHeight()/2, -1, 180, 1, spellpath_alt, 128, 32); //main gear
+    CutinBG_Octagon(GetStgFrameWidth()/2, GetStgFrameHeight()/2, 1, 212, 1, spellpath, 256, 64); //main gear
+    CutinBG_Octagon(GetStgFrameWidth()/2 + (128+64)/(2^0.5), GetStgFrameHeight()/2 + (128+64)/(2^0.5), 1, 90, 1, spellpath_alt, 128, 32); //sub gear
+    CutinBG_Octagon(GetStgFrameWidth()/2 + (128+64)/(2^0.5), GetStgFrameHeight()/2 - (128+64)/(2^0.5), 1, 90, 1, spellpath_alt, 128, 32); //sub gear
+    CutinBG_Octagon(GetStgFrameWidth()/2 - (128+64)/(2^0.5), GetStgFrameHeight()/2 + (128+64)/(2^0.5), 1, 90, 1, spellpath_alt, 128, 32); //sub gear
+    CutinBG_Octagon(GetStgFrameWidth()/2 - (128+64)/(2^0.5), GetStgFrameHeight()/2 - (128+64)/(2^0.5), 1, 90, 1, spellpath_alt, 128, 32); //sub gear
     Cutin_Image(imgpath, L, T, R, B);
 
     ascent(i in 0..30) {
@@ -268,15 +268,15 @@ task Cutin_BGAnim(imgpath, CutType, L, T, R, B) {
                 if(i > round(maxtime/2)) {
                     displacement = 300 * -1 * (1 - sin(i*180/maxtime));
                 }
-                ObjRender_SetPosition(obj, 384/2 + displacement, 448/2 - displacement, 1);
+                ObjRender_SetPosition(obj, GetStgFrameWidth()/2 + displacement, GetStgFrameHeight()/2 - displacement, 1);
             } else if (CutType == "GEN") {
-                let displacementx = 384 * -1 * (1 - sin(i*180/maxtime));
-                let displacementy = 224 * 1 * (1 - cos(i*180/maxtime));
+                let displacementx = GetStgFrameWidth * -1 * (1 - sin(i*180/maxtime));
+                let displacementy = GetStgFrameHeight()/2 * 1 * (1 - cos(i*180/maxtime));
                 if(i > round(maxtime/2)) {
-                    displacementx = 384 * 1 * (1 - sin(i*180/maxtime));
+                    displacementx = GetStgFrameWidth * 1 * (1 - sin(i*180/maxtime));
                     //displacementy = 300 * 1 * (1 - cos(i*180/maxtime));
                 }
-                ObjRender_SetPosition(obj, 384/2 + displacementx, 448/3 + displacementy/4, 1);
+                ObjRender_SetPosition(obj, GetStgFrameWidth()/2 + displacementx, GetStgFrameHeight()/3 + displacementy/4, 1);
             }
             yield;
         }
