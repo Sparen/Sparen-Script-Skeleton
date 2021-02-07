@@ -62,6 +62,10 @@
         let arg = GetEventArgument(0); //id
         BulletDeleteEffect(arg);
     }
+    case(EV_USER_STAGE+751){ //Bullet Delete Effect (Sprite List)
+        let arg = GetEventArgument(0); //array of bullet IDs
+        BulletDeleteEffectSL(arg);
+    }
     case(EV_USER_STAGE+777) { //Boss Explosion
         let arg = GetEventArgument(0); //x, y
         BossExplosion(arg[0], arg[1]);

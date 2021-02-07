@@ -231,7 +231,7 @@ task TFinalize(islast) {
     while(ObjEnemy_GetInfo(objBoss, INFO_LIFE) > 0) {yield;}
     loop(11) {yield;}
     let arr = GetShotIdInCircleA2(GetCenterX, GetCenterY, 1000, TARGET_ENEMY);
-    ascent(i in 0..length(arr)) {NotifyEventAll(EV_USER_STAGE+750, arr[i]);} //bullet delete effect
+    NotifyEventAll(EV_USER_STAGE+751, arr); //bullet delete effect (SPRITE LIST)
     yield; //give a frame for effects to actually spawn
     DeleteShotAll(TYPE_ALL, TYPE_IMMEDIATE);
     if(islast) {
@@ -254,7 +254,7 @@ task TFinalizeSpell(islast) {
     while(ObjEnemy_GetInfo(objBoss, INFO_LIFE) > 0) {yield;}
     loop(11) {yield;}
     let arr = GetShotIdInCircleA2(GetCenterX, GetCenterY, 1000, TARGET_ENEMY);
-    ascent(i in 0..length(arr)) {NotifyEventAll(EV_USER_STAGE+750, arr[i]);} //bullet delete effect
+    NotifyEventAll(EV_USER_STAGE+751, arr); //bullet delete effect (SPRITE LIST)
     yield; //give a frame for effects to actually spawn
     DeleteShotAll(TYPE_ALL, TYPE_IMMEDIATE);
     if(islast) {

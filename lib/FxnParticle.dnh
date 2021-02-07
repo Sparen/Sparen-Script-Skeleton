@@ -504,41 +504,37 @@ task BulletDeleteEffect(objparent) {
     Obj_Delete(obj);
 }
 
-// WARNING: BELOW IS UNUSED AND UNTESTED.
 /* *************************************************************************
-*BulletDeleteEffectBatch([obj]) -- Creates a shot deletion effect for all in list
-*Param: objparentlist ([obj]) - Shot Objects to render effect at
+*BulletDeleteEffectSL(obj[]) -- Creates a shot deletion effect for all bullets in array
+*Param: objarr (obj[]) - Shot Objects to render effects at
 ************************************************************************* */
-task BulletDeleteEffectBatch(objparents) {
+task BulletDeleteEffectSL(objarr){
     let path = GetCurrentScriptDirectory~"../img/bulletdelete.png";
     let obj = ObjPrim_Create(OBJ_SPRITE_LIST_2D);
     ObjPrim_SetTexture(obj, path);
-    // Get positions and colors
-    let numshots = length(objparents);
-    let colors = [];
-    let positions = [];
-    ascent(i in 0..numshots) {
-        positions = positions ~ [[ObjMove_GetX(objparents[i]), ObjMove_GetY(objparents[i])]];
-        if(Obj_IsDeleted(objparents[i]) || ObjShot_GetImageID(objparents[i]) <= 0) {
-            colors = colors ~ [[0, 0, 0]]; // Default to 0 for bad objects
-        } else {
-            let shotinfo = GetShotDataInfoA1(ObjShot_GetImageID(objparents[i]), TARGET_ENEMY, INFO_DELAY_COLOR);
-            colors = colors ~ [[ObjMove_GetX(objparents[i]), ObjMove_GetY(objparents[i])]];
-        }
-    }
+    ObjRender_SetPosition(obj, 0, 0, 1);
     ObjRender_SetBlendType(obj, BLEND_ADD_ARGB);
     ObjRender_SetScaleXYZ(obj, 0.5, 0.5, 0);
-    ascent(i in 0..8) {
-        ObjSpriteList2D_ClearVertexCount(obj); // Clear
-        ascent(j in 0..numshots) { // Re-add
-            ObjRender_SetPosition(obj, positions[j][0], positions[j][1], 1);
-            ObjRender_SetColor(obj, colors[j][0], colors[j][1], colors[j][2]);
+    let shotinfoarr = [];
+    let shotxarr = [];
+    let shotyarr = [];
+    // We need to store POSITIONS as well since the IDs will be deleted soon after
+    ascent(j in 0..length(objarr)) {
+    if(ObjShot_GetImageID(objarr[j]) <= 0){return;} //Next Line(s) will error so hard otherwise.
+        shotinfoarr = shotinfoarr ~ [GetShotDataInfoA1(ObjShot_GetImageID(objarr[j]), TARGET_ENEMY, INFO_DELAY_COLOR)];
+        shotxarr = shotxarr ~ [ObjMove_GetX(objarr[j])];
+        shotyarr = shotyarr ~ [ObjMove_GetY(objarr[j])];
+    }
+    ascent(i in 0..8){
+        ascent(j in 0..length(objarr)) {
+            ObjRender_SetColor(obj, shotinfoarr[j][0], shotinfoarr[j][1], shotinfoarr[j][2]);
+            ObjRender_SetPosition(obj, shotxarr[j], shotyarr[j], 1);
             ObjSpriteList2D_SetSourceRect(obj, i*64, 0, (i + 1)*64, 64);
             ObjSpriteList2D_SetDestCenter(obj);
             ObjSpriteList2D_AddVertex(obj);
         }
-        ObjSpriteList2D_CloseVertex(obj);
-        loop(5) {yield;}
+        loop(5){yield;}
+        ObjSpriteList2D_ClearVertexCount(obj); //Reset for next set of graphics
     }
     Obj_Delete(obj);
 }
